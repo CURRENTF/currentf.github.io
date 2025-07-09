@@ -31,7 +31,6 @@
             padding: 2rem;
         }
 
-        /* --- Header --- */
         .header {
             display: flex;
             justify-content: space-between;
@@ -46,12 +45,12 @@
             font-size: 2.25rem;
             color: var(--font-color);
         }
-        .header-info .name-en { display: none; }
         
         .header-links {
             display: flex;
             gap: 1.25rem;
             margin-top: 0.5rem;
+            align-items: center;
         }
 
         .header-links a, .lang-switcher {
@@ -74,7 +73,6 @@
             font-family: inherit;
         }
 
-        /* --- Sections --- */
         .section {
             background-color: var(--card-bg);
             padding: 2rem;
@@ -92,17 +90,10 @@
             border-bottom: 2px solid #e9ecef;
             padding-bottom: 0.75rem;
         }
-        .section h2 .lang-en { display: none; }
 
-        /* --- About Section --- */
-        #about p {
-            margin: 0;
-        }
-        #about p strong {
-            color: var(--primary-color);
-        }
+        #about p { margin: 0; }
+        #about p strong { color: var(--primary-color); }
 
-        /* --- Publications --- */
         .publication-list .item {
             margin-bottom: 2rem;
         }
@@ -115,6 +106,7 @@
         }
         .publication-list .authors {
             font-size: 0.95em;
+            line-height: 1.6;
         }
         .publication-list .venue {
             font-size: 0.95em;
@@ -132,7 +124,6 @@
             color: var(--font-color);
         }
 
-        /* --- Awards Section --- */
         #awards ul {
             list-style-type: '🏆';
             padding-left: 2rem;
@@ -143,42 +134,25 @@
             margin-bottom: 0.5rem;
         }
         
-        /* --- Footer --- */
         footer {
             text-align: center;
             padding: 2rem 0;
             color: #6c757d;
             font-size: 0.9em;
         }
-
-        /* --- Language Switching Logic --- */
-        body.lang-en .lang-zh { display: none; }
-        body.lang-en .lang-en { display: inline; }
         
-        .lang-en { display: none; }
+        /* 关键改动：移除了 [lang="en"] { display: none; } 这一行，以避免与 JavaScript 冲突 */
 
-        body.lang-en .header-info .name-zh { display: none; }
-        body.lang-en .header-info .name-en { display: block; }
-        body.lang-en .section h2 .lang-zh { display: none; }
-        body.lang-en .section h2 .lang-en { display: inline; }
-
-        /* --- Responsive Design --- */
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
+            .container { padding: 1rem; }
             .header {
                 flex-direction: column;
                 align-items: center;
                 gap: 1rem;
                 text-align: center;
             }
-            .section {
-                padding: 1.5rem;
-            }
-            .header-info h1 {
-                font-size: 2rem;
-            }
+            .section { padding: 1.5rem; }
+            .header-info h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -187,90 +161,81 @@
     <div class="container">
         <header class="header">
             <div class="header-info">
-                <h1 class="name-zh">郝继泰</h1>
-                <h1 class="name-en">Jitai Hao</h1>
+                <h1 lang="zh-CN">郝继泰</h1>
+                <h1 lang="en">Jitai Hao</h1>
             </div>
             <div class="header-links">
                 <a href="mailto:jitaihao@outlook.com">Email</a>
                 <a href="https://github.com/currentf" target="_blank">GitHub</a>
+                <a href="https://scholar.google.com.hk/citations?user=mnCgkvYAAAAJ" target="_blank">Google Scholar</a>
                 <button class="lang-switcher" onclick="toggleLanguage()">
-                    <span class="lang-zh">English</span>
-                    <span class="lang-en">中文</span>
+                    <span lang="zh-CN">English</span>
+                    <span lang="en">中文</span>
                 </button>
             </div>
         </header>
 
         <main>
             <section id="about" class="section">
-                <h2 class="lang-zh">关于我</h2>
-                <h2 class="lang-en">About Me</h2>
-                <p class="lang-zh">
-                    我是山东大学的硕士研究生，研究方向为**高效大模型**。我于2022年在山东大学获得了计算机科学学士学位（人工智能实验班）。本科期间，我曾获得 <strong>ACM/ICPC 区域赛银牌</strong>，展现了较强的代码实现能力。
+                <h2 lang="zh-CN">关于我</h2>
+                <h2 lang="en">About Me</h2>
+                <p lang="zh-CN">
+                    我的主要研究方向为<strong>高效大模型训练和推理</strong>。我于2022年在山东大学获得了计算机科学学士学位（人工智能实验班）。本科期间，我曾获得 <strong>ACM/ICPC 区域赛银牌</strong>，展现了较强的代码实现能力。
                 </p>
-                <p class="lang-en">
+                <p lang="en">
                     I am a Master's student at Shandong University with a research focus on **efficient large-scale models**. I received my B.S. in Computer Science (AI Experimental Class) from the same university in 2022. During my undergraduate studies, I won a <strong>Silver Medal in the ACM/ICPC Regional Contest</strong>, highlighting my strong programming skills.
                 </p>
             </section>
 
             <section id="news" class="section">
-                <h2 class="lang-zh">最新动态</h2>
-                <h2 class="lang-en">News</h2>
-                <p class="lang-zh"><b>[2025年5月]</b> 我们关于大模型知识蒸馏的新论文已发布在 <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>！</p>
-                <p class="lang-en"><b>[May 2025]</b> Our new paper on knowledge distillation for LLMs is now available on <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>!</p>
+                <h2 lang="zh-CN">最新动态</h2>
+                <h2 lang="en">News</h2>
+                <p lang="zh-CN"><b>[2025年5月]</b> 我们关于大模型高效知识蒸馏的新论文已发布在 <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>！我们提出了 Low-Rank Clone (LRC)，一种创新的 SLM 高效预训练方法。 LRC 仅需约 10B-20B tokens 即可达到甚至超越需要数万亿 (Trillions) tokens 训练的SOTA模型。</p>
+                <p lang="en"><b>[May 2025]</b> Our new paper on efficient knowledge distillation for LLMs is now available on <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>! We propose Low-Rank Clone (LRC), an innovative and efficient pretraining method for SLMs. LRC can achieve, or even surpass, the performance of SOTA models trained on trillions of tokens with only about 10B-20B tokens.</p>
             </section>
 
             <section id="publications" class="section">
-                <h2 class="lang-zh">研究成果</h2>
-                <h2 class="lang-en">Publications</h2>
+                <h2 lang="zh-CN">研究成果</h2>
+                <h2 lang="en">Publications</h2>
                 <div class="publication-list">
                     
                     <div class="item">
-                        <h3 class="lang-zh">A Token is Worth over 1,000 Tokens: 高效知识蒸馏</h3>
-                        <h3 class="lang-en">A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
-                        <div class="authors lang-zh"><b>郝继泰</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
-                        <div class="authors lang-en"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
-                        <div class="venue">arXiv:2505.12781 [cs.CL], 2025 [<a href="https://arxiv.org/abs/2505.12781" target="_blank">PDF</a>]</div>
+                        <h3>A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
+                        <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
+                        <div class="venue">arXiv:2505.12781 [cs.CL], 2025</div>
                     </div>
                     
                     <div class="item">
-                        <h3 class="lang-zh">OmniKV: 面向长上下文大模型的动态上下文选择</h3>
-                        <h3 class="lang-en">OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
-                        <div class="authors lang-zh"><i>详细作者列表待补充...</i> (共同第一作者)</div>
-                        <div class="authors lang-en"><i>Full author list to be added...</i> (Co-first author)</div>
+                        <h3>OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
+                        <div class="authors"><b>Jitai Hao*</b>, Yuke Zhu*, Tian Wang, Jun Yu, Xin Xin, Bo Zheng, Zhaochun Ren, Sheng Guo</div>
                         <div class="venue">ICLR 2025</div>
                     </div>
 
                     <div class="item">
-                        <h3 class="lang-zh">MEFT: 基于稀疏适配器的内存高效微调</h3>
-                        <h3 class="lang-en">MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
-                        <div class="authors lang-zh"><i>详细作者列表待补充...</i> (第一作者)</div>
-                        <div class="authors lang-en"><i>Full author list to be added...</i> (First author)</div>
-                        <div class="venue">ACL 2024 (CCF-A)</div>
+                        <h3>MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
+                        <div class="authors"><b>Jitai Hao</b>, Weiwei Sun, Xin Xin, Qi Meng, Zhumin Chen, Pengjie Ren, Zhaochun Ren</div>
+                        <div class="venue">ACL 2024</div>
                     </div>
                 
                     <div class="item">
-                        <h3 class="lang-zh">基于层次推理的多被告法律判决预测</h3>
-                        <h3 class="lang-en">Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
-                        <div class="authors lang-zh"><i>详细作者列表待补充...</i> (共同第一作者)</div>
-                        <div class="authors lang-en"><i>Full author list to be added...</i> (Co-first author)</div>
-                        <div class="venue">EMNLP 2023 Findings (CCF-B)</div>
+                        <h3>Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
+                        <div class="authors">Yougang Lyu*, <b>Jitai Hao*</b>, Zihan Wang, Kai Zhao, Shen Gao, Pengjie Ren, Zhumin Chen, Zhaochun Ren</div>
+                        <div class="venue">EMNLP 2023 Findings</div>
                     </div>
 
                 </div>
             </section>
 
             <section id="awards" class="section">
-                <h2 class="lang-zh">奖项与荣誉</h2>
-                <h2 class="lang-en">Awards & Honors</h2>
-                <ul class="lang-zh">
+                <h2 lang="zh-CN">奖项与荣誉</h2>
+                <h2 lang="en">Awards & Honors</h2>
+                <ul lang="zh-CN">
+                    <li><b>国家奖学金</b>，一等学业奖学金等</li>
                     <li>ACM/ICPC 亚洲区域赛银牌 (2枚)</li>
-                    <li>CCPC 银牌 (1枚)</li>
                     <li>大学生软件创新大赛 (OPPO 杯) 国家一等奖</li>
-                    <li>国家奖学金，一等学业奖学金等</li>
                 </ul>
-                <ul class="lang-en">
+                <ul lang="en">
                     <li>ACM/ICPC Asia Regional Contest, Silver Medal (x2)</li>
-                    <li>CCPC, Silver Medal (x1)</li>
                     <li>National First Prize, University Student Software Innovation Competition (OPPO Cup)</li>
                     <li>National Scholarship, First-Class Academic Scholarship, etc.</li>
                 </ul>
@@ -278,34 +243,48 @@
         </main>
         
         <footer>
-            <span class="lang-zh">上次更新于 2025年7月</span>
-            <span class="lang-en">Last updated in July 2025</span>
+            <span lang="zh-CN">上次更新于 2025年7月</span>
+            <span lang="en">Last updated in July 2025</span>
         </footer>
     </div>
 
     <script>
-        function setLanguage(lang) {
-            if (lang === 'en') {
-                document.body.classList.add('lang-en');
-                document.documentElement.lang = 'en';
-            } else {
-                document.body.classList.remove('lang-en');
-                document.documentElement.lang = 'zh-CN';
-            }
+        // 根据浏览器语言设置初始语言，默认为中文
+        let currentLang = navigator.language.startsWith('en') ? 'en' : 'zh-CN';
+
+        /**
+         * 应用指定的语言到整个文档
+         * @param {string} lang 要显示的语言 ('en' 或 'zh-CN')
+         */
+        function applyLanguage(lang) {
+            // 设置 <html> 标签的 lang 属性，这对于可访问性(accessibility)和CSS选择器很有用
+            document.documentElement.lang = lang;
+            
+            const otherLang = lang === 'en' ? 'zh-CN' : 'en';
+
+            // 显示所有属于当前语言的元素
+            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => {
+                el.style.display = ''; // 恢复元素的默认 display 属性
+            });
+
+            // 隐藏所有属于另一种语言的元素
+            document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => {
+                el.style.display = 'none'; // 通过内联样式强制隐藏
+            });
         }
 
+        /**
+         * 切换当前语言
+         */
         function toggleLanguage() {
-            const isEnglish = document.body.classList.contains('lang-en');
-            setLanguage(isEnglish ? 'zh-CN' : 'en');
+            currentLang = (currentLang === 'en') ? 'zh-CN' : 'en';
+            applyLanguage(currentLang);
         }
 
-        // Optional: Set initial language based on browser preference
-        const userLang = navigator.language || navigator.userLanguage;
-        if (userLang.startsWith('en')) {
-            setLanguage('en');
-        } else {
-            setLanguage('zh-CN');
-        }
+        // 页面加载完成后，立即应用初始语言设置
+        document.addEventListener('DOMContentLoaded', () => {
+            applyLanguage(currentLang);
+        });
     </script>
 </body>
 </html>
