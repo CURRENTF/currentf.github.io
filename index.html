@@ -123,6 +123,16 @@
         .publication-list .authors b {
             color: var(--font-color);
         }
+        
+        /* 新增样式：为 TL;DR 添加样式 */
+        .publication-list .tldr {
+            margin-top: 0.75rem;
+            padding: 0.25rem 0 0.25rem 1rem;
+            border-left: 3px solid var(--primary-color);
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.6;
+        }
 
         #awards ul {
             list-style-type: '🏆';
@@ -141,8 +151,6 @@
             font-size: 0.9em;
         }
         
-        /* 关键改动：移除了 [lang="en"] { display: none; } 这一行，以避免与 JavaScript 冲突 */
-
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .header {
@@ -203,24 +211,48 @@
                         <h3>A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
                         <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
                         <div class="venue">arXiv:2505.12781 [cs.CL], 2025</div>
+                        <div class="tldr" lang="zh-CN">
+                            <b>TL;DR:</b> 我们提出 Low-Rank Clone (LRC)，一种能显著提高模型训练效率的创新方法。LRC 仅需约 10B-20B tokens 数据，就能达到甚至超越那些用数万亿 tokens 训练的顶尖模型（如 Qwen3, Llama3）的性能。
+                        </div>
+                        <div class="tldr" lang="en">
+                            <b>TL;DR:</b> We propose Low-Rank Clone (LRC), an innovative method to significantly improve model training efficiency. With only about 10B-20B tokens, LRC can match or even surpass the performance of SOTA models like Qwen3 and Llama3, which are trained on trillions of tokens.
+                        </div>
                     </div>
                     
                     <div class="item">
                         <h3>OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
                         <div class="authors"><b>Jitai Hao*</b>, Yuke Zhu*, Tian Wang, Jun Yu, Xin Xin, Bo Zheng, Zhaochun Ren, Sheng Guo</div>
                         <div class="venue">ICLR 2025</div>
+                        <div class="tldr" lang="zh-CN">
+                            <b>TL;DR:</b> 通过创新地提出层间注意力相似性，OmniKV 能够动态选择最重要的上下文信息，从而在处理长文本时，显著提升 LLM 的效率和性能，同时降低计算成本。
+                        </div>
+                        <div class="tldr" lang="en">
+                            <b>TL;DR:</b> By innovatively proposing inter-layer attention similarity, OmniKV dynamically selects the most crucial context information, significantly enhancing the efficiency and performance of LLMs for long-context tasks while reducing computational costs.
+                        </div>
                     </div>
 
                     <div class="item">
                         <h3>MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
                         <div class="authors"><b>Jitai Hao</b>, Weiwei Sun, Xin Xin, Qi Meng, Zhumin Chen, Pengjie Ren, Zhaochun Ren</div>
                         <div class="venue">ACL 2024</div>
+                        <div class="tldr" lang="zh-CN">
+                            <b>TL;DR:</b> MEFT 是一种内存效率更高的模型微调方法。它通过引入稀疏适配器（Sparse Adapter）来减少微调时占用的内存，使得在大模型上进行微调更加可行和高效。
+                        </div>
+                        <div class="tldr" lang="en">
+                            <b>TL;DR:</b> MEFT is a memory-efficient fine-tuning method. It reduces memory usage during fine-tuning by introducing a sparse adapter, making it more feasible and efficient to fine-tune large models.
+                        </div>
                     </div>
                 
                     <div class="item">
                         <h3>Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
                         <div class="authors">Yougang Lyu*, <b>Jitai Hao*</b>, Zihan Wang, Kai Zhao, Shen Gao, Pengjie Ren, Zhumin Chen, Zhaochun Ren</div>
                         <div class="venue">EMNLP 2023 Findings</div>
+                        <div class="tldr" lang="zh-CN">
+                            <b>TL;DR:</b> 本文研究如何通过分层推理来预测涉及多个被告的法律判决结果，旨在理解案件中复杂的实体关系和逻辑链条，以提高预测的准确性。
+                        </div>
+                        <div class="tldr" lang="en">
+                            <b>TL;DR:</b> This paper investigates how to predict legal judgment outcomes involving multiple defendants through hierarchical reasoning, aiming to understand complex relationships and logical chains to improve prediction accuracy.
+                        </div>
                     </div>
 
                 </div>
