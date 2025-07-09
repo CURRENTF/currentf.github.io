@@ -4,15 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jitai Hao (郝继泰) - Personal Homepage</title>
+    <!-- Google Fonts: Poppins for a modern, clean look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --bg-color: #f8f9fa;
-            --font-color: #343a40;
-            --primary-color: #0056b3;
+            /* --- Modern & Softer Color Palette --- */
+            --bg-color: #f4f7f9;
+            --font-color: #34495e;
+            --primary-color: #3498db;
+            --primary-color-dark: #2980b9;
+            --secondary-color: #95a5a6;
             --card-bg: #ffffff;
-            --border-color: #dee2e6;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-            --font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --gradient-start: #3498db;
+            --gradient-end: #2c3e50;
+            /* --- Typography --- */
+            --font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        /* --- Global Styles & Smooth Scrolling --- */
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -23,144 +40,212 @@
             padding: 0;
             line-height: 1.8;
             font-size: 16px;
+            font-weight: 400;
         }
 
         .container {
-            max-width: 850px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 2rem;
         }
 
+        /* --- Header Enhancements --- */
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             padding-bottom: 2rem;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
         
         .header-info h1 {
             margin: 0;
-            font-size: 2.25rem;
-            color: var(--font-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
         }
         
         .header-links {
             display: flex;
-            gap: 1.25rem;
-            margin-top: 0.5rem;
+            gap: 1rem;
             align-items: center;
         }
 
         .header-links a, .lang-switcher {
-            color: var(--primary-color);
+            color: var(--font-color);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.2s ease;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem; /* Space between icon and text */
         }
         .header-links a:hover, .lang-switcher:hover {
-            color: #007bff;
-            text-decoration: underline;
+            background-color: var(--primary-color);
+            color: white;
         }
 
         .lang-switcher {
             background: none;
-            border: none;
-            padding: 0;
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            font-size: 1em;
             font-family: inherit;
+            font-size: 0.9em;
+        }
+        .lang-switcher:hover {
+             border-color: var(--primary-color);
         }
 
+        /* --- Section Card Styling --- */
         .section {
             background-color: var(--card-bg);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px var(--shadow-color);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow-color);
             border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px var(--shadow-color);
         }
 
         .section h2 {
-            font-size: 1.75rem;
-            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--font-color);
             margin-top: 0;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 0.75rem;
-        }
-
-        #about p { margin: 0; }
-        #about p strong { color: var(--primary-color); }
-
-        .publication-list .item {
             margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        /* Specific icons for section headers */
+        #about h2::before      { content: '\f007'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
+        #news h2::before       { content: '\f1ea'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
+        #publications h2::before { content: '\f02d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
+        #awards h2::before     { content: '\f091'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
+
+        #about p strong { color: var(--primary-color); font-weight: 600; }
+
+        #news p { margin: 0; }
+        #news a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
+        #news a:hover { text-decoration: underline; color: var(--primary-color-dark); }
+        #news b { color: var(--primary-color); }
+        
+        /* --- Publication List Styling --- */
+        .publication-list .item {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px dashed var(--border-color);
         }
         .publication-list .item:last-child {
             margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
         }
         .publication-list h3 {
-            margin: 0 0 0.25rem 0;
-            font-size: 1.2rem;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
         }
-        .publication-list .authors {
-            font-size: 0.95em;
-            line-height: 1.6;
+        .publication-list .authors { font-size: 0.95em; line-height: 1.6; color: #7f8c8d; }
+        .publication-list .authors b { color: var(--font-color); font-weight: 600; }
+        .publication-list .venue { font-size: 0.95em; color: var(--secondary-color); font-style: italic; }
+        .publication-list .venue a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
+        .publication-list .venue a:hover { text-decoration: underline; }
+
+        /* Publication links like [PDF], [Code] */
+        .pub-links {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
-        .publication-list .venue {
-            font-size: 0.95em;
-            color: #6c757d;
-        }
-        .publication-list .venue a {
-            color: var(--primary-color);
+        .pub-links a {
+            font-size: 0.85em;
             text-decoration: none;
-            font-weight: bold;
+            color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
         }
-        .publication-list .venue a:hover {
-            text-decoration: underline;
-        }
-        .publication-list .authors b {
-            color: var(--font-color);
+        .pub-links a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
         
-        /* 新增样式：为 TL;DR 添加样式 */
         .publication-list .tldr {
-            margin-top: 0.75rem;
-            padding: 0.25rem 0 0.25rem 1rem;
-            border-left: 3px solid var(--primary-color);
+            margin-top: 1rem;
+            padding: 1rem;
+            border-left: 4px solid var(--primary-color);
+            background-color: #f8f9fa;
             font-size: 0.9em;
             color: #555;
-            line-height: 1.6;
+            line-height: 1.7;
+            border-radius: 0 6px 6px 0;
         }
+        .tldr b { color: #34495e; }
 
+        /* --- Awards & Honors Styling --- */
         #awards ul {
-            list-style-type: '🏆';
-            padding-left: 2rem;
+            list-style: none;
+            padding-left: 0;
             margin: 0;
         }
         #awards li {
-            padding-left: 0.75rem;
-            margin-bottom: 0.5rem;
+            padding-left: 2rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+        #awards li::before {
+            content: '\f005'; /* Font Awesome star icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #f1c40f; /* Gold color */
+            position: absolute;
+            left: 0;
+            top: 5px;
+        }
+        #awards li b {
+            font-weight: 600;
+            color: var(--font-color);
         }
         
+        /* --- Footer --- */
         footer {
             text-align: center;
-            padding: 2rem 0;
-            color: #6c757d;
+            padding: 2.5rem 0;
+            color: var(--secondary-color);
             font-size: 0.9em;
         }
         
+        /* --- Responsive Design --- */
         @media (max-width: 768px) {
-            .container { padding: 1rem; }
+            .container { padding: 1.5rem; }
             .header {
                 flex-direction: column;
                 align-items: center;
-                gap: 1rem;
+                gap: 1.5rem;
                 text-align: center;
             }
+            .header-info h1 { font-size: 2.2rem; }
             .section { padding: 1.5rem; }
-            .header-info h1 { font-size: 2rem; }
+            .section h2 { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -173,9 +258,9 @@
                 <h1 lang="en">Jitai Hao</h1>
             </div>
             <div class="header-links">
-                <a href="mailto:jitaihao@outlook.com">Email</a>
-                <a href="https://github.com/currentf" target="_blank">GitHub</a>
-                <a href="https://scholar.google.com.hk/citations?user=mnCgkvYAAAAJ" target="_blank">Google Scholar</a>
+                <a href="mailto:jitaihao@outlook.com"><i class="fas fa-envelope"></i> Email</a>
+                <a href="https://github.com/currentf" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://scholar.google.com.hk/citations?user=mnCgkvYAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i> Scholar</a>
                 <button class="lang-switcher" onclick="toggleLanguage()">
                     <span lang="zh-CN">English</span>
                     <span lang="en">中文</span>
@@ -211,6 +296,10 @@
                         <h3>A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
                         <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
                         <div class="venue">arXiv:2505.12781 [cs.CL], 2025</div>
+                        <div class="pub-links">
+                            <a href="https://arxiv.org/pdf/2505.12781.pdf" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                            <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                        </div>
                         <div class="tldr" lang="zh-CN">
                             <b>TL;DR:</b> 我们提出 Low-Rank Clone (LRC)，一种能显著提高模型训练效率的创新方法。LRC 仅需约 10B-20B tokens 数据，就能达到甚至超越那些用数万亿 tokens 训练的顶尖模型（如 Qwen3, Llama3）的性能。
                         </div>
@@ -223,6 +312,10 @@
                         <h3>OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
                         <div class="authors"><b>Jitai Hao*</b>, Yuke Zhu*, Tian Wang, Jun Yu, Xin Xin, Bo Zheng, Zhaochun Ren, Sheng Guo</div>
                         <div class="venue">ICLR 2025</div>
+                         <div class="pub-links">
+                            <a href="https://openreview.net/pdf?id=ulCAPXYXfa" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                            <a href="https://github.com/antgroup/OmniKV" target="_blank"><i class="fab fa-github"></i> Code</a>
+                        </div>
                         <div class="tldr" lang="zh-CN">
                             <b>TL;DR:</b> 通过创新地提出层间注意力相似性，OmniKV 能够动态选择最重要的上下文信息，从而在处理长文本时，显著提升 LLM 的效率和性能，同时降低计算成本。
                         </div>
@@ -235,6 +328,10 @@
                         <h3>MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
                         <div class="authors"><b>Jitai Hao</b>, Weiwei Sun, Xin Xin, Qi Meng, Zhumin Chen, Pengjie Ren, Zhaochun Ren</div>
                         <div class="venue">ACL 2024</div>
+                        <div class="pub-links">
+                            <a href="https://arxiv.org/pdf/2406.04984" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                            <a href="https://github.com/CURRENTF/MEFT" target="_blank"><i class="fab fa-github"></i> Code</a>
+                        </div>
                         <div class="tldr" lang="zh-CN">
                             <b>TL;DR:</b> MEFT 是一种内存效率更高的模型微调方法。它通过引入稀疏适配器（Sparse Adapter）来减少微调时占用的内存，使得在大模型上进行微调更加可行和高效。
                         </div>
@@ -247,6 +344,10 @@
                         <h3>Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
                         <div class="authors">Yougang Lyu*, <b>Jitai Hao*</b>, Zihan Wang, Kai Zhao, Shen Gao, Pengjie Ren, Zhumin Chen, Zhaochun Ren</div>
                         <div class="venue">EMNLP 2023 Findings</div>
+                        <div class="pub-links">
+                            <a href="https://arxiv.org/pdf/2312.05762" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                            <a href="https://github.com/CURRENTF/HRN" target="_blank"><i class="fab fa-github"></i> Code</a>
+                        </div>
                         <div class="tldr" lang="zh-CN">
                             <b>TL;DR:</b> 本文研究如何通过分层推理来预测涉及多个被告的法律判决结果，旨在理解案件中复杂的实体关系和逻辑链条，以提高预测的准确性。
                         </div>
@@ -263,13 +364,13 @@
                 <h2 lang="en">Awards & Honors</h2>
                 <ul lang="zh-CN">
                     <li><b>国家奖学金</b>，一等学业奖学金等</li>
-                    <li>ACM/ICPC 亚洲区域赛银牌 (2枚)</li>
-                    <li>大学生软件创新大赛 (OPPO 杯) 国家一等奖</li>
+                    <li><b>ACM/ICPC 亚洲区域赛银牌</b> (2枚)</li>
+                    <li><b>大学生软件创新大赛 (OPPO 杯)</b> 国家一等奖</li>
                 </ul>
                 <ul lang="en">
-                    <li>ACM/ICPC Asia Regional Contest, Silver Medal (x2)</li>
-                    <li>National First Prize, University Student Software Innovation Competition (OPPO Cup)</li>
-                    <li>National Scholarship, First-Class Academic Scholarship, etc.</li>
+                    <li><b>National Scholarship</b>, First-Class Academic Scholarship, etc.</li>
+                    <li><b>ACM/ICPC Asia Regional Contest, Silver Medal</b> (x2)</li>
+                    <li><b>National First Prize</b>, University Student Software Innovation Competition (OPPO Cup)</li>
                 </ul>
             </section>
         </main>
@@ -289,19 +390,15 @@
          * @param {string} lang 要显示的语言 ('en' 或 'zh-CN')
          */
         function applyLanguage(lang) {
-            // 设置 <html> 标签的 lang 属性，这对于可访问性(accessibility)和CSS选择器很有用
             document.documentElement.lang = lang;
-            
             const otherLang = lang === 'en' ? 'zh-CN' : 'en';
 
-            // 显示所有属于当前语言的元素
             document.querySelectorAll(`[lang="${lang}"]`).forEach(el => {
-                el.style.display = ''; // 恢复元素的默认 display 属性
+                el.style.display = '';
             });
 
-            // 隐藏所有属于另一种语言的元素
             document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => {
-                el.style.display = 'none'; // 通过内联样式强制隐藏
+                el.style.display = 'none';
             });
         }
 
