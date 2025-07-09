@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jitai Hao (郝继泰) - Personal Homepage</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f4f6f8;
+            --font-color: #34495e;
+            --container-bg: #ffffff;
+            --border-radius: 8px;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--font-color);
+            line-height: 1.7;
+            transition: all 0.3s ease;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px 40px;
+            background-color: var(--container-bg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: var(--border-radius);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: var(--primary-color);
+        }
+        header .contact-info {
+            margin-top: 15px;
+        }
+        header .contact-info a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+        header .contact-info a:hover {
+            color: var(--primary-color);
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .section-item {
+            margin-bottom: 25px;
+        }
+        .section-item h3 {
+            margin: 0 0 5px 0;
+            color: var(--font-color);
+            font-size: 1.2em;
+        }
+        .section-item .meta {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+        .section-item ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .lang-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--container-bg);
+            padding: 8px 12px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--secondary-color);
+            border: 1px solid #ddd;
+            z-index: 100;
+        }
+        [lang="en"] { display: none; }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 15px 25px;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+            .lang-switcher {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lang-switcher" onclick="toggleLanguage()">EN / 中文</div>
+
+    <div class="container">
+        <header>
+            <div lang="zh-CN">
+                <h1>郝继泰 (Jitai Hao)</h1>
+            </div>
+            <div lang="en">
+                <h1>Jitai Hao (郝继泰)</h1>
+            </div>
+            <div class="contact-info">
+                <a href="mailto:jitaihao@outlook.com">Email</a> |
+                <a href="https://github.com/currentf" target="_blank">GitHub</a>
+            </div>
+        </header>
+
+        <main>
+            <!-- About Me -->
+            <section id="about">
+                <div lang="zh-CN">
+                    <h2>个人简介</h2>
+                    <p>
+                        我是山东大学的一名硕士研究生。我的主要研究方向为高效大模型及其应用。本科期间，我积极参与程序设计竞赛，曾获得 <strong>ACM/ICPC 区域赛（国家级）银牌</strong>，展现了较强的代码实现能力。
+                    </p>
+                </div>
+                <div lang="en">
+                    <h2>About Me</h2>
+                    <p>
+                        I am a Master's student at Shandong University. My primary research focus is on efficient large-scale models and their applications. As an undergraduate, I actively participated in programming competitions and won a <strong>Silver Medal in the ACM/ICPC Regional Contest (National Level)</strong>, which demonstrates my strong coding abilities.
+                    </p>
+                </div>
+            </section>
+            
+            <!-- News -->
+            <section id="news">
+                 <div lang="zh-CN">
+                    <h2>最新动态</h2>
+                     <div class="section-item">
+                         <p><b>[2025年5月]</b> 我的一篇关于大模型知识蒸馏的论文已被 <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a> 收录！</p>
+                     </div>
+                </div>
+                <div lang="en">
+                    <h2>News</h2>
+                     <div class="section-item">
+                        <p><b>[May 2025]</b> Our new paper on knowledge distillation for LLMs is available on <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>!</p>
+                     </div>
+                </div>
+            </section>
+
+            <!-- Publications -->
+            <section id="publications">
+                <div lang="zh-CN">
+                    <h2>研究成果</h2>
+                </div>
+                <div lang="en">
+                    <h2>Publications</h2>
+                </div>
+                
+                <div class="section-item">
+                    <h3 lang="zh-CN">A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
+                    <h3 lang="en">A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
+                    <p lang="zh-CN"><b>郝继泰</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</p>
+                    <p lang="en"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</p>
+                    <p class="meta">arXiv:2505.12781 [cs.CL], 2025 [<a href="https://arxiv.org/abs/2505.12781" target="_blank">PDF</a>]</p>
+                </div>
+                
+                <div class="section-item">
+                    <h3 lang="zh-CN">OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
+                    <h3 lang="en">OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
+                    <p lang="zh-CN"><i>详细作者列表待补充...</i> (共同第一作者)</p>
+                    <p lang="en"><i>Full author list to be added...</i> (Co-first author)</p>
+                    <p class="meta">ICLR 2025</p>
+                </div>
+
+                <div class="section-item">
+                    <h3 lang="zh-CN">MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
+                    <h3 lang="en">MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
+                    <p lang="zh-CN"><i>详细作者列表待补充...</i> (第一作者)</p>
+                    <p lang="en"><i>Full author list to be added...</i> (First author)</p>
+                    <p class="meta">ACL 2024 (CCF-A)</p>
+                </div>
+                
+                <div class="section-item">
+                    <h3 lang="zh-CN">Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
+                    <h3 lang="en">Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
+                    <p lang="zh-CN"><i>详细作者列表待补充...</i> (共同第一作者)</p>
+                    <p lang="en"><i>Full author list to be added...</i> (Co-first author)</p>
+                    <p class="meta">EMNLP 2023 Findings (CCF-B)</p>
+                </div>
+            </section>
+            
+            <!-- Education -->
+            <section id="education">
+                <div lang="zh-CN">
+                    <h2>教育经历</h2>
+                    <div class="section-item">
+                        <h3>山东大学 | 计算机科学与技术硕士</h3>
+                        <p class="meta">2022年9月 - 至今</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>山东大学 | 计算机科学与技术学士 (人工智能实验班)</h3>
+                        <p class="meta">2018年9月 - 2022年6月</p>
+                    </div>
+                </div>
+                <div lang="en">
+                    <h2>Education</h2>
+                    <div class="section-item">
+                        <h3>Shandong University | M.S. in Computer Science and Technology</h3>
+                        <p class="meta">Sep 2022 - Present</p>
+                    </div>
+                    <div class="section-item">
+                        <h3>Shandong University | B.S. in Computer Science and Technology (AI Experimental Class)</h3>
+                        <p class="meta">Sep 2018 - Jun 2022</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Awards -->
+            <section id="awards">
+                <div lang="zh-CN">
+                    <h2>奖项与荣誉</h2>
+                    <ul>
+                        <li>ACM/ICPC 亚洲区域赛银牌 (2枚)</li>
+                        <li>CCPC 银牌 (1枚)</li>
+                        <li>大学生软件创新大赛 (OPPO 杯) 国家一等奖</li>
+                        <li>国家奖学金</li>
+                        <li>一等学业奖学金、创新奖学金等</li>
+                    </ul>
+                </div>
+                <div lang="en">
+                    <h2>Awards & Honors</h2>
+                    <ul>
+                        <li>ACM/ICPC Asia Regional Contest, Silver Medal (x2)</li>
+                        <li>CCPC, Silver Medal (x1)</li>
+                        <li>National First Prize, University Student Software Innovation Competition (OPPO Cup)</li>
+                        <li>National Scholarship</li>
+                        <li>First-Class Academic Scholarship, Innovation Scholarship, etc.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div lang="zh-CN">
+                <p>上次更新于 2025年7月 | 由 AI 助手辅助构建</p>
+            </div>
+            <div lang="en">
+                <p>Last updated in July 2025 | Built with assistance from an AI agent.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        let currentLang = 'zh-CN';
+
+        function setLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[lang="zh-CN"]').forEach(el => {
+                el.style.display = lang === 'zh-CN' ? '' : 'none';
+            });
+            document.querySelectorAll('[lang="en"]').forEach(el => {
+                el.style.display = lang === 'en' ? '' : 'none';
+            });
+            currentLang = lang;
+        }
+
+        function toggleLanguage() {
+            const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+            setLanguage(newLang);
+        }
+
+        // Set initial language based on browser preference, default to Chinese
+        const userLang = navigator.language || navigator.userLanguage;
+        if (userLang.startsWith('en')) {
+            setLanguage('en');
+        } else {
+            setLanguage('zh-CN');
+        }
+    </script>
+</body>
+</html>
