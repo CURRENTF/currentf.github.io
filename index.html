@@ -6,290 +6,300 @@
     <title>Jitai Hao (郝继泰) - Personal Homepage</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --background-color: #f4f6f8;
-            --font-color: #34495e;
-            --container-bg: #ffffff;
-            --border-radius: 8px;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--font-color);
-            line-height: 1.7;
-            transition: all 0.3s ease;
-        }
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px 40px;
-            background-color: var(--container-bg);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border-radius: var(--border-radius);
-        }
-        header {
-            text-align: center;
-            padding-bottom: 30px;
-            border-bottom: 2px solid #eee;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            color: var(--primary-color);
-        }
-        header .contact-info {
-            margin-top: 15px;
-        }
-        header .contact-info a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            margin: 0 12px;
-            font-size: 1.1em;
-            transition: color 0.3s;
-        }
-        header .contact-info a:hover {
-            color: var(--primary-color);
-        }
-        h2 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
-        .section-item {
-            margin-bottom: 25px;
-        }
-        .section-item h3 {
-            margin: 0 0 5px 0;
-            color: var(--font-color);
-            font-size: 1.2em;
-        }
-        .section-item .meta {
-            font-style: italic;
-            color: #7f8c8d;
-            margin-bottom: 8px;
-        }
-        .section-item ul {
-            padding-left: 20px;
-            margin-top: 5px;
-        }
-        .lang-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--container-bg);
-            padding: 8px 12px;
-            border-radius: 5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            cursor: pointer;
-            font-weight: bold;
-            color: var(--secondary-color);
-            border: 1px solid #ddd;
-            z-index: 100;
-        }
-        [lang="en"] { display: none; }
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            font-size: 0.9em;
-            color: #7f8c8d;
-            border-top: 1px solid #eee;
+            --bg-color: #f8f9fa;
+            --font-color: #343a40;
+            --primary-color: #0056b3;
+            --card-bg: #ffffff;
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
 
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--font-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* --- Header --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        
+        .header-info h1 {
+            margin: 0;
+            font-size: 2.25rem;
+            color: var(--font-color);
+        }
+        .header-info .name-en { display: none; }
+        
+        .header-links {
+            display: flex;
+            gap: 1.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .header-links a, .lang-switcher {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .header-links a:hover, .lang-switcher:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+        .lang-switcher {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        /* --- Sections --- */
+        .section {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .section h2 {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.75rem;
+        }
+        .section h2 .lang-en { display: none; }
+
+        /* --- About Section --- */
+        #about p {
+            margin: 0;
+        }
+        #about p strong {
+            color: var(--primary-color);
+        }
+
+        /* --- Publications --- */
+        .publication-list .item {
+            margin-bottom: 2rem;
+        }
+        .publication-list .item:last-child {
+            margin-bottom: 0;
+        }
+        .publication-list h3 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1.2rem;
+        }
+        .publication-list .authors {
+            font-size: 0.95em;
+        }
+        .publication-list .venue {
+            font-size: 0.95em;
+            color: #6c757d;
+        }
+        .publication-list .venue a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .publication-list .venue a:hover {
+            text-decoration: underline;
+        }
+        .publication-list .authors b {
+            color: var(--font-color);
+        }
+
+        /* --- Awards Section --- */
+        #awards ul {
+            list-style-type: '🏆';
+            padding-left: 2rem;
+            margin: 0;
+        }
+        #awards li {
+            padding-left: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        /* --- Language Switching Logic --- */
+        body.lang-en .lang-zh { display: none; }
+        body.lang-en .lang-en { display: inline; }
+        
+        .lang-en { display: none; }
+
+        body.lang-en .header-info .name-zh { display: none; }
+        body.lang-en .header-info .name-en { display: block; }
+        body.lang-en .section h2 .lang-zh { display: none; }
+        body.lang-en .section h2 .lang-en { display: inline; }
+
+        /* --- Responsive Design --- */
         @media (max-width: 768px) {
             .container {
-                margin: 20px;
-                padding: 15px 25px;
+                padding: 1rem;
             }
-            header h1 {
-                font-size: 2em;
+            .header {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                text-align: center;
             }
-            .lang-switcher {
-                top: 10px;
-                right: 10px;
+            .section {
+                padding: 1.5rem;
+            }
+            .header-info h1 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="lang-switcher" onclick="toggleLanguage()">EN / 中文</div>
-
     <div class="container">
-        <header>
-            <div lang="zh-CN">
-                <h1>郝继泰 (Jitai Hao)</h1>
+        <header class="header">
+            <div class="header-info">
+                <h1 class="name-zh">郝继泰</h1>
+                <h1 class="name-en">Jitai Hao</h1>
             </div>
-            <div lang="en">
-                <h1>Jitai Hao (郝继泰)</h1>
-            </div>
-            <div class="contact-info">
-                <a href="mailto:jitaihao@outlook.com">Email</a> |
+            <div class="header-links">
+                <a href="mailto:jitaihao@outlook.com">Email</a>
                 <a href="https://github.com/currentf" target="_blank">GitHub</a>
+                <button class="lang-switcher" onclick="toggleLanguage()">
+                    <span class="lang-zh">English</span>
+                    <span class="lang-en">中文</span>
+                </button>
             </div>
         </header>
 
         <main>
-            <!-- About Me -->
-            <section id="about">
-                <div lang="zh-CN">
-                    <h2>个人简介</h2>
-                    <p>
-                        我是山东大学的一名硕士研究生。我的主要研究方向为高效大模型及其应用。本科期间，我积极参与程序设计竞赛，曾获得 <strong>ACM/ICPC 区域赛（国家级）银牌</strong>，展现了较强的代码实现能力。
-                    </p>
-                </div>
-                <div lang="en">
-                    <h2>About Me</h2>
-                    <p>
-                        I am a Master's student at Shandong University. My primary research focus is on efficient large-scale models and their applications. As an undergraduate, I actively participated in programming competitions and won a <strong>Silver Medal in the ACM/ICPC Regional Contest (National Level)</strong>, which demonstrates my strong coding abilities.
-                    </p>
-                </div>
+            <section id="about" class="section">
+                <h2 class="lang-zh">关于我</h2>
+                <h2 class="lang-en">About Me</h2>
+                <p class="lang-zh">
+                    我是山东大学的硕士研究生，研究方向为**高效大模型**。我于2022年在山东大学获得了计算机科学学士学位（人工智能实验班）。本科期间，我曾获得 <strong>ACM/ICPC 区域赛银牌</strong>，展现了较强的代码实现能力。
+                </p>
+                <p class="lang-en">
+                    I am a Master's student at Shandong University with a research focus on **efficient large-scale models**. I received my B.S. in Computer Science (AI Experimental Class) from the same university in 2022. During my undergraduate studies, I won a <strong>Silver Medal in the ACM/ICPC Regional Contest</strong>, highlighting my strong programming skills.
+                </p>
             </section>
-            
-            <!-- News -->
-            <section id="news">
-                 <div lang="zh-CN">
-                    <h2>最新动态</h2>
-                     <div class="section-item">
-                         <p><b>[2025年5月]</b> 我的一篇关于大模型知识蒸馏的论文已被 <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a> 收录！</p>
-                     </div>
-                </div>
-                <div lang="en">
-                    <h2>News</h2>
-                     <div class="section-item">
-                        <p><b>[May 2025]</b> Our new paper on knowledge distillation for LLMs is available on <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>!</p>
-                     </div>
+
+            <section id="news" class="section">
+                <h2 class="lang-zh">最新动态</h2>
+                <h2 class="lang-en">News</h2>
+                <p class="lang-zh"><b>[2025年5月]</b> 我们关于大模型知识蒸馏的新论文已发布在 <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>！</p>
+                <p class="lang-en"><b>[May 2025]</b> Our new paper on knowledge distillation for LLMs is now available on <a href="https://arxiv.org/abs/2505.12781" target="_blank">arXiv</a>!</p>
+            </section>
+
+            <section id="publications" class="section">
+                <h2 class="lang-zh">研究成果</h2>
+                <h2 class="lang-en">Publications</h2>
+                <div class="publication-list">
+                    
+                    <div class="item">
+                        <h3 class="lang-zh">A Token is Worth over 1,000 Tokens: 高效知识蒸馏</h3>
+                        <h3 class="lang-en">A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
+                        <div class="authors lang-zh"><b>郝继泰</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
+                        <div class="authors lang-en"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
+                        <div class="venue">arXiv:2505.12781 [cs.CL], 2025 [<a href="https://arxiv.org/abs/2505.12781" target="_blank">PDF</a>]</div>
+                    </div>
+                    
+                    <div class="item">
+                        <h3 class="lang-zh">OmniKV: 面向长上下文大模型的动态上下文选择</h3>
+                        <h3 class="lang-en">OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
+                        <div class="authors lang-zh"><i>详细作者列表待补充...</i> (共同第一作者)</div>
+                        <div class="authors lang-en"><i>Full author list to be added...</i> (Co-first author)</div>
+                        <div class="venue">ICLR 2025</div>
+                    </div>
+
+                    <div class="item">
+                        <h3 class="lang-zh">MEFT: 基于稀疏适配器的内存高效微调</h3>
+                        <h3 class="lang-en">MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
+                        <div class="authors lang-zh"><i>详细作者列表待补充...</i> (第一作者)</div>
+                        <div class="authors lang-en"><i>Full author list to be added...</i> (First author)</div>
+                        <div class="venue">ACL 2024 (CCF-A)</div>
+                    </div>
+                
+                    <div class="item">
+                        <h3 class="lang-zh">基于层次推理的多被告法律判决预测</h3>
+                        <h3 class="lang-en">Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
+                        <div class="authors lang-zh"><i>详细作者列表待补充...</i> (共同第一作者)</div>
+                        <div class="authors lang-en"><i>Full author list to be added...</i> (Co-first author)</div>
+                        <div class="venue">EMNLP 2023 Findings (CCF-B)</div>
+                    </div>
+
                 </div>
             </section>
 
-            <!-- Publications -->
-            <section id="publications">
-                <div lang="zh-CN">
-                    <h2>研究成果</h2>
-                </div>
-                <div lang="en">
-                    <h2>Publications</h2>
-                </div>
-                
-                <div class="section-item">
-                    <h3 lang="zh-CN">A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
-                    <h3 lang="en">A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone</h3>
-                    <p lang="zh-CN"><b>郝继泰</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</p>
-                    <p lang="en"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</p>
-                    <p class="meta">arXiv:2505.12781 [cs.CL], 2025 [<a href="https://arxiv.org/abs/2505.12781" target="_blank">PDF</a>]</p>
-                </div>
-                
-                <div class="section-item">
-                    <h3 lang="zh-CN">OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
-                    <h3 lang="en">OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h3>
-                    <p lang="zh-CN"><i>详细作者列表待补充...</i> (共同第一作者)</p>
-                    <p lang="en"><i>Full author list to be added...</i> (Co-first author)</p>
-                    <p class="meta">ICLR 2025</p>
-                </div>
-
-                <div class="section-item">
-                    <h3 lang="zh-CN">MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
-                    <h3 lang="en">MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter</h3>
-                    <p lang="zh-CN"><i>详细作者列表待补充...</i> (第一作者)</p>
-                    <p lang="en"><i>Full author list to be added...</i> (First author)</p>
-                    <p class="meta">ACL 2024 (CCF-A)</p>
-                </div>
-                
-                <div class="section-item">
-                    <h3 lang="zh-CN">Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
-                    <h3 lang="en">Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
-                    <p lang="zh-CN"><i>详细作者列表待补充...</i> (共同第一作者)</p>
-                    <p lang="en"><i>Full author list to be added...</i> (Co-first author)</p>
-                    <p class="meta">EMNLP 2023 Findings (CCF-B)</p>
-                </div>
-            </section>
-            
-            <!-- Education -->
-            <section id="education">
-                <div lang="zh-CN">
-                    <h2>教育经历</h2>
-                    <div class="section-item">
-                        <h3>山东大学 | 计算机科学与技术硕士</h3>
-                        <p class="meta">2022年9月 - 至今</p>
-                    </div>
-                    <div class="section-item">
-                        <h3>山东大学 | 计算机科学与技术学士 (人工智能实验班)</h3>
-                        <p class="meta">2018年9月 - 2022年6月</p>
-                    </div>
-                </div>
-                <div lang="en">
-                    <h2>Education</h2>
-                    <div class="section-item">
-                        <h3>Shandong University | M.S. in Computer Science and Technology</h3>
-                        <p class="meta">Sep 2022 - Present</p>
-                    </div>
-                    <div class="section-item">
-                        <h3>Shandong University | B.S. in Computer Science and Technology (AI Experimental Class)</h3>
-                        <p class="meta">Sep 2018 - Jun 2022</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Awards -->
-            <section id="awards">
-                <div lang="zh-CN">
-                    <h2>奖项与荣誉</h2>
-                    <ul>
-                        <li>ACM/ICPC 亚洲区域赛银牌 (2枚)</li>
-                        <li>CCPC 银牌 (1枚)</li>
-                        <li>大学生软件创新大赛 (OPPO 杯) 国家一等奖</li>
-                        <li>国家奖学金</li>
-                        <li>一等学业奖学金、创新奖学金等</li>
-                    </ul>
-                </div>
-                <div lang="en">
-                    <h2>Awards & Honors</h2>
-                    <ul>
-                        <li>ACM/ICPC Asia Regional Contest, Silver Medal (x2)</li>
-                        <li>CCPC, Silver Medal (x1)</li>
-                        <li>National First Prize, University Student Software Innovation Competition (OPPO Cup)</li>
-                        <li>National Scholarship</li>
-                        <li>First-Class Academic Scholarship, Innovation Scholarship, etc.</li>
-                    </ul>
-                </div>
+            <section id="awards" class="section">
+                <h2 class="lang-zh">奖项与荣誉</h2>
+                <h2 class="lang-en">Awards & Honors</h2>
+                <ul class="lang-zh">
+                    <li>ACM/ICPC 亚洲区域赛银牌 (2枚)</li>
+                    <li>CCPC 银牌 (1枚)</li>
+                    <li>大学生软件创新大赛 (OPPO 杯) 国家一等奖</li>
+                    <li>国家奖学金，一等学业奖学金等</li>
+                </ul>
+                <ul class="lang-en">
+                    <li>ACM/ICPC Asia Regional Contest, Silver Medal (x2)</li>
+                    <li>CCPC, Silver Medal (x1)</li>
+                    <li>National First Prize, University Student Software Innovation Competition (OPPO Cup)</li>
+                    <li>National Scholarship, First-Class Academic Scholarship, etc.</li>
+                </ul>
             </section>
         </main>
-
+        
         <footer>
-            <div lang="zh-CN">
-                <p>上次更新于 2025年7月 | 由 AI 助手辅助构建</p>
-            </div>
-            <div lang="en">
-                <p>Last updated in July 2025 | Built with assistance from an AI agent.</p>
-            </div>
+            <span class="lang-zh">上次更新于 2025年7月</span>
+            <span class="lang-en">Last updated in July 2025</span>
         </footer>
-
     </div>
 
     <script>
-        let currentLang = 'zh-CN';
-
         function setLanguage(lang) {
-            document.documentElement.lang = lang;
-            document.querySelectorAll('[lang="zh-CN"]').forEach(el => {
-                el.style.display = lang === 'zh-CN' ? '' : 'none';
-            });
-            document.querySelectorAll('[lang="en"]').forEach(el => {
-                el.style.display = lang === 'en' ? '' : 'none';
-            });
-            currentLang = lang;
+            if (lang === 'en') {
+                document.body.classList.add('lang-en');
+                document.documentElement.lang = 'en';
+            } else {
+                document.body.classList.remove('lang-en');
+                document.documentElement.lang = 'zh-CN';
+            }
         }
 
         function toggleLanguage() {
-            const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
-            setLanguage(newLang);
+            const isEnglish = document.body.classList.contains('lang-en');
+            setLanguage(isEnglish ? 'zh-CN' : 'en');
         }
 
-        // Set initial language based on browser preference, default to Chinese
+        // Optional: Set initial language based on browser preference
         const userLang = navigator.language || navigator.userLanguage;
         if (userLang.startsWith('en')) {
             setLanguage('en');
