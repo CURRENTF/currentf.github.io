@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -134,9 +134,12 @@
         #about h2::before      { content: '\f007'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
         #news h2::before       { content: '\f1ea'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
         #publications h2::before { content: '\f02d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
+        #experience h2::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
         #awards h2::before     { content: '\f091'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
 
         #about p strong { color: var(--primary-color); font-weight: 600; }
+        #about a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
+        #about a:hover { text-decoration: underline; color: var(--primary-color-dark); }
 
         #news p { margin: 0; }
         #news a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
@@ -201,13 +204,13 @@
         }
         .tldr b { color: #34495e; }
 
-        /* --- Awards & Honors Styling --- */
-        #awards ul {
+        /* --- Awards, Honors & Experience Styling --- */
+        #awards ul, #experience ul {
             list-style: none;
             padding-left: 0;
             margin: 0;
         }
-        #awards li {
+        #awards li, #experience li {
             padding-left: 2rem;
             margin-bottom: 0.75rem;
             position: relative;
@@ -221,7 +224,16 @@
             left: 0;
             top: 5px;
         }
-        #awards li b {
+        #experience li::before {
+            content: '\f0b1'; /* Font Awesome briefcase icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            top: 5px;
+        }
+        #awards li b, #experience li b {
             font-weight: 600;
             color: var(--font-color);
         }
@@ -273,10 +285,10 @@
                 <h2 lang="zh-CN">关于我</h2>
                 <h2 lang="en">About Me</h2>
                 <p lang="zh-CN">
-                    我的主要研究方向为 <strong>高效大模型训练和推理</strong>。我于 2022 和 2025 年分别在山东大学获得了计算机科学学士和硕士学位（人工智能实验班）。本科期间，我曾获得 <strong>ACM/ICPC 区域赛银牌</strong>，具有较强的代码实现能力。
+                    我的主要研究方向为 <strong>高效大模型训练和推理</strong>。我于 2022 和 2025 年分别在山东大学获得了计算机科学学士和硕士学位（人工智能实验班）。我的本科和硕士导师是 <a href="https://renzhaochun.github.io/" target="_blank">任昭春教授</a>。我即将成为哈尔滨工业大学（深圳）的博士生，导师为 <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank">俞俊教授</a>。
                 </p>
                 <p lang="en">
-                    My main research focus is on <strong>efficient training and inference of large language models (LLMs)</strong>. I obtained my Bachelor's and Master's degrees in Computer Science from Shandong University in 2022 and 2025, respectively (Artificial Intelligence Experimental Class). During my undergraduate studies, I was awarded the <strong>ACM/ICPC Regional Contest Silver Medal</strong>, demonstrating strong coding abilities.
+                    My main research focus is on <strong>efficient training and inference of large language models (LLMs)</strong>. I obtained my Bachelor's and Master's degrees in Computer Science from Shandong University in 2022 and 2025, respectively (Artificial Intelligence Experimental Class). My advisor for my Bachelor's and Master's degrees was <a href="https://renzhaochun.github.io/" target="_blank">Zhaochun Ren</a>. I will soon be joining HITSZ as a Ph.D. student, advised by <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank">Jun Yu</a>. During my undergraduate studies, I was awarded the <strong>ACM/ICPC Regional Contest Silver Medal</strong>, demonstrating strong coding abilities.
                 </p>
             </section>
 
@@ -359,6 +371,19 @@
                 </div>
             </section>
 
+            <section id="experience" class="section">
+                <h2 lang="zh-CN">实习经历</h2>
+                <h2 lang="en">Internship Experience</h2>
+                <ul lang="zh-CN">
+                    <li><b>百度</b> (2025年3月 - 至今)，研究实习生</li>
+                    <li><b>蚂蚁集团</b> (2024年5月 - 2024年10月)，研究实习生</li>
+                </ul>
+                <ul lang="en">
+                    <li><b>Baidu</b> (Mar. 2025 - Present), Research Intern</li>
+                    <li><b>Ant Group</b> (May 2024 - Oct. 2024), Research Intern</li>
+                </ul>
+            </section>
+
             <section id="awards" class="section">
                 <h2 lang="zh-CN">奖项与荣誉</h2>
                 <h2 lang="en">Awards & Honors</h2>
@@ -382,12 +407,12 @@
     </div>
 
     <script>
-        // 根据浏览器语言设置初始语言，默认为中文
-        let currentLang = navigator.language.startsWith('en') ? 'en' : 'zh-CN';
+        // Set English as the default language, but respect user's preference if they switch
+        let currentLang = 'en';
 
         /**
-         * 应用指定的语言到整个文档
-         * @param {string} lang 要显示的语言 ('en' 或 'zh-CN')
+         * Apply the specified language to the entire document
+         * @param {string} lang The language to display ('en' or 'zh-CN')
          */
         function applyLanguage(lang) {
             document.documentElement.lang = lang;
@@ -403,14 +428,14 @@
         }
 
         /**
-         * 切换当前语言
+         * Toggle the current language
          */
         function toggleLanguage() {
             currentLang = (currentLang === 'en') ? 'zh-CN' : 'en';
             applyLanguage(currentLang);
         }
 
-        // 页面加载完成后，立即应用初始语言设置
+        // Apply the initial language setting when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
         });
