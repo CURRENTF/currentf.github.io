@@ -4,49 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jitai Hao (郝继泰) - Personal Homepage</title>
-    <!-- Google Fonts: Poppins for a modern, clean look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            /* --- Modern & Softer Color Palette --- */
-            --bg-color: #f4f7f9;
-            --font-color: #34495e;
-            --primary-color: #3498db;
-            --primary-color-dark: #2980b9;
-            --secondary-color: #95a5a6;
-            --card-bg: #ffffff;
-            --border-color: #e0e0e0;
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --gradient-start: #3498db;
-            --gradient-end: #2c3e50;
+            /* --- Midnight Blues Theme Palette --- */
+            --bg-color: #0A192F; /* Deep midnight blue */
+            --font-color: #CCD6F6; /* Light, soft blue-grey text */
+            --primary-color: #64FFDA; /* Bright, vibrant cyan accent */
+            --primary-color-dark: #11D8B4; /* Darker cyan for hover */
+            --secondary-color: #8892B0; /* Muted blue-grey for secondary text */
+            --card-bg: rgba(16, 33, 57, 0.75); /* Semi-transparent card background */
+            --border-color: rgba(136, 146, 176, 0.2);
+            --shadow-color: rgba(100, 255, 218, 0.1);
+            --glow-color: rgba(100, 255, 218, 0.4);
+            --gradient-start: #64FFDA; /* Cyan */
+            --gradient-end: #79CBF9; /* Soft sky blue */
+            
             /* --- Typography --- */
             --font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
 
-        /* --- Global Styles & Smooth Scrolling --- */
+        /* --- Global Styles & Animated Background --- */
         html {
             scroll-behavior: smooth;
         }
 
         body {
             font-family: var(--font-family);
-            background-color: var(--bg-color);
+            background: var(--bg-color);
             color: var(--font-color);
             margin: 0;
             padding: 0;
             line-height: 1.8;
             font-size: 16px;
             font-weight: 400;
+            /* Animated Aurora Background */
+            background-image: radial-gradient(at 15% 85%, hsla(168, 76%, 58%, 0.15) 0px, transparent 50%),
+                              radial-gradient(at 80% 20%, hsla(210, 82%, 66%, 0.15) 0px, transparent 50%),
+                              radial-gradient(at 50% 50%, hsla(200, 76%, 58%, 0.1) 0px, transparent 50%);
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 2rem;
+        }
+        
+        /* --- Animate sections on scroll --- */
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* --- Header Enhancements --- */
@@ -63,21 +78,25 @@
             margin: 0;
             font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end), var(--gradient-start));
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-fill-color: transparent;
+            animation: text-gradient-anim 5s linear infinite;
         }
         
-        .header-links {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
+        @keyframes text-gradient-anim {
+            to {
+                background-position: 200% center;
+            }
         }
 
+        .header-links { display: flex; gap: 1rem; align-items: center; }
+
         .header-links a, .lang-switcher {
-            color: var(--font-color);
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -85,43 +104,45 @@
             border-radius: 6px;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem; /* Space between icon and text */
+            gap: 0.5rem;
+            border: 1px solid var(--border-color);
         }
         .header-links a:hover, .lang-switcher:hover {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: rgba(100, 255, 218, 0.1);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--shadow-color);
         }
 
         .lang-switcher {
             background: none;
-            border: 1px solid var(--border-color);
             cursor: pointer;
             font-family: inherit;
             font-size: 0.9em;
         }
-        .lang-switcher:hover {
-             border-color: var(--primary-color);
-        }
 
-        /* --- Section Card Styling --- */
+        /* --- Section Card Styling (Glassmorphism) --- */
         .section {
             background-color: var(--card-bg);
             padding: 2.5rem;
             margin-bottom: 2.5rem;
             border-radius: 12px;
-            box-shadow: 0 8px 30px var(--shadow-color);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(10px);
         }
         .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px var(--shadow-color);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 20px var(--shadow-color);
+            border: 1px solid var(--primary-color);
         }
 
         .section h2 {
             font-size: 1.8rem;
             font-weight: 600;
-            color: var(--font-color);
+            color: #fff;
             margin-top: 0;
             margin-bottom: 2rem;
             border-bottom: 2px solid var(--primary-color);
@@ -140,124 +161,68 @@
         #about p strong { color: var(--primary-color); font-weight: 600; }
         #about a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
         #about a:hover { text-decoration: underline; color: var(--primary-color-dark); }
-
         #news p { margin: 0; }
         #news a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
         #news a:hover { text-decoration: underline; color: var(--primary-color-dark); }
         #news b { color: var(--primary-color); }
         
         /* --- Publication List Styling --- */
-        .publication-list .item {
-            margin-bottom: 2.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px dashed var(--border-color);
-        }
-        .publication-list .item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-        .publication-list h3 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        .publication-list .authors { font-size: 0.95em; line-height: 1.6; color: #7f8c8d; }
+        .publication-list .item { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px dashed var(--border-color); }
+        .publication-list .item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .publication-list h3 { margin: 0 0 0.5rem 0; font-size: 1.25rem; font-weight: 600; color: #fff; }
+        .publication-list .authors { font-size: 0.95em; line-height: 1.6; color: var(--secondary-color); }
         .publication-list .authors b { color: var(--font-color); font-weight: 600; }
         .publication-list .venue { font-size: 0.95em; color: var(--secondary-color); font-style: italic; }
         .publication-list .venue a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
         .publication-list .venue a:hover { text-decoration: underline; }
 
-        /* Publication links like [PDF], [Code] */
-        .pub-links {
-            margin-top: 0.75rem;
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
+        .pub-links { margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
         .pub-links a {
             font-size: 0.85em;
             text-decoration: none;
             color: var(--primary-color);
-            background-color: rgba(52, 152, 219, 0.1);
-            padding: 0.2rem 0.6rem;
+            background-color: rgba(100, 255, 218, 0.1);
+            padding: 0.3rem 0.7rem;
             border-radius: 4px;
-            border: 1px solid rgba(52, 152, 219, 0.3);
+            border: 1px solid rgba(100, 255, 218, 0.3);
             transition: all 0.3s ease;
         }
         .pub-links a:hover {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: rgba(100, 255, 218, 0.2);
             border-color: var(--primary-color);
+            box-shadow: 0 0 8px var(--shadow-color);
         }
         
         .publication-list .tldr {
             margin-top: 1rem;
             padding: 1rem;
             border-left: 4px solid var(--primary-color);
-            background-color: #f8f9fa;
+            background-color: rgba(10, 25, 47, 0.5); /* Darker background */
             font-size: 0.9em;
-            color: #555;
+            color: var(--secondary-color);
             line-height: 1.7;
             border-radius: 0 6px 6px 0;
         }
-        .tldr b { color: #34495e; }
+        .tldr b { color: var(--font-color); }
 
         /* --- Awards, Honors & Experience Styling --- */
-        #awards ul, #experience ul {
-            list-style: none;
-            padding-left: 0;
-            margin: 0;
-        }
-        #awards li, #experience li {
-            padding-left: 2rem;
-            margin-bottom: 0.75rem;
-            position: relative;
-        }
-        #awards li::before {
-            content: '\f005'; /* Font Awesome star icon */
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: #f1c40f; /* Gold color */
-            position: absolute;
-            left: 0;
-            top: 5px;
-        }
-        #experience li::before {
-            content: '\f0b1'; /* Font Awesome briefcase icon */
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: var(--primary-color);
-            position: absolute;
-            left: 0;
-            top: 5px;
-        }
-        #awards li b, #experience li b {
-            font-weight: 600;
-            color: var(--font-color);
-        }
+        #awards ul, #experience ul { list-style: none; padding-left: 0; margin: 0; }
+        #awards li, #experience li { padding-left: 2rem; margin-bottom: 0.75rem; position: relative; }
+        #awards li::before { content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #C0C0C0; /* Silver instead of gold */ position: absolute; left: 0; top: 5px; }
+        #experience li::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); position: absolute; left: 0; top: 5px; }
+        #awards li b, #experience li b { font-weight: 600; color: var(--font-color); }
         
         /* --- Footer --- */
-        footer {
-            text-align: center;
-            padding: 2.5rem 0;
-            color: var(--secondary-color);
-            font-size: 0.9em;
-        }
+        footer { text-align: center; padding: 2.5rem 0; color: var(--secondary-color); font-size: 0.9em; }
         
         /* --- Responsive Design --- */
         @media (max-width: 768px) {
             .container { padding: 1.5rem; }
-            .header {
-                flex-direction: column;
-                align-items: center;
-                gap: 1.5rem;
-                text-align: center;
-            }
+            .header { flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; }
             .header-info h1 { font-size: 2.2rem; }
             .section { padding: 1.5rem; }
             .section h2 { font-size: 1.6rem; }
+            .section:hover { transform: translateY(-5px) scale(1.0); } /* Disable scaling on mobile */
         }
     </style>
 </head>
@@ -405,40 +370,37 @@
             <span lang="en">Last updated in July 2025</span>
         </footer>
     </div>
-
+    
     <script>
-        // Set English as the default language, but respect user's preference if they switch
+        // --- Language Switcher ---
         let currentLang = 'en';
-
-        /**
-         * Apply the specified language to the entire document
-         * @param {string} lang The language to display ('en' or 'zh-CN')
-         */
         function applyLanguage(lang) {
             document.documentElement.lang = lang;
             const otherLang = lang === 'en' ? 'zh-CN' : 'en';
-
-            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => {
-                el.style.display = '';
-            });
-
-            document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => {
-                el.style.display = 'none';
-            });
+            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => { el.style.display = ''; });
+            document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => { el.style.display = 'none'; });
         }
-
-        /**
-         * Toggle the current language
-         */
         function toggleLanguage() {
             currentLang = (currentLang === 'en') ? 'zh-CN' : 'en';
             applyLanguage(currentLang);
         }
 
-        // Apply the initial language setting when the page loads
+        // --- Animate on Scroll ---
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => { observer.observe(section); });
+        
+        // Apply initial language on load
         document.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
         });
     </script>
+
 </body>
 </html>
