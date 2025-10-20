@@ -26,6 +26,9 @@
             --font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
 
+        /* 解决加载时语言闪烁问题：默认隐藏中文 */
+        [lang="zh-CN"] { display: none; }
+
         /* --- Global Styles & Animated Background --- */
         html {
             scroll-behavior: smooth;
@@ -191,10 +194,10 @@
         #awards li::before { content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); position: absolute; left: 0; top: 5px; }
         #experience li::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); position: absolute; left: 0; top: 5px; }
         #awards li b, #experience li b { font-weight: 600; color: var(--primary-color); }
-        
+
         /* --- Footer --- */
         footer { text-align: center; padding: 2.5rem 0; color: var(--secondary-color); font-size: 0.9em; }
-        
+
         /* --- Responsive Design --- */
         @media (max-width: 768px) {
             .container { padding: 1.5rem; }
@@ -205,6 +208,33 @@
             .section:hover { transform: translateY(-5px); } /* Disable scaling on mobile */
         }
     </style>
+    <script>
+        // --- 语言切换逻辑 ---
+        // 默认语言为英语
+        let currentLang = 'en';
+
+        // 应用指定语言的函数
+        function applyLanguage(lang) {
+            document.documentElement.lang = lang;
+            const otherLang = lang === 'en' ? 'zh-CN' : 'en';
+            // 显示当前语言元素
+            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => { el.style.display = ''; });
+            // 隐藏其他语言元素
+            document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => { el.style.display = 'none'; });
+        }
+
+        // 切换语言的函数
+        function toggleLanguage() {
+            currentLang = (currentLang === 'en') ? 'zh-CN' : 'en';
+            applyLanguage(currentLang);
+        }
+
+        // 页面加载完成后，立即根据默认设置应用语言，确保初始状态正确
+        document.addEventListener('DOMContentLoaded', () => {
+            // 注意：初始的隐藏是通过head中的CSS实现的，这里是为了确保后续切换逻辑正确
+            applyLanguage(currentLang);
+        });
+    </script>
 </head>
 <body>
 
@@ -354,19 +384,6 @@
     </div>
 
     <script>
-        // --- Language Switcher ---
-        let currentLang = 'en';
-        function applyLanguage(lang) {
-            document.documentElement.lang = lang;
-            const otherLang = lang === 'en' ? 'zh-CN' : 'en';
-            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => { el.style.display = ''; });
-            document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => { el.style.display = 'none'; });
-        }
-        function toggleLanguage() {
-            currentLang = (currentLang === 'en') ? 'zh-CN' : 'en';
-            applyLanguage(currentLang);
-        }
-
         // --- Animate on Scroll ---
         const sections = document.querySelectorAll('.section');
         const observer = new IntersectionObserver(entries => {
@@ -377,11 +394,6 @@
             });
         }, { threshold: 0.1 });
         sections.forEach(section => { observer.observe(section); });
-
-        // Apply initial language on load
-        document.addEventListener('DOMContentLoaded', () => {
-            applyLanguage(currentLang);
-        });
     </script>
 
 </body>
