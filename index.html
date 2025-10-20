@@ -10,19 +10,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            /* --- Midnight Blues Theme Palette --- */
-            --bg-color: #0A192F; /* Deep midnight blue */
-            --font-color: #CCD6F6; /* Light, soft blue-grey text */
-            --primary-color: #64FFDA; /* Bright, vibrant cyan accent */
-            --primary-color-dark: #11D8B4; /* Darker cyan for hover */
-            --secondary-color: #8892B0; /* Muted blue-grey for secondary text */
-            --card-bg: rgba(16, 33, 57, 0.75); /* Semi-transparent card background */
-            --border-color: rgba(136, 146, 176, 0.2);
-            --shadow-color: rgba(100, 255, 218, 0.1);
-            --glow-color: rgba(100, 255, 218, 0.4);
-            --gradient-start: #64FFDA; /* Cyan */
-            --gradient-end: #79CBF9; /* Soft sky blue */
-            
+            /* --- 简洁专业的米白色主题 --- */
+            --bg-color: #F9FAFB;             /* 页面背景色 - 米白色 */
+            --font-color: #374151;           /* 主要字体颜色 - 深灰色 */
+            --primary-color: #111827;         /* 主色调/标题颜色 - 近黑色 */
+            --primary-color-dark: #000000;     /* 主色调悬浮 - 纯黑 */
+            --secondary-color: #6B7280;       /* 次要字体颜色 - 灰色 */
+            --card-bg: #FFFFFF;              /* 卡片背景色 - 纯白色，与背景形成对比 */
+            --border-color: #E5E7EB;         /* 边框颜色 - 浅灰色 */
+            --shadow-color: rgba(0, 0, 0, 0.05); /* 阴影颜色 - 非常淡的阴影 */
+            --link-color: #007bff;            /* 链接颜色 - 蓝色 */
+            --link-hover-color: #0056b3;      /* 链接悬浮 - 深蓝色 */
+
             /* --- Typography --- */
             --font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
@@ -41,10 +40,6 @@
             line-height: 1.8;
             font-size: 16px;
             font-weight: 400;
-            /* Animated Aurora Background */
-            background-image: radial-gradient(at 15% 85%, hsla(168, 76%, 58%, 0.15) 0px, transparent 50%),
-                              radial-gradient(at 80% 20%, hsla(210, 82%, 66%, 0.15) 0px, transparent 50%),
-                              radial-gradient(at 50% 50%, hsla(200, 76%, 58%, 0.1) 0px, transparent 50%);
         }
 
         .container {
@@ -52,7 +47,7 @@
             margin: 0 auto;
             padding: 2rem;
         }
-        
+
         /* --- Animate sections on scroll --- */
         .section {
             opacity: 0;
@@ -73,30 +68,18 @@
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 3rem;
         }
-        
+
         .header-info h1 {
             margin: 0;
             font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end), var(--gradient-start));
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            animation: text-gradient-anim 5s linear infinite;
-        }
-        
-        @keyframes text-gradient-anim {
-            to {
-                background-position: 200% center;
-            }
+            color: var(--primary-color);
         }
 
         .header-links { display: flex; gap: 1rem; align-items: center; }
 
         .header-links a, .lang-switcher {
-            color: var(--primary-color);
+            color: var(--font-color);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -106,16 +89,16 @@
             align-items: center;
             gap: 0.5rem;
             border: 1px solid var(--border-color);
+            background-color: var(--card-bg); /* 按钮背景设为白色 */
         }
         .header-links a:hover, .lang-switcher:hover {
-            background-color: rgba(100, 255, 218, 0.1);
+            background-color: #F3F4F6;
             color: var(--primary-color);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px var(--shadow-color);
+            border-color: var(--secondary-color);
         }
 
         .lang-switcher {
-            background: none;
+            background: var(--card-bg);
             cursor: pointer;
             font-family: inherit;
             font-size: 0.9em;
@@ -127,77 +110,74 @@
             padding: 2.5rem;
             margin-bottom: 2.5rem;
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px var(--shadow-color);
             border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
-            backdrop-filter: blur(10px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
         .section:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 20px var(--shadow-color);
-            border: 1px solid var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.07);
+            border-color: var(--secondary-color);
         }
 
         .section h2 {
             font-size: 1.8rem;
             font-weight: 600;
-            color: #fff;
+            color: var(--primary-color);
             margin-top: 0;
             margin-bottom: 2rem;
-            border-bottom: 2px solid var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 0.75rem;
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
         }
         /* Specific icons for section headers */
-        #about h2::before      { content: '\f007'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
-        #news h2::before       { content: '\f1ea'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
-        #publications h2::before { content: '\f02d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
-        #experience h2::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
-        #awards h2::before     { content: '\f091'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); }
+        #about h2::before      { content: '\f007'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
+        #news h2::before       { content: '\f1ea'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
+        #publications h2::before { content: '\f02d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
+        #experience h2::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
+        #awards h2::before     { content: '\f091'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
 
         #about p strong { color: var(--primary-color); font-weight: 600; }
-        #about a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
-        #about a:hover { text-decoration: underline; color: var(--primary-color-dark); }
+        #about a { color: var(--link-color); text-decoration: none; font-weight: 500; }
+        #about a:hover { text-decoration: underline; color: var(--link-hover-color); }
         #news p { margin: 0; }
-        #news a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
-        #news a:hover { text-decoration: underline; color: var(--primary-color-dark); }
+        #news a { color: var(--link-color); text-decoration: none; font-weight: 500; }
+        #news a:hover { text-decoration: underline; color: var(--link-hover-color); }
         #news b { color: var(--primary-color); }
-        
+
         /* --- Publication List Styling --- */
         .publication-list .item { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px dashed var(--border-color); }
         .publication-list .item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .publication-list h3 { margin: 0 0 0.5rem 0; font-size: 1.25rem; font-weight: 600; color: #fff; }
+        .publication-list h3 { margin: 0 0 0.5rem 0; font-size: 1.25rem; font-weight: 600; color: var(--primary-color); }
         .publication-list .authors { font-size: 0.95em; line-height: 1.6; color: var(--secondary-color); }
         .publication-list .authors b { color: var(--font-color); font-weight: 600; }
         .publication-list .venue { font-size: 0.95em; color: var(--secondary-color); font-style: italic; }
-        .publication-list .venue a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
+        .publication-list .venue a { color: var(--link-color); text-decoration: none; font-weight: 500; }
         .publication-list .venue a:hover { text-decoration: underline; }
 
         .pub-links { margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
         .pub-links a {
             font-size: 0.85em;
             text-decoration: none;
-            color: var(--primary-color);
-            background-color: rgba(100, 255, 218, 0.1);
+            color: var(--font-color);
+            background-color: #F3F4F6;
             padding: 0.3rem 0.7rem;
             border-radius: 4px;
-            border: 1px solid rgba(100, 255, 218, 0.3);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
         .pub-links a:hover {
-            background-color: rgba(100, 255, 218, 0.2);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px var(--shadow-color);
+            background-color: #E5E7EB;
+            border-color: var(--secondary-color);
         }
-        
+
         .publication-list .tldr {
             margin-top: 1rem;
             padding: 1rem;
-            border-left: 4px solid var(--primary-color);
-            background-color: rgba(10, 25, 47, 0.5); /* Darker background */
+            border-left: 4px solid var(--border-color);
+            background-color: var(--bg-color); /* 与页面背景色一致 */
             font-size: 0.9em;
             color: var(--secondary-color);
             line-height: 1.7;
@@ -208,9 +188,9 @@
         /* --- Awards, Honors & Experience Styling --- */
         #awards ul, #experience ul { list-style: none; padding-left: 0; margin: 0; }
         #awards li, #experience li { padding-left: 2rem; margin-bottom: 0.75rem; position: relative; }
-        #awards li::before { content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #C0C0C0; /* Silver instead of gold */ position: absolute; left: 0; top: 5px; }
-        #experience li::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--primary-color); position: absolute; left: 0; top: 5px; }
-        #awards li b, #experience li b { font-weight: 600; color: var(--font-color); }
+        #awards li::before { content: '\f005'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); position: absolute; left: 0; top: 5px; }
+        #experience li::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); position: absolute; left: 0; top: 5px; }
+        #awards li b, #experience li b { font-weight: 600; color: var(--primary-color); }
         
         /* --- Footer --- */
         footer { text-align: center; padding: 2.5rem 0; color: var(--secondary-color); font-size: 0.9em; }
@@ -222,7 +202,7 @@
             .header-info h1 { font-size: 2.2rem; }
             .section { padding: 1.5rem; }
             .section h2 { font-size: 1.6rem; }
-            .section:hover { transform: translateY(-5px) scale(1.0); } /* Disable scaling on mobile */
+            .section:hover { transform: translateY(-5px); } /* Disable scaling on mobile */
         }
     </style>
 </head>
