@@ -349,8 +349,10 @@
             <span lang="zh-CN">上次更新于 2025年9月</span>
             <span lang="en">Last updated in September 2025</span>
         </footer>
+
+        <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=nR6VQyJZ1oZvoZpzfu6lOhZVBZsS6OT47jndRtgCerY&cl=ffffff&w=a"></script>
     </div>
-    
+
     <script>
         // --- Language Switcher ---
         let currentLang = 'en';
@@ -375,14 +377,12 @@
             });
         }, { threshold: 0.1 });
         sections.forEach(section => { observer.observe(section); });
-        
+
         // Apply initial language on load
         document.addEventListener('DOMContentLoaded', () => {
             applyLanguage(currentLang);
         });
     </script>
-
-    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=nR6VQyJZ1oZvoZpzfu6lOhZVBZsS6OT47jndRtgCerY&cl=ffffff&w=a"></script>
 
 </body>
 </html>
