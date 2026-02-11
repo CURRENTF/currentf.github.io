@@ -26,8 +26,9 @@
             --font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
 
-        /* 解决加载时语言闪烁问题：默认隐藏中文 */
-        [lang="zh-CN"] { display: none; }
+        /* 根据 <html lang="..."> 自动显示/隐藏对应语言，避免加载时闪烁 */
+        html[lang="en"] [lang="zh-CN"] { display: none; }
+        html[lang="zh-CN"] [lang="en"] { display: none; }
 
         /* --- Global Styles & Animated Background --- */
         html {
@@ -210,28 +211,24 @@
     </style>
     <script>
         // --- 语言切换逻辑 ---
-        // 默认语言为英语
+        // 通过切换 <html lang="..."> 来驱动 CSS 显示/隐藏对应语言内容
         let currentLang = 'en';
 
-        // 应用指定语言的函数
         function applyLanguage(lang) {
             document.documentElement.lang = lang;
-            const otherLang = lang === 'en' ? 'zh-CN' : 'en';
-            // 显示当前语言元素
-            document.querySelectorAll(`[lang="${lang}"]`).forEach(el => { el.style.display = ''; });
-            // 隐藏其他语言元素
-            document.querySelectorAll(`[lang="${otherLang}"]`).forEach(el => { el.style.display = 'none'; });
+            try { localStorage.setItem('lang', lang); } catch {}
         }
 
-        // 切换语言的函数
         function toggleLanguage() {
             currentLang = (currentLang === 'en') ? 'zh-CN' : 'en';
             applyLanguage(currentLang);
         }
 
-        // 页面加载完成后，立即根据默认设置应用语言，确保初始状态正确
         document.addEventListener('DOMContentLoaded', () => {
-            // 注意：初始的隐藏是通过head中的CSS实现的，这里是为了确保后续切换逻辑正确
+            try {
+                const saved = localStorage.getItem('lang');
+                if (saved === 'en' || saved === 'zh-CN') currentLang = saved;
+            } catch {}
             applyLanguage(currentLang);
         });
     </script>
@@ -260,16 +257,18 @@
                 <h2 lang="zh-CN">关于我</h2>
                 <h2 lang="en">About Me</h2>
                 <p lang="zh-CN">
-                    我的主要研究方向为 <strong>Efficient AI/LLMs</strong>。我于 2022 和 2025 年分别在山东大学获得了计算机科学学士和硕士学位，导师是 <a href="https://renzhaochun.github.io/" target="_blank">任昭春教授</a>。我现在是哈尔滨工业大学（深圳）的博士生，导师为 <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank">俞俊教授</a>。
+                    我的主要研究方向为 <strong>Efficient AI/LLMs</strong> 与 <strong>统一多模态理解与生成模型</strong>。目前我在哈尔滨工业大学（深圳）攻读博士学位，导师为 <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank">俞俊教授</a>。在此之前，我于 2022 和 2025 年分别在山东大学获得计算机科学学士和硕士学位，导师是 <a href="https://renzhaochun.github.io/" target="_blank">任昭春教授</a>。
                 </p>
                 <p lang="en">
-                    My main research focus is on <strong>Efficient AI/LLMs</strong>. I obtained my Bachelor's and Master's degrees in Computer Science from Shandong University in 2022 and 2025, respectively, under the supervision of <a href="https://renzhaochun.github.io/" target="_blank">Prof. Zhaochun Ren</a>. Currently, I am a Ph.D. student at Harbin Institute of Technology (Shenzhen), supervised by <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank">Prof. Jun Yu</a>.
+                    My research interests include <strong>Efficient AI/LLMs</strong> and <strong>unified multimodal understanding & generation models</strong>. I am currently a Ph.D. student at Harbin Institute of Technology (Shenzhen), supervised by <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank">Prof. Jun Yu</a>. Before that, I obtained my Bachelor's and Master's degrees in Computer Science from Shandong University in 2022 and 2025, respectively, under the supervision of <a href="https://renzhaochun.github.io/" target="_blank">Prof. Zhaochun Ren</a>.
                 </p>
             </section>
 
             <section id="news" class="section">
                 <h2 lang="zh-CN">最新动态</h2>
                 <h2 lang="en">News</h2>
+                <p lang="zh-CN"><b>[2026年2月]</b> 我们关于统一多模态模型训练中模态冲突缓解的新论文 <a href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank">Uni-X</a> 已被 <b>ICLR 2026 (Poster)</b> 接收！</p>
+                <p lang="en"><b>[Feb 2026]</b> Our new paper <a href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank">Uni-X</a> on mitigating modality conflict for unified multimodal models has been accepted to <b>ICLR 2026 (Poster)</b>!</p>
                 <p lang="zh-CN"><b>[2025年9月]</b> 我们关于大模型高效知识蒸馏的新论文已被 <b>NeurIPS 2025 (Spotlight)</b> 接收！我们提出了 Low-Rank Clone (💖LRC💖)，一种创新的 SLM 高效预训练方法。 LRC 仅需约 10B-20B tokens 即可达到甚至超越需要数万亿 (Trillions) tokens 训练的SOTA模型。</p>
                 <p lang="en"><b>[Sep 2025]</b> Our new paper on efficient knowledge distillation for LLMs has been accepted to <b>NeurIPS 2025 (Spotlight)</b>! We propose Low-Rank Clone (💖LRC💖), an innovative and efficient pretraining method for SLMs. LRC can achieve, or even surpass, the performance of SOTA models trained on trillions of tokens with only about 10B-20B tokens.</p>
             </section>
@@ -280,12 +279,48 @@
                 <div class="publication-list">
 
                     <div class="item">
+                        <h3>DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity</h3>
+                        <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Yaowei Wang, Min Zhang, Jun Yu</div>
+                        <div class="venue">arXiv 2026</div>
+                        <div class="pub-links">
+                            <a href="https://arxiv.org/pdf/2602.08005.pdf" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                            <a href="https://arxiv.org/abs/2602.08005" target="_blank"><i class="fas fa-link"></i> arXiv</a>
+                            <a href="https://github.com/CURRENTF/Sparse-vLLM" target="_blank"><i class="fab fa-github"></i> Code</a>
+                            <a href="https://zhuanlan.zhihu.com/p/2004213586399106489" target="_blank"><i class="fab fa-zhihu"></i> Zhihu</a>
+                        </div>
+                        <div class="tldr" lang="zh-CN">
+                            <b>TL;DR:</b> 我们发现 KV 表征中存在显著的长程相似性，据此提出 DeltaKV。通过将语义表示编码为相对历史参考的残差，在不丢弃 token 的情况下将 KV 内存降至 29%，在 SCBench、AIME 等任务上接近无损，并实现 2× 吞吐提升。
+                        </div>
+                        <div class="tldr" lang="en">
+                            <b>TL;DR:</b> Motivated by the long-range similarity in KV representations, we propose DeltaKV. It encodes semantic residuals relative to historical references, reducing KV memory to 29% without discarding tokens. It achieves near-lossless performance on SCBench and AIME, with 2× throughput gain.
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <h3>Uni-X: Mitigating Modality Conflict with a Two-End-Separated Architecture for Unified Multimodal Models</h3>
+                        <div class="authors"><b>Jitai Hao</b>*, Hao Liu*, Xinyan Xiao, Qiang Huang, Jun Yu</div>
+                        <div class="venue">ICLR 2026 (Poster)</div>
+                        <div class="pub-links">
+                            <a href="https://arxiv.org/pdf/2509.24365.pdf" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
+                            <a href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank"><i class="fas fa-link"></i> OpenReview</a>
+                            <a href="https://github.com/CURRENTF/Uni-X" target="_blank"><i class="fab fa-github"></i> Code</a>
+	                        </div>
+	                        <div class="tldr" lang="zh-CN">
+	                            <b>TL;DR:</b> 提出 Uni-X “两端分离—中间共享”架构，通过模态特定路径缓解统一多模态模型中的梯度冲突。3B 规模的 Uni-X 性能比肩 7B 模型，并在 GenEval 上达到 82.0。
+	                        </div>
+	                        <div class="tldr" lang="en">
+	                            <b>TL;DR:</b> Uni-X uses an X-shaped "two-end-separated" architecture to mitigate modality conflicts in unified multimodal models. A 3B Uni-X matches or surpasses 7B models, achieving 82.0 on GenEval.
+	                        </div>
+	                    </div>
+
+                    <div class="item">
                         <h3>A Token is Worth over 1,000 Tokens: <strong>Efficient</strong> Knowledge Distillation through Low-Rank Clone</h3>
                         <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
                         <div class="venue">NeurIPS 2025 (Spotlight)</div>
                         <div class="pub-links">
                             <a href="https://arxiv.org/pdf/2505.12781.pdf" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
                             <a href="https://github.com/CURRENTF/LowRankClone" target="_blank"><i class="fab fa-github"></i> Code</a>
+                            <a href="https://zhuanlan.zhihu.com/p/1959655943672426991" target="_blank"><i class="fab fa-zhihu"></i> Zhihu</a>
                         </div>
                         <div class="tldr" lang="zh-CN">
                             <b>TL;DR:</b> 我们提出 Low-Rank Clone (LRC)，一种能显著提高模型训练效率的创新方法。LRC 仅需约 10B-20B tokens 数据，就能达到甚至超越那些用数万亿 tokens 训练的顶尖模型（如 Qwen3, Llama3）的性能。
@@ -299,9 +334,10 @@
                         <h3>OmniKV: Dynamic Context Selection for <strong>Efficient</strong> Long-Context LLMs</h3>
                         <div class="authors"><b>Jitai Hao*</b>, Yuke Zhu*, Tian Wang, Jun Yu, Xin Xin, Bo Zheng, Zhaochun Ren, Sheng Guo</div>
                         <div class="venue">ICLR 2025</div>
-                         <div class="pub-links">
+                        <div class="pub-links">
                             <a href="https://openreview.net/pdf?id=ulCAPXYXfa" target="_blank"><i class="fas fa-file-pdf"></i> PDF</a>
                             <a href="https://github.com/antgroup/OmniKV" target="_blank"><i class="fab fa-github"></i> Code</a>
+                            <a href="https://zhuanlan.zhihu.com/p/32154143967" target="_blank"><i class="fab fa-zhihu"></i> Zhihu</a>
                         </div>
                         <div class="tldr" lang="zh-CN">
                             <b>TL;DR:</b> 通过创新地提出层间注意力相似性，OmniKV 能够动态选择最重要的上下文信息，从而在处理长文本时，显著提升 LLM 的效率和性能，同时降低计算成本。
@@ -350,11 +386,11 @@
                 <h2 lang="zh-CN">实习经历</h2>
                 <h2 lang="en">Internship Experience</h2>
                 <ul lang="zh-CN">
-                    <li><b>百度</b> (2025年3月 - 至今)，研究实习生</li>
+                    <li><b>百度</b> (2025年3月 - 2025年10月)，研究实习生</li>
                     <li><b>蚂蚁集团</b> (2024年5月 - 2024年10月)，研究实习生</li>
                 </ul>
                 <ul lang="en">
-                    <li><b>Baidu</b> (Mar. 2025 - Present), Research Intern</li>
+                    <li><b>Baidu</b> (Mar. 2025 - Oct. 2025), Research Intern</li>
                     <li><b>Ant Group</b> (May 2024 - Oct. 2024), Research Intern</li>
                 </ul>
             </section>
@@ -375,12 +411,12 @@
             </section>
         </main>
 
-        <footer>
+        <!-- <footer>
             <span lang="zh-CN">上次更新于 2025年9月</span>
             <span lang="en">Last updated in September 2025</span>
-        </footer>
+        </footer> -->
 
-<!--        <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=nR6VQyJZ1oZvoZpzfu6lOhZVBZsS6OT47jndRtgCerY&cl=ffffff&w=a"></script>-->
+       <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=nR6VQyJZ1oZvoZpzfu6lOhZVBZsS6OT47jndRtgCerY&cl=ffffff&w=a"></script>
     </div>
 
     <script>
