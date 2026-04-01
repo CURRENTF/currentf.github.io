@@ -140,6 +140,7 @@
         #about h2::before      { content: '\f007'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
         #news h2::before       { content: '\f1ea'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
         #publications h2::before { content: '\f02d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
+        #projects h2::before   { content: '\f07b'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
         #experience h2::before { content: '\f0b1'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
         #awards h2::before     { content: '\f091'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--secondary-color); }
 
@@ -199,6 +200,42 @@
         /* --- Footer --- */
         footer { text-align: center; padding: 2.5rem 0; color: var(--secondary-color); font-size: 0.9em; }
 
+        /* --- Visitor Widget --- */
+        .visitor-widget-wrap {
+            margin-top: 2.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            background-color: var(--card-bg);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .visitor-widget-wrap:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
+            border-color: var(--secondary-color);
+        }
+
+        .visitor-widget-wrap #mapmyvisitors-widget {
+            display: block;
+            width: 100% !important;
+            max-width: 100%;
+            border-radius: inherit;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .visitor-widget-wrap .mapmyvisitors-map-container {
+            border-radius: inherit;
+            overflow: hidden;
+        }
+
+        .visitor-widget-wrap .mapmyvisitors-visitors,
+        .visitor-widget-wrap .mapmyvisitors-date {
+            font-family: var(--font-family) !important;
+        }
+
         /* --- Responsive Design --- */
         @media (max-width: 768px) {
             .container { padding: 1.5rem; }
@@ -207,6 +244,7 @@
             .section { padding: 1.5rem; }
             .section h2 { font-size: 1.6rem; }
             .section:hover { transform: translateY(-5px); } /* Disable scaling on mobile */
+            .visitor-widget-wrap { margin-top: 1.5rem; }
         }
     </style>
     <script>
@@ -382,6 +420,29 @@
                 </div>
             </section>
 
+            <section id="projects" class="section">
+                <h2 lang="zh-CN">项目</h2>
+                <h2 lang="en">Projects</h2>
+                <div class="publication-list">
+                    <div class="item">
+                        <h3>Sparse-vLLM: A Sparse-First Inference Framework for Long-Context LLMs</h3>
+                        <div class="venue" lang="zh-CN">统一稀疏推理框架，支持物理淘汰、逻辑掩码与混合压缩</div>
+                        <div class="venue" lang="en">A unified sparse inference engine supporting physical eviction, logical masking, and hybrid compression</div>
+                        <div class="pub-links">
+                            <a href="https://github.com/CURRENTF/Sparse-vLLM" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://deepwiki.com/CURRENTF/Sparse-vLLM" target="_blank"><i class="fas fa-book-open"></i> DeepWiki</a>
+                            <a href="https://arxiv.org/abs/2602.08005" target="_blank"><i class="fas fa-file-lines"></i> DeltaKV Paper</a>
+                        </div>
+                        <div class="tldr" lang="zh-CN">
+                            <b>TL;DR:</b> Sparse-vLLM 是我构建的一个以稀疏性为核心设计原则的长上下文 LLM 推理框架。它不是在传统 KV Cache 之上临时叠加稀疏方法，而是从缓存布局、控制流和 kernel 层面重新设计，使得 SnapKV、PyramidKV、OmniKV、QuEST 以及 DeltaKV 等方法都能在统一框架下高效集成与对比。
+                        </div>
+                        <div class="tldr" lang="en">
+                            <b>TL;DR:</b> Sparse-vLLM is a sparse-first inference framework I built for long-context LLMs. Rather than layering sparse tricks on top of a conventional KV cache, it redesigns cache layout, controller flow, and kernels from the ground up, enabling methods such as SnapKV, PyramidKV, OmniKV, QuEST, and DeltaKV to be integrated and compared efficiently within one engine.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="experience" class="section">
                 <h2 lang="zh-CN">实习经历</h2>
                 <h2 lang="en">Internship Experience</h2>
@@ -416,7 +477,9 @@
             <span lang="en">Last updated in September 2025</span>
         </footer> -->
 
-       <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=nR6VQyJZ1oZvoZpzfu6lOhZVBZsS6OT47jndRtgCerY&cl=ffffff&w=a"></script>
+        <div class="visitor-widget-wrap">
+            <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=nR6VQyJZ1oZvoZpzfu6lOhZVBZsS6OT47jndRtgCerY&cl=ffffff&w=a"></script>
+        </div>
     </div>
 
     <script>
