@@ -269,7 +269,7 @@
 
         .research-map {
             position: relative;
-            min-height: 536px;
+            min-height: 618px;
             padding: 24px;
             border: 1px solid #d5dfec;
             border-radius: var(--radius);
@@ -305,7 +305,89 @@
 
         .map-canvas {
             position: relative;
-            height: 438px;
+            height: 520px;
+        }
+
+        .map-lane {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            border: 1px solid rgba(216, 224, 235, 0.86);
+            border-radius: var(--radius);
+            pointer-events: none;
+            z-index: 0;
+            transition: transform 240ms ease, border-color 240ms ease, background 240ms ease;
+        }
+
+        .map-lane::before {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
+
+        .lane-efficiency {
+            left: 0;
+            width: 68%;
+            background:
+                linear-gradient(180deg, rgba(5, 150, 105, 0.075), rgba(5, 150, 105, 0.018)),
+                rgba(255, 255, 255, 0.58);
+        }
+
+        .lane-efficiency::before {
+            content: "Efficiency line";
+            color: var(--green);
+            background: rgba(5, 150, 105, 0.12);
+        }
+
+        .lane-multimodal {
+            right: 0;
+            width: 28%;
+            background:
+                linear-gradient(180deg, rgba(37, 99, 235, 0.075), rgba(37, 99, 235, 0.018)),
+                rgba(255, 255, 255, 0.62);
+        }
+
+        .lane-multimodal::before {
+            content: "Unified multimodal line";
+            color: var(--blue);
+            background: rgba(37, 99, 235, 0.12);
+        }
+
+        html[lang="zh-CN"] .lane-efficiency::before { content: "效率主线"; }
+        html[lang="zh-CN"] .lane-multimodal::before { content: "统一多模态主线"; }
+
+        .map-divider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 69.5%;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(101, 112, 131, 0.26), transparent);
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 240ms ease, transform 240ms ease;
+        }
+
+        .research-map.is-repel .lane-efficiency {
+            transform: translateX(-8px);
+            border-color: rgba(5, 150, 105, 0.24);
+        }
+
+        .research-map.is-repel .lane-multimodal {
+            transform: translateX(8px);
+            border-color: rgba(37, 99, 235, 0.24);
+        }
+
+        .research-map.is-repel .map-divider {
+            opacity: 0.95;
+            transform: scaleY(1.04);
         }
 
         .map-lines {
@@ -330,6 +412,9 @@
 
         .map-node {
             position: absolute;
+            --repel-x: 0px;
+            --repel-y: 0px;
+            --lane-bias: 0px;
             width: 188px;
             min-height: 68px;
             padding: 11px 12px;
@@ -337,12 +422,14 @@
             border-radius: var(--radius);
             background: rgba(255, 255, 255, 0.94);
             box-shadow: 0 14px 34px rgba(32, 42, 68, 0.10);
+            transform: translate(calc(var(--repel-x) + var(--lane-bias)), var(--repel-y));
             transition: transform 180ms ease, box-shadow 180ms ease;
             z-index: 2;
+            will-change: transform;
         }
 
         .map-node:hover {
-            transform: translateY(-4px);
+            transform: translate(calc(var(--repel-x) + var(--lane-bias)), calc(var(--repel-y) - 4px));
             box-shadow: 0 20px 42px rgba(32, 42, 68, 0.14);
         }
 
@@ -376,14 +463,17 @@
             line-height: 1;
         }
 
-        .node-efficiency { left: 3%; top: 74%; border-color: #a7d8c2; }
-        .node-meft { left: 18%; top: 50%; }
-        .node-omnikv { left: 34%; top: 28%; }
-        .node-deltakv { left: 50%; top: 5%; }
-        .node-sparse { left: 68%; top: 5%; }
-        .node-lrc { left: 42%; top: 57%; }
-        .node-multimodal { left: 58%; top: 74%; border-color: #afc8ff; }
-        .node-unix { left: 76%; top: 49%; }
+        .node-efficiency { left: 3%; top: 70%; border-color: #a7d8c2; }
+        .node-meft { left: 18%; top: 51%; }
+        .node-omnikv { left: 31%; top: 31%; }
+        .node-deltakv { left: 45%; top: 9%; }
+        .node-sparse { left: 45%; top: 35%; }
+        .node-lrc { left: 31%; top: 72%; }
+        .node-multimodal { left: 74%; top: 68%; border-color: #afc8ff; }
+        .node-unix { left: 76%; top: 31%; }
+
+        .research-map.is-repel .map-node[data-route="efficiency"] { --lane-bias: -7px; }
+        .research-map.is-repel .map-node[data-route="multimodal"] { --lane-bias: 9px; }
 
         .node-efficiency,
         .node-meft,
@@ -768,6 +858,8 @@
                 display: grid;
                 gap: 12px;
             }
+            .map-lane,
+            .map-divider,
             .map-lines { display: none; }
             .map-node,
             .map-node.root {
@@ -818,6 +910,8 @@
                 display: grid;
                 gap: 12px;
             }
+            .map-lane,
+            .map-divider,
             .map-lines { display: none; }
             .map-node,
             .map-node.root {
@@ -960,7 +1054,10 @@
                             <span class="map-note" lang="zh-CN">两条主线，一个长期问题</span>
                         </div>
                         <div class="map-canvas">
-                            <svg class="map-lines" viewBox="0 0 720 438" preserveAspectRatio="none" aria-hidden="true">
+                            <div class="map-lane lane-efficiency"></div>
+                            <div class="map-lane lane-multimodal"></div>
+                            <div class="map-divider"></div>
+                            <svg class="map-lines" viewBox="0 0 720 520" preserveAspectRatio="none" aria-hidden="true">
                                 <defs>
                                     <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                                         <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(5, 150, 105, 0.72)"></path>
@@ -975,64 +1072,64 @@
                                         <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(37, 99, 235, 0.76)"></path>
                                     </marker>
                                 </defs>
-                                <path class="line-eff" marker-end="url(#arrow-green)" d="M 91 324 C 118 306, 150 292, 189 287"></path>
-                                <path class="line-eff" marker-end="url(#arrow-green)" d="M 189 219 C 222 194, 258 188, 305 191"></path>
-                                <path class="line-branch" marker-end="url(#arrow-gold)" d="M 249 253 C 272 262, 286 276, 302 284"></path>
-                                <path class="line-framework" marker-end="url(#arrow-rose)" d="M 305 123 C 330 96, 374 82, 420 90"></path>
-                                <path class="line-framework" marker-end="url(#arrow-rose)" d="M 305 123 C 382 184, 480 160, 550 90"></path>
-                                <path class="line-mm" marker-end="url(#arrow-blue)" d="M 487 324 C 514 294, 558 280, 607 283"></path>
+                                <path class="line-eff" marker-end="url(#arrow-green)" d="M 105 395 C 132 360, 160 335, 189 315"></path>
+                                <path class="line-eff" marker-end="url(#arrow-green)" d="M 245 285 C 260 248, 280 228, 300 214"></path>
+                                <path class="line-branch" marker-end="url(#arrow-gold)" d="M 245 335 C 270 365, 288 392, 302 408"></path>
+                                <path class="line-framework" marker-end="url(#arrow-rose)" d="M 360 178 C 378 142, 394 118, 420 106"></path>
+                                <path class="line-framework" marker-end="url(#arrow-rose)" d="M 365 216 C 392 225, 405 231, 418 240"></path>
+                                <path class="line-mm" marker-end="url(#arrow-blue)" d="M 592 357 C 592 315, 594 265, 598 232"></path>
                             </svg>
 
-                            <article class="map-node root node-efficiency">
+                            <article class="map-node root node-efficiency" data-route="efficiency">
                                 <h3>Efficiency</h3>
                                 <p lang="en">The core thread: reduce memory, tokens, and inference cost.</p>
                                 <p lang="zh-CN">主线：降低显存、token 与推理成本。</p>
                                 <span class="tag"><span lang="en">Research line</span><span lang="zh-CN">研究主线</span></span>
                             </article>
 
-                            <article class="map-node node-meft">
+                            <article class="map-node node-meft" data-route="efficiency">
                                 <h3>MEFT</h3>
                                 <p lang="en">Memory-efficient fine-tuning with sparse adapters.</p>
                                 <p lang="zh-CN">通过稀疏 adapter 做内存高效微调。</p>
                                 <span class="tag">ACL 2024</span>
                             </article>
 
-                            <article class="map-node node-omnikv">
+                            <article class="map-node node-omnikv" data-route="efficiency">
                                 <h3>OmniKV</h3>
                                 <p lang="en">Dynamic context selection for long-context LLMs.</p>
                                 <p lang="zh-CN">长上下文 LLM 的动态上下文选择。</p>
                                 <span class="tag">ICLR 2025</span>
                             </article>
 
-                            <article class="map-node node-deltakv">
+                            <article class="map-node node-deltakv" data-route="efficiency">
                                 <h3>DeltaKV</h3>
                                 <p lang="en">Residual-based KV cache compression.</p>
                                 <p lang="zh-CN">基于残差的 KV Cache 压缩。</p>
                                 <span class="tag">arXiv 2026</span>
                             </article>
 
-                            <article class="map-node node-sparse">
+                            <article class="map-node node-sparse" data-route="efficiency">
                                 <h3>Sparse-vLLM</h3>
                                 <p lang="en">Sparse-first inference framework.</p>
                                 <p lang="zh-CN">以稀疏性为核心的推理框架。</p>
                                 <span class="tag"><span lang="en">System</span><span lang="zh-CN">系统</span></span>
                             </article>
 
-                            <article class="map-node node-lrc">
+                            <article class="map-node node-lrc" data-route="efficiency">
                                 <h3>LRC</h3>
                                 <p lang="en">Branch from MEFT: low-rank modules clone teacher knowledge, making each training token far more valuable.</p>
                                 <p lang="zh-CN">从 MEFT 分支：用低秩模块克隆教师知识，让每个训练 token 承载更多监督信号。</p>
                                 <span class="tag">NeurIPS 2025 Spotlight</span>
                             </article>
 
-                            <article class="map-node root node-multimodal">
+                            <article class="map-node root node-multimodal" data-route="multimodal">
                                 <h3>Unified Multimodal Models</h3>
                                 <p lang="en">The second thread: unify understanding and generation.</p>
                                 <p lang="zh-CN">第二主线：统一理解与生成。</p>
                                 <span class="tag"><span lang="en">Research line</span><span lang="zh-CN">研究主线</span></span>
                             </article>
 
-                            <article class="map-node node-unix">
+                            <article class="map-node node-unix" data-route="multimodal">
                                 <h3>Uni-X</h3>
                                 <p lang="en">Two-end-separated architecture for modality conflict.</p>
                                 <p lang="zh-CN">两端分离架构，缓解模态冲突。</p>
@@ -1284,6 +1381,49 @@
         }, { threshold: 0.08 });
 
         sections.forEach(section => observer.observe(section));
+
+        const researchMap = document.querySelector(".research-map");
+        const mapNodes = researchMap ? Array.from(researchMap.querySelectorAll(".map-node")) : [];
+        const canAnimateMap = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+        function resetMapRepulsion() {
+            if (!researchMap) return;
+            researchMap.classList.remove("is-repel");
+            mapNodes.forEach(node => {
+                node.style.setProperty("--repel-x", "0px");
+                node.style.setProperty("--repel-y", "0px");
+            });
+        }
+
+        if (researchMap && canAnimateMap) {
+            researchMap.addEventListener("pointermove", event => {
+                researchMap.classList.add("is-repel");
+                const mapRect = researchMap.getBoundingClientRect();
+                const pointerX = event.clientX;
+                const pointerY = event.clientY;
+
+                mapNodes.forEach(node => {
+                    const rect = node.getBoundingClientRect();
+                    const nodeX = rect.left + rect.width / 2;
+                    const nodeY = rect.top + rect.height / 2;
+                    const dx = nodeX - pointerX;
+                    const dy = nodeY - pointerY;
+                    const distance = Math.max(Math.hypot(dx, dy), 1);
+                    const influence = Math.max(0, 1 - distance / 310);
+                    const force = influence * 17;
+                    const routeBias = node.dataset.route === "multimodal" ? 1 : -1;
+                    const dividerPush = Math.max(0, 1 - Math.abs(pointerX - (mapRect.left + mapRect.width * 0.7)) / 240) * 5 * routeBias;
+                    const repelX = (dx / distance) * force + dividerPush;
+                    const repelY = (dy / distance) * force * 0.42;
+
+                    node.style.setProperty("--repel-x", `${repelX.toFixed(2)}px`);
+                    node.style.setProperty("--repel-y", `${repelY.toFixed(2)}px`);
+                });
+            });
+
+            researchMap.addEventListener("pointerleave", resetMapRepulsion);
+            window.addEventListener("blur", resetMapRepulsion);
+        }
     </script>
 </body>
 </html>
