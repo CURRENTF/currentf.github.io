@@ -169,6 +169,44 @@
             </section>
 
             <section class="project-section section-reveal">
+                <h2 lang="en">Method Framework</h2>
+                <h2 lang="zh-CN">方法框架图</h2>
+                <p lang="en">The original framework figure shows OmniKV's decode-stage system: a Context Selector identifies useful tokens in filter layers, while the Context Bank keeps full KV cache offloaded and only moves selected subsets back to GPU for sparse layers.</p>
+                <p lang="zh-CN">原始框架图展示了 OmniKV 的 decode 阶段系统：Context Selector 在 filter layers 中识别关键 token，Context Bank 保留完整 KV cache 并把选中的子集加载回 GPU 供稀疏层使用。</p>
+                <figure class="paper-figure">
+                    <img src="../assets/papers/omnikv-framework.png" alt="Original OmniKV framework figure showing Context Selector, Context Bank, GPU and CPU KV cache movement, and sparse attention layers.">
+                    <figcaption lang="en">Original Figure 2 from the OmniKV paper: filter layers select important tokens from the observation window, and sparse layers load the selected KV cache subset from CPU memory to GPU memory.</figcaption>
+                    <figcaption lang="zh-CN">OmniKV 论文原始 Figure 2：filter layers 根据 observation window 选择重要 token，sparse layers 再从 CPU 内存加载对应 KV cache 子集到 GPU。</figcaption>
+                </figure>
+                <div class="method-notes">
+                    <article class="method-note">
+                        <h3 lang="en">How the system runs</h3>
+                        <h3 lang="zh-CN">系统如何运行</h3>
+                        <p lang="en">During prefill, every layer performs full attention and builds KV cache. OmniKV then stores most non-filter layer cache in the CPU-side Context Bank, while keeping a small set of filter layers available for full attention and token selection.</p>
+                        <p lang="zh-CN">在 prefill 阶段，所有层先执行完整注意力并生成 KV cache。随后 OmniKV 将多数非 filter layer 的 cache 存入 CPU 侧 Context Bank，同时保留少数 filter layers 做完整注意力和 token 选择。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Why it is drop-free</h3>
+                        <h3 lang="zh-CN">为什么不是直接丢 token</h3>
+                        <p lang="en">In decode, selected token indices are refreshed dynamically. The full cache is retained in the Context Bank, so tokens are not permanently discarded; only the visible GPU cache is made sparse for the current step.</p>
+                        <p lang="zh-CN">在 decode 阶段，token 索引会动态更新。完整 cache 仍保存在 Context Bank 中，因此 token 不会被永久丢弃；只是当前步对 GPU 可见的 KV cache 变稀疏。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Efficiency mechanism</h3>
+                        <h3 lang="zh-CN">效率来源</h3>
+                        <p lang="en">Layers between neighboring filter layers share selected indices, allowing packed CPU-to-GPU loading. This reduces both attention sequence length and repeated transfer volume in long-context inference.</p>
+                        <p lang="zh-CN">相邻 filter layers 之间的层共享选择索引，因此可以批量从 CPU 加载到 GPU，减少长上下文推理中的注意力长度和重复数据传输。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Experimental evidence</h3>
+                        <h3 lang="zh-CN">实验结论</h3>
+                        <p lang="en">The paper reports best or near-full-attention quality on LongBench and InfiniteBench, up to 75% KV-cache memory reduction with offloading, and 1.7x speedup at 128K context.</p>
+                        <p lang="zh-CN">论文报告在 LongBench 和 InfiniteBench 上达到最佳或接近 full attention 的效果；结合 offloading 可最多减少 75% KV-cache 显存，并在 128K context 下达到 1.7x 加速。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="project-section section-reveal">
                 <h2 lang="en">Research Keywords</h2>
                 <h2 lang="zh-CN">检索关键词</h2>
                 <p lang="en">This page uses visible research terms that match how researchers and AI literature assistants search for related work in efficient long-context language models.</p>

@@ -165,6 +165,44 @@
             </section>
 
             <section class="project-section section-reveal">
+                <h2 lang="en">Method Framework</h2>
+                <h2 lang="zh-CN">方法框架图</h2>
+                <p lang="en">The original framework figure shows LRC's two core steps inside each layer: low-rank projection maps teacher weights into the student space, and activation clone aligns teacher and student intermediate activations.</p>
+                <p lang="zh-CN">原始框架图展示了 LRC 在每层中的两个核心步骤：Low-Rank Projection 将教师权重映射到学生空间，Activation Clone 对齐教师与学生的中间激活。</p>
+                <figure class="paper-figure">
+                    <img src="../assets/papers/lrc-framework.png" alt="Original LRC framework figure showing low-rank projection, activation clone, attention weights, FFN weights, and MSE activation alignment.">
+                    <figcaption lang="en">Original Figure 2 from the LRC paper: low-rank projection initializes the student's attention and FFN weights from the teacher, while activation clone aligns intermediate activations through MSE losses.</figcaption>
+                    <figcaption lang="zh-CN">LRC 论文原始 Figure 2：低秩投影从教师模型初始化学生的 attention 与 FFN 权重，Activation Clone 通过 MSE 对齐中间激活。</figcaption>
+                </figure>
+                <div class="method-notes">
+                    <article class="method-note">
+                        <h3 lang="en">Low-rank projection</h3>
+                        <h3 lang="zh-CN">低秩投影</h3>
+                        <p lang="en">Instead of randomly initializing a smaller student, LRC learns compact projection matrices that convert teacher attention, FFN, embedding, and LM-head weights into the student's dimensionality.</p>
+                        <p lang="zh-CN">LRC 不从随机初始化的小模型开始，而是学习紧凑的投影矩阵，把教师模型的 attention、FFN、embedding 与 LM-head 权重转换到学生模型维度。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Activation clone</h3>
+                        <h3 lang="zh-CN">激活克隆</h3>
+                        <p lang="en">Teacher and student run forward passes on the same data. LRC aligns intermediate states, including often-overlooked FFN activations, so each token carries layer-level teacher supervision.</p>
+                        <p lang="zh-CN">教师和学生在同一数据上前向传播。LRC 对齐中间状态，尤其包含常被忽略的 FFN 激活，让每个 token 带有层级教师监督信号。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Training objective</h3>
+                        <h3 lang="zh-CN">训练目标</h3>
+                        <p lang="en">The method combines clone losses with language-model training so the student inherits useful representations while remaining a deployable standard transformer after training.</p>
+                        <p lang="zh-CN">方法将 clone loss 与语言模型训练结合，使学生模型继承有效表征，同时训练后仍是可直接部署的标准 Transformer。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Experimental evidence</h3>
+                        <h3 lang="zh-CN">实验结论</h3>
+                        <p lang="en">The paper reports that LRC models match or surpass strong SLMs trained on trillions of tokens; LRC-1.7B reaches 64.98 average versus Qwen3-1.7B at 63.17 using over 1,000x fewer tokens.</p>
+                        <p lang="zh-CN">论文报告 LRC 模型可匹配或超过使用万亿级 token 训练的强 SLM；LRC-1.7B 平均分 64.98，高于 Qwen3-1.7B 的 63.17，并使用超过 1000x 更少的训练 token。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="project-section section-reveal">
                 <h2 lang="en">Research Keywords</h2>
                 <h2 lang="zh-CN">检索关键词</h2>
                 <p lang="en">This page uses visible research terms that match how researchers and AI literature assistants search for related work in efficient LLM training and knowledge distillation.</p>
