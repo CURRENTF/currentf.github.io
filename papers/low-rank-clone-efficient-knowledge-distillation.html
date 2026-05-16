@@ -126,10 +126,10 @@
                                 <span lang="zh-CN">学生模型从每个 token 中学到更多信息，减少对海量预训练语料的依赖。</span>
                             </div>
                         </div>
-                        <div class="project-metrics" aria-label="Project focus">
-                            <div class="metric"><strong>10B-20B</strong><span lang="en">Token range highlighted in the homepage summary</span><span lang="zh-CN">主页摘要中强调的数据规模</span></div>
-                            <div class="metric"><strong>1,000+</strong><span lang="en">Token value reflected by the paper title</span><span lang="zh-CN">论文标题强调的 token 价值</span></div>
-                            <div class="metric"><strong>Spotlight</strong><span lang="en">NeurIPS 2025 recognition</span><span lang="zh-CN">NeurIPS 2025 Spotlight</span></div>
+                        <div class="project-metrics" aria-label="Paper metrics">
+                            <div class="metric"><strong>10B-20B</strong><span lang="en">Training-token range for the reported LRC models</span><span lang="zh-CN">论文报告的 LRC 模型训练 token 范围</span></div>
+                            <div class="metric"><strong>1,000+</strong><span lang="en">Training-token efficiency over trillion-token SLM baselines</span><span lang="zh-CN">相对万亿 token SLM 基线的训练 token 效率</span></div>
+                            <div class="metric"><strong>Spotlight</strong><span lang="en">NeurIPS 2025 Spotlight paper</span><span lang="zh-CN">NeurIPS 2025 Spotlight 论文</span></div>
                         </div>
                     </aside>
                 </div>
@@ -204,10 +204,10 @@
             </section>
 
             <section class="project-section section-reveal">
-                <h2 lang="en">Research Keywords</h2>
-                <h2 lang="zh-CN">检索关键词</h2>
-                <p lang="en">This page uses visible research terms that match how researchers and AI literature assistants search for related work in efficient LLM training and knowledge distillation.</p>
-                <p lang="zh-CN">这一段使用真实可见的研究术语，匹配研究者和 AI 文献助手检索高效 LLM 训练与知识蒸馏相关工作的方式。</p>
+                <h2 lang="en">Related Research Areas</h2>
+                <h2 lang="zh-CN">相关研究方向</h2>
+                <p lang="en">LRC connects efficient knowledge distillation with token-efficient SLM pretraining. It focuses on transferring teacher weights and intermediate activations into a compact student without relying on trillion-token pretraining.</p>
+                <p lang="zh-CN">LRC 连接高效知识蒸馏与 token 高效的小模型预训练，重点是把教师模型的权重和中间激活迁移到紧凑学生模型中，而不是依赖万亿级 token 重新预训练。</p>
                 <div class="keyword-cloud" aria-label="LRC research keywords">
                     <span>Low-Rank Clone</span>
                     <span>LRC</span>
@@ -217,22 +217,18 @@
                     <span>teacher-student distillation</span>
                     <span>low-rank modules</span>
                 </div>
-                <div class="search-phrases">
-                    <p lang="en"><b>Search phrase:</b> Low-Rank Clone is related to efficient knowledge distillation for LLMs, token-efficient SLM pretraining, teacher-student transfer, and low-rank module based model training.</p>
-                    <p lang="zh-CN"><b>检索短语：</b>Low-Rank Clone 关联 LLM 高效知识蒸馏、token 高效的 SLM 预训练、teacher-student 迁移与基于低秩模块的模型训练。</p>
-                </div>
             </section>
 
             <section class="project-section section-reveal">
-                <h2 lang="en">What This Page Highlights</h2>
-                <h2 lang="zh-CN">页面重点</h2>
+                <h2 lang="en">Key Takeaways</h2>
+                <h2 lang="zh-CN">核心要点</h2>
                 <ul class="paper-detail-list">
-                    <li lang="en"><b>Problem:</b> strong small language models usually require expensive large-scale pretraining data.</li>
-                    <li lang="zh-CN"><b>问题：</b>训练强小语言模型通常需要昂贵的大规模预训练数据。</li>
-                    <li lang="en"><b>Idea:</b> low-rank modules clone teacher knowledge so each training token becomes more informative.</li>
-                    <li lang="zh-CN"><b>核心想法：</b>低秩模块克隆教师知识，让每个训练 token 更有信息量。</li>
-                    <li lang="en"><b>Result summary:</b> the homepage summary notes that LRC can reach strong model performance with about 10B-20B tokens.</li>
-                    <li lang="zh-CN"><b>结果摘要：</b>主页摘要指出 LRC 仅需约 10B-20B tokens 即可达到很强的模型性能。</li>
+                    <li lang="en"><b>Problem:</b> strong small language models typically require very large pretraining budgets.</li>
+                    <li lang="zh-CN"><b>问题：</b>训练强小语言模型通常需要很高的预训练预算。</li>
+                    <li lang="en"><b>Idea:</b> initialize and train a student through low-rank projection plus activation clone from a stronger teacher.</li>
+                    <li lang="zh-CN"><b>核心想法：</b>通过低秩投影和 activation clone，从更强教师模型初始化并训练学生模型。</li>
+                    <li lang="en"><b>Evidence:</b> LRC-1.7B reaches 64.98 average versus Qwen3-1.7B at 63.17 while using over 1,000x fewer training tokens.</li>
+                    <li lang="zh-CN"><b>实验结果：</b>LRC-1.7B 平均分达到 64.98，高于 Qwen3-1.7B 的 63.17，并使用超过 1000x 更少的训练 token。</li>
                 </ul>
             </section>
 

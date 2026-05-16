@@ -125,10 +125,10 @@
                                 <span lang="zh-CN">在必要处隔离冲突梯度，在有效处共享模型容量。</span>
                             </div>
                         </div>
-                        <div class="project-metrics" aria-label="Project focus">
-                            <div class="metric"><strong>3B</strong><span lang="en">Model scale highlighted in the homepage summary</span><span lang="zh-CN">主页摘要中强调的模型规模</span></div>
-                            <div class="metric"><strong>82.0</strong><span lang="en">GenEval score noted in the summary</span><span lang="zh-CN">摘要中提到的 GenEval 表现</span></div>
-                            <div class="metric"><strong>X</strong><span lang="en">Two-end-separated architecture</span><span lang="zh-CN">两端分离架构</span></div>
+                        <div class="project-metrics" aria-label="Paper metrics">
+                            <div class="metric"><strong>3B</strong><span lang="en">Language backbone scale in the expanded Uni-X setting</span><span lang="zh-CN">扩展版 Uni-X 的语言底座规模</span></div>
+                            <div class="metric"><strong>82.0</strong><span lang="en">GenEval score reported for image generation</span><span lang="zh-CN">图像生成 GenEval 报告分数</span></div>
+                            <div class="metric"><strong>X</strong><span lang="en">Two-end-separated, middle-shared architecture</span><span lang="zh-CN">两端分离，中间共享架构</span></div>
                         </div>
                     </aside>
                 </div>
@@ -203,10 +203,10 @@
             </section>
 
             <section class="project-section section-reveal">
-                <h2 lang="en">Research Keywords</h2>
-                <h2 lang="zh-CN">检索关键词</h2>
-                <p lang="en">This page uses visible research terms that match how researchers and AI literature assistants search for related work in unified multimodal understanding and generation.</p>
-                <p lang="zh-CN">这一段使用真实可见的研究术语，匹配研究者和 AI 文献助手检索统一多模态理解与生成相关工作的方式。</p>
+                <h2 lang="en">Related Research Areas</h2>
+                <h2 lang="zh-CN">相关研究方向</h2>
+                <p lang="en">Uni-X connects unified multimodal modeling with gradient-conflict analysis. It focuses on when text and vision should share transformer capacity, and when modality-specific layers are a better fit.</p>
+                <p lang="zh-CN">Uni-X 连接统一多模态建模与梯度冲突分析，关注文本和视觉何时应该共享 Transformer 容量，何时需要模态特定层。</p>
                 <div class="keyword-cloud" aria-label="Uni-X research keywords">
                     <span>Uni-X</span>
                     <span>unified multimodal models</span>
@@ -216,22 +216,18 @@
                     <span>vision-language models</span>
                     <span>GenEval</span>
                 </div>
-                <div class="search-phrases">
-                    <p lang="en"><b>Search phrase:</b> Uni-X is related to unified multimodal models, modality conflict mitigation, two-end-separated model architecture, multimodal understanding, multimodal generation, and vision-language model training.</p>
-                    <p lang="zh-CN"><b>检索短语：</b>Uni-X 关联统一多模态模型、模态冲突缓解、两端分离模型架构、多模态理解、多模态生成与视觉语言模型训练。</p>
-                </div>
             </section>
 
             <section class="project-section section-reveal">
-                <h2 lang="en">What This Page Highlights</h2>
-                <h2 lang="zh-CN">页面重点</h2>
+                <h2 lang="en">Key Takeaways</h2>
+                <h2 lang="zh-CN">核心要点</h2>
                 <ul class="paper-detail-list">
-                    <li lang="en"><b>Problem:</b> unified multimodal models can suffer from modality conflict when diverse objectives are forced through one shared path.</li>
-                    <li lang="zh-CN"><b>问题：</b>统一多模态模型在将多种目标强行压入同一共享路径时，容易产生模态冲突。</li>
-                    <li lang="en"><b>Idea:</b> use an X-shaped two-end-separated architecture: modality-specific at the ends, shared in the middle.</li>
-                    <li lang="zh-CN"><b>核心想法：</b>采用 X-shaped 两端分离架构：两端模态特定，中间共享。</li>
-                    <li lang="en"><b>Result summary:</b> the homepage summary notes that a 3B Uni-X can match or surpass 7B models and achieves 82.0 on GenEval.</li>
-                    <li lang="zh-CN"><b>结果摘要：</b>主页摘要指出 3B 规模 Uni-X 可比肩或超过 7B 模型，并在 GenEval 上达到 82.0。</li>
+                    <li lang="en"><b>Problem:</b> fully shared autoregressive multimodal transformers produce strong gradient conflicts in shallow and deep layers.</li>
+                    <li lang="zh-CN"><b>问题：</b>完全共享的自回归多模态 Transformer 会在浅层和深层产生明显梯度冲突。</li>
+                    <li lang="en"><b>Idea:</b> keep modality-specific layers at both ends while sharing the middle semantic block.</li>
+                    <li lang="zh-CN"><b>核心想法：</b>在两端保留模态特定层，同时共享中间的语义层。</li>
+                    <li lang="en"><b>Evidence:</b> Uni-X reports the best controlled-training average score of 41.6; scaled 3B / 4.5B Uni-X reaches 67.1 text average and 82 on GenEval, competitive with larger 7B AR-based UMMs.</li>
+                    <li lang="zh-CN"><b>实验结果：</b>Uni-X 在受控训练设置下取得 41.6 的最佳平均分；扩展后的 3B / 4.5B Uni-X 文本平均分 67.1、GenEval 82，可与更大的 7B AR-based UMM 竞争。</li>
                 </ul>
             </section>
 

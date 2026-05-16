@@ -130,10 +130,10 @@
                                 <span lang="zh-CN">OmniKV 保留关键上下文，同时减少冗余处理开销。</span>
                             </div>
                         </div>
-                        <div class="project-metrics" aria-label="Project focus">
-                            <div class="metric"><strong>KV</strong><span lang="en">Context-aware memory and attention efficiency</span><span lang="zh-CN">面向上下文的显存与注意力效率</span></div>
-                            <div class="metric"><strong>Layer</strong><span lang="en">Signals shared across transformer layers</span><span lang="zh-CN">跨 Transformer 层共享选择信号</span></div>
-                            <div class="metric"><strong>Long</strong><span lang="en">Designed for long-context inference</span><span lang="zh-CN">面向长上下文推理场景</span></div>
+                        <div class="project-metrics" aria-label="Paper metrics">
+                            <div class="metric"><strong>KV</strong><span lang="en">KV-cache offloading and sparse visible context</span><span lang="zh-CN">KV-cache offloading 与稀疏可见上下文</span></div>
+                            <div class="metric"><strong>Layer</strong><span lang="en">Filter layers share selected token indices</span><span lang="zh-CN">Filter layers 共享选择出的 token 索引</span></div>
+                            <div class="metric"><strong>Long</strong><span lang="en">Long-context decoding beyond 32K tokens</span><span lang="zh-CN">面向 32K 以上长上下文解码</span></div>
                         </div>
                     </aside>
                 </div>
@@ -208,10 +208,10 @@
             </section>
 
             <section class="project-section section-reveal">
-                <h2 lang="en">Research Keywords</h2>
-                <h2 lang="zh-CN">检索关键词</h2>
-                <p lang="en">This page uses visible research terms that match how researchers and AI literature assistants search for related work in efficient long-context language models.</p>
-                <p lang="zh-CN">这一段使用真实可见的研究术语，匹配研究者和 AI 文献助手检索高效长上下文语言模型相关工作的方式。</p>
+                <h2 lang="en">Related Research Areas</h2>
+                <h2 lang="zh-CN">相关研究方向</h2>
+                <p lang="en">OmniKV sits at the intersection of long-context inference, sparse attention, and KV-cache systems. It is most relevant to work on training-free inference acceleration, dynamic token selection, and memory-efficient LLM serving.</p>
+                <p lang="zh-CN">OmniKV 位于长上下文推理、稀疏注意力与 KV-cache 系统的交叉处，适合与训练无关的推理加速、动态 token 选择和高效 LLM serving 放在一起理解。</p>
                 <div class="keyword-cloud" aria-label="OmniKV research keywords">
                     <span>long-context LLMs</span>
                     <span>efficient inference</span>
@@ -221,22 +221,18 @@
                     <span>large language models</span>
                     <span>context compression</span>
                 </div>
-                <div class="search-phrases">
-                    <p lang="en"><b>Search phrase:</b> OmniKV is related to efficient long-context LLM inference, dynamic context selection, attention similarity across transformer layers, and KV cache efficiency.</p>
-                    <p lang="zh-CN"><b>检索短语：</b>OmniKV 关联高效长上下文 LLM 推理、动态上下文选择、Transformer 层间注意力相似性与 KV Cache 效率。</p>
-                </div>
             </section>
 
             <section class="project-section section-reveal">
-                <h2 lang="en">What This Page Highlights</h2>
-                <h2 lang="zh-CN">页面重点</h2>
+                <h2 lang="en">Key Takeaways</h2>
+                <h2 lang="zh-CN">核心要点</h2>
                 <ul class="paper-detail-list">
-                    <li lang="en"><b>Problem:</b> long-context models carry high computation and memory pressure when every token is processed with equal priority.</li>
-                    <li lang="zh-CN"><b>问题：</b>长上下文模型若对所有 token 等权处理，会带来较高的计算与显存压力。</li>
-                    <li lang="en"><b>Idea:</b> use inter-layer attention similarity to guide dynamic context selection.</li>
-                    <li lang="zh-CN"><b>核心想法：</b>利用层间注意力相似性，引导动态上下文选择。</li>
-                    <li lang="en"><b>Position:</b> OmniKV connects MEFT-style efficiency work with later KV-cache and sparse inference systems.</li>
-                    <li lang="zh-CN"><b>研究位置：</b>OmniKV 连接了 MEFT 式效率研究与后续 KV Cache / 稀疏推理系统。</li>
+                    <li lang="en"><b>Problem:</b> long-context decoding creates KV-cache memory pressure and unnecessary full-context attention.</li>
+                    <li lang="zh-CN"><b>问题：</b>长上下文解码会带来 KV-cache 显存压力，并让模型在每一步都执行不必要的完整上下文注意力。</li>
+                    <li lang="en"><b>Idea:</b> use filter layers and inter-layer attention similarity to select context dynamically without permanently dropping tokens.</li>
+                    <li lang="zh-CN"><b>核心想法：</b>利用 filter layers 和层间注意力相似性动态选择上下文，同时不永久丢弃 token。</li>
+                    <li lang="en"><b>Evidence:</b> OmniKV reports near-full-attention quality on LongBench and InfiniteBench, up to 75% KV-cache memory reduction with offloading, and 1.7x speedup at 128K context.</li>
+                    <li lang="zh-CN"><b>实验结果：</b>OmniKV 在 LongBench 和 InfiniteBench 上接近 full attention 效果；结合 offloading 可最多减少 75% KV-cache 显存，并在 128K context 下达到 1.7x 加速。</li>
                 </ul>
             </section>
 
