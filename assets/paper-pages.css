@@ -118,6 +118,12 @@ body.project-page {
     box-shadow: 0 10px 26px rgba(32, 42, 68, 0.08);
 }
 
+.project-page .nav-link[aria-current="page"] {
+    color: #ffffff;
+    border-color: var(--ink);
+    background: var(--ink);
+}
+
 .project-hero {
     padding: 28px 0 46px;
 }
@@ -482,6 +488,88 @@ body.project-page {
     box-shadow: 0 0 0 5px var(--blue-soft);
 }
 
+.blog-page .project-hero-grid {
+    grid-template-columns: 1fr;
+}
+
+.blog-page .project-hero {
+    padding-bottom: 18px;
+}
+
+.blog-page .project-copy h1 {
+    font-size: clamp(2rem, 5vw, 3.35rem);
+}
+
+.blog-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.blog-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fbfcff;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-2px);
+    border-color: #b9c6d8;
+    box-shadow: 0 12px 28px rgba(32, 42, 68, 0.10);
+}
+
+.blog-kicker {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.blog-card h3 {
+    margin: 8px 0 0;
+    font-size: clamp(1.05rem, 2vw, 1.45rem);
+    line-height: 1.22;
+}
+
+.blog-card p {
+    margin: 9px 0 0;
+    color: var(--muted);
+    font-size: 0.94rem;
+    line-height: 1.62;
+}
+
+.blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 13px;
+}
+
+.blog-tags span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 8px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #ffffff;
+    color: #42506a;
+    font-size: 0.75rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.blog-card .project-button {
+    margin: 0;
+    white-space: nowrap;
+}
+
 .resource-panel {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -594,6 +682,11 @@ body.project-page {
 }
 
 @media (max-width: 720px) {
+    .blog-card {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
     .project-copy,
     .project-visual,
     .project-section,
