@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</title>
+    <meta name="description" content="OmniKV is an ICLR 2025 paper on dynamic context selection for efficient long-context LLMs, using inter-layer attention similarity to reduce redundant long-context computation.">
+    <link rel="canonical" href="https://currentf.github.io/papers/omnikv-dynamic-context-selection.html">
+    <meta name="citation_title" content="OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs">
+    <meta name="citation_author" content="Jitai Hao">
+    <meta name="citation_author" content="Yuke Zhu">
+    <meta name="citation_author" content="Tian Wang">
+    <meta name="citation_author" content="Jun Yu">
+    <meta name="citation_author" content="Xin Xin">
+    <meta name="citation_author" content="Bo Zheng">
+    <meta name="citation_author" content="Zhaochun Ren">
+    <meta name="citation_author" content="Sheng Guo">
+    <meta name="citation_publication_date" content="2025">
+    <meta name="citation_conference_title" content="International Conference on Learning Representations">
+    <meta name="citation_pdf_url" content="https://openreview.net/pdf?id=ulCAPXYXfa">
+    <meta property="og:title" content="OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs">
+    <meta property="og:description" content="ICLR 2025 paper overview for OmniKV, a dynamic context selection method for efficient long-context LLMs.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://currentf.github.io/papers/omnikv-dynamic-context-selection.html">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ScholarlyArticle",
+        "name": "OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs",
+        "headline": "OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs",
+        "description": "OmniKV uses inter-layer attention similarity to dynamically select crucial context information for efficient long-context LLM inference.",
+        "author": [
+            { "@type": "Person", "name": "Jitai Hao" },
+            { "@type": "Person", "name": "Yuke Zhu" },
+            { "@type": "Person", "name": "Tian Wang" },
+            { "@type": "Person", "name": "Jun Yu" },
+            { "@type": "Person", "name": "Xin Xin" },
+            { "@type": "Person", "name": "Bo Zheng" },
+            { "@type": "Person", "name": "Zhaochun Ren" },
+            { "@type": "Person", "name": "Sheng Guo" }
+        ],
+        "datePublished": "2025",
+        "isPartOf": { "@type": "Event", "name": "ICLR 2025" },
+        "keywords": "OmniKV, long-context LLMs, efficient inference, dynamic context selection, inter-layer attention similarity, KV cache efficiency, large language models",
+        "url": "https://currentf.github.io/papers/omnikv-dynamic-context-selection.html",
+        "sameAs": [
+            "https://openreview.net/pdf?id=ulCAPXYXfa",
+            "https://github.com/antgroup/OmniKV"
+        ]
+    }
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/paper-pages.css">
+    <script defer src="../assets/paper-pages.js"></script>
+</head>
+<body class="project-page theme-efficiency">
+    <div class="site-shell">
+        <header class="site-header">
+            <a class="brand" href="../index.html" aria-label="Jitai Hao homepage">
+                <span class="brand-mark">JH</span>
+                <span class="brand-text">
+                    <strong lang="en">Jitai Hao</strong>
+                    <strong lang="zh-CN">郝继泰</strong>
+                    <span lang="en">Efficient AI and multimodal models</span>
+                    <span lang="zh-CN">高效 AI 与统一多模态模型</span>
+                </span>
+            </a>
+            <nav class="header-links" aria-label="Primary navigation">
+                <a class="nav-link" href="../index.html"><i class="fa-solid fa-house"></i> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+                <a class="nav-link" href="../index.html#publications"><i class="fa-solid fa-book-open"></i> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+                <a class="nav-link" href="../index.html#projects"><i class="fa-solid fa-diagram-project"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope"></i> Email</a>
+                <button class="lang-switcher" type="button" onclick="toggleLanguage()">
+                    <i class="fa-solid fa-language"></i>
+                    <span lang="zh-CN">English</span>
+                    <span lang="en">中文</span>
+                </button>
+            </nav>
+        </header>
+
+        <main>
+            <section class="project-hero" aria-labelledby="paper-title">
+                <div class="project-hero-grid">
+                    <div class="project-copy">
+                        <h1 id="paper-title" lang="en">OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</h1>
+                        <h1 lang="zh-CN">OmniKV：面向高效长上下文 LLM 的动态上下文选择</h1>
+                        <div class="paper-authors">
+                            <span lang="en"><b>Jitai Hao*</b>, Yuke Zhu*, Tian Wang, Jun Yu, Xin Xin, Bo Zheng, Zhaochun Ren, Sheng Guo</span>
+                            <span lang="zh-CN"><b>Jitai Hao*</b>, Yuke Zhu*, Tian Wang, Jun Yu, Xin Xin, Bo Zheng, Zhaochun Ren, Sheng Guo</span>
+                        </div>
+                        <p lang="en">OmniKV studies how long-context LLMs can keep the most useful context while reducing unnecessary computation. The method uses inter-layer attention similarity to dynamically select crucial context information for efficient long-context reasoning.</p>
+                        <p lang="zh-CN">OmniKV 研究长上下文 LLM 如何保留最有价值的上下文，同时减少不必要的计算。方法利用层间注意力相似性，动态选择关键上下文信息，提升长文本处理效率与性能。</p>
+                        <div class="project-meta-row" aria-label="Paper metadata">
+                            <span class="project-pill"><i class="fa-solid fa-award"></i> ICLR 2025</span>
+                            <span class="project-pill"><i class="fa-solid fa-bolt"></i> Efficiency</span>
+                            <span class="project-pill"><i class="fa-solid fa-align-left"></i> Long-context LLMs</span>
+                        </div>
+                        <div class="project-actions">
+                            <a class="project-button primary" href="https://openreview.net/pdf?id=ulCAPXYXfa" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf"></i> PDF</a>
+                            <a class="project-button" href="https://github.com/antgroup/OmniKV" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> Code</a>
+                            <a class="project-button" href="https://zhuanlan.zhihu.com/p/32154143967" target="_blank" rel="noreferrer"><i class="fa-brands fa-zhihu"></i> Zhihu</a>
+                        </div>
+                    </div>
+
+                    <aside class="project-visual" aria-label="OmniKV method overview">
+                        <h2 class="visual-title" lang="en">Method View</h2>
+                        <h2 class="visual-title" lang="zh-CN">方法示意</h2>
+                        <div class="method-flow">
+                            <div class="flow-node">
+                                <strong lang="en">Long context request</strong>
+                                <strong lang="zh-CN">长上下文请求</strong>
+                                <span lang="en">The model receives a long sequence where not every token contributes equally at every layer.</span>
+                                <span lang="zh-CN">模型接收长序列输入，但每一层中并非所有 token 都同等重要。</span>
+                            </div>
+                            <div class="flow-node">
+                                <strong lang="en">Inter-layer attention similarity</strong>
+                                <strong lang="zh-CN">层间注意力相似性</strong>
+                                <span lang="en">Attention patterns provide reusable signals for identifying important context positions.</span>
+                                <span lang="zh-CN">注意力模式提供可复用信号，用于识别更关键的上下文位置。</span>
+                            </div>
+                            <div class="flow-node">
+                                <strong lang="en">Dynamic context selection</strong>
+                                <strong lang="zh-CN">动态上下文选择</strong>
+                                <span lang="en">OmniKV keeps important context available while reducing redundant processing cost.</span>
+                                <span lang="zh-CN">OmniKV 保留关键上下文，同时减少冗余处理开销。</span>
+                            </div>
+                        </div>
+                        <div class="project-metrics" aria-label="Project focus">
+                            <div class="metric"><strong>KV</strong><span lang="en">Context-aware memory and attention efficiency</span><span lang="zh-CN">面向上下文的显存与注意力效率</span></div>
+                            <div class="metric"><strong>Layer</strong><span lang="en">Signals shared across transformer layers</span><span lang="zh-CN">跨 Transformer 层共享选择信号</span></div>
+                            <div class="metric"><strong>Long</strong><span lang="en">Designed for long-context inference</span><span lang="zh-CN">面向长上下文推理场景</span></div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section class="project-section section-reveal">
+                <h2 lang="en">Overview</h2>
+                <h2 lang="zh-CN">论文概览</h2>
+                <p lang="en">OmniKV is part of the efficient LLM research line. It focuses on a practical long-context question: how can a model avoid spending the same amount of computation on context that is not equally useful?</p>
+                <p lang="zh-CN">OmniKV 属于高效大模型研究主线，关注一个实际的长上下文问题：模型如何避免在不等价的信息上投入同样多的计算？</p>
+                <div class="section-grid">
+                    <article class="section-card">
+                        <i class="fa-solid fa-filter"></i>
+                        <h3 lang="en">Select Context</h3>
+                        <h3 lang="zh-CN">选择上下文</h3>
+                        <p lang="en">Dynamically identifies important context information instead of treating all tokens uniformly.</p>
+                        <p lang="zh-CN">动态识别关键上下文信息，而不是对所有 token 做均匀处理。</p>
+                    </article>
+                    <article class="section-card">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <h3 lang="en">Use Layer Similarity</h3>
+                        <h3 lang="zh-CN">利用层间相似性</h3>
+                        <p lang="en">Uses inter-layer attention similarity as the signal behind context selection.</p>
+                        <p lang="zh-CN">以层间注意力相似性作为上下文选择的重要依据。</p>
+                    </article>
+                    <article class="section-card">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <h3 lang="en">Reduce Cost</h3>
+                        <h3 lang="zh-CN">降低成本</h3>
+                        <p lang="en">Targets better long-context efficiency while preserving useful information for downstream tasks.</p>
+                        <p lang="zh-CN">在保留下游任务所需信息的同时，提高长上下文推理效率。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="project-section section-reveal">
+                <h2 lang="en">Method Framework</h2>
+                <h2 lang="zh-CN">方法框架图</h2>
+                <p lang="en">The original framework figure shows OmniKV's decode-stage system: a Context Selector identifies useful tokens in filter layers, while the Context Bank keeps full KV cache offloaded and only moves selected subsets back to GPU for sparse layers.</p>
+                <p lang="zh-CN">原始框架图展示了 OmniKV 的 decode 阶段系统：Context Selector 在 filter layers 中识别关键 token，Context Bank 保留完整 KV cache 并把选中的子集加载回 GPU 供稀疏层使用。</p>
+                <figure class="paper-figure">
+                    <img src="../assets/papers/omnikv-framework.png" alt="Original OmniKV framework figure showing Context Selector, Context Bank, GPU and CPU KV cache movement, and sparse attention layers.">
+                    <figcaption lang="en">Original Figure 2 from the OmniKV paper: filter layers select important tokens from the observation window, and sparse layers load the selected KV cache subset from CPU memory to GPU memory.</figcaption>
+                    <figcaption lang="zh-CN">OmniKV 论文原始 Figure 2：filter layers 根据 observation window 选择重要 token，sparse layers 再从 CPU 内存加载对应 KV cache 子集到 GPU。</figcaption>
+                </figure>
+                <div class="method-notes">
+                    <article class="method-note">
+                        <h3 lang="en">How the system runs</h3>
+                        <h3 lang="zh-CN">系统如何运行</h3>
+                        <p lang="en">During prefill, every layer performs full attention and builds KV cache. OmniKV then stores most non-filter layer cache in the CPU-side Context Bank, while keeping a small set of filter layers available for full attention and token selection.</p>
+                        <p lang="zh-CN">在 prefill 阶段，所有层先执行完整注意力并生成 KV cache。随后 OmniKV 将多数非 filter layer 的 cache 存入 CPU 侧 Context Bank，同时保留少数 filter layers 做完整注意力和 token 选择。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Why it is drop-free</h3>
+                        <h3 lang="zh-CN">为什么不是直接丢 token</h3>
+                        <p lang="en">In decode, selected token indices are refreshed dynamically. The full cache is retained in the Context Bank, so tokens are not permanently discarded; only the visible GPU cache is made sparse for the current step.</p>
+                        <p lang="zh-CN">在 decode 阶段，token 索引会动态更新。完整 cache 仍保存在 Context Bank 中，因此 token 不会被永久丢弃；只是当前步对 GPU 可见的 KV cache 变稀疏。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Efficiency mechanism</h3>
+                        <h3 lang="zh-CN">效率来源</h3>
+                        <p lang="en">Layers between neighboring filter layers share selected indices, allowing packed CPU-to-GPU loading. This reduces both attention sequence length and repeated transfer volume in long-context inference.</p>
+                        <p lang="zh-CN">相邻 filter layers 之间的层共享选择索引，因此可以批量从 CPU 加载到 GPU，减少长上下文推理中的注意力长度和重复数据传输。</p>
+                    </article>
+                    <article class="method-note">
+                        <h3 lang="en">Experimental evidence</h3>
+                        <h3 lang="zh-CN">实验结论</h3>
+                        <p lang="en">The paper reports best or near-full-attention quality on LongBench and InfiniteBench, up to 75% KV-cache memory reduction with offloading, and 1.7x speedup at 128K context.</p>
+                        <p lang="zh-CN">论文报告在 LongBench 和 InfiniteBench 上达到最佳或接近 full attention 的效果；结合 offloading 可最多减少 75% KV-cache 显存，并在 128K context 下达到 1.7x 加速。</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="project-section section-reveal">
+                <h2 lang="en">Research Keywords</h2>
+                <h2 lang="zh-CN">检索关键词</h2>
+                <p lang="en">This page uses visible research terms that match how researchers and AI literature assistants search for related work in efficient long-context language models.</p>
+                <p lang="zh-CN">这一段使用真实可见的研究术语，匹配研究者和 AI 文献助手检索高效长上下文语言模型相关工作的方式。</p>
+                <div class="keyword-cloud" aria-label="OmniKV research keywords">
+                    <span>long-context LLMs</span>
+                    <span>efficient inference</span>
+                    <span>dynamic context selection</span>
+                    <span>inter-layer attention similarity</span>
+                    <span>KV cache efficiency</span>
+                    <span>large language models</span>
+                    <span>context compression</span>
+                </div>
+                <div class="search-phrases">
+                    <p lang="en"><b>Search phrase:</b> OmniKV is related to efficient long-context LLM inference, dynamic context selection, attention similarity across transformer layers, and KV cache efficiency.</p>
+                    <p lang="zh-CN"><b>检索短语：</b>OmniKV 关联高效长上下文 LLM 推理、动态上下文选择、Transformer 层间注意力相似性与 KV Cache 效率。</p>
+                </div>
+            </section>
+
+            <section class="project-section section-reveal">
+                <h2 lang="en">What This Page Highlights</h2>
+                <h2 lang="zh-CN">页面重点</h2>
+                <ul class="paper-detail-list">
+                    <li lang="en"><b>Problem:</b> long-context models carry high computation and memory pressure when every token is processed with equal priority.</li>
+                    <li lang="zh-CN"><b>问题：</b>长上下文模型若对所有 token 等权处理，会带来较高的计算与显存压力。</li>
+                    <li lang="en"><b>Idea:</b> use inter-layer attention similarity to guide dynamic context selection.</li>
+                    <li lang="zh-CN"><b>核心想法：</b>利用层间注意力相似性，引导动态上下文选择。</li>
+                    <li lang="en"><b>Position:</b> OmniKV connects MEFT-style efficiency work with later KV-cache and sparse inference systems.</li>
+                    <li lang="zh-CN"><b>研究位置：</b>OmniKV 连接了 MEFT 式效率研究与后续 KV Cache / 稀疏推理系统。</li>
+                </ul>
+            </section>
+
+            <section class="resource-panel section-reveal">
+                <div>
+                    <h2 lang="en">Resources</h2>
+                    <h2 lang="zh-CN">相关资源</h2>
+                    <p lang="en">Paper, implementation, and Chinese write-up for OmniKV.</p>
+                    <p lang="zh-CN">OmniKV 的论文、代码与中文解读。</p>
+                </div>
+                <div class="project-actions">
+                    <a class="project-button primary" href="https://openreview.net/pdf?id=ulCAPXYXfa" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf"></i> PDF</a>
+                    <a class="project-button" href="https://github.com/antgroup/OmniKV" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> Code</a>
+                    <a class="project-button" href="../index.html#publications"><i class="fa-solid fa-arrow-left"></i> <span lang="en">Back</span><span lang="zh-CN">返回</span></a>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
