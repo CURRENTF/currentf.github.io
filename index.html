@@ -147,17 +147,41 @@
 
         .hero-copy {
             display: grid;
-            grid-template-columns: minmax(340px, 0.82fr) minmax(360px, 1fr);
-            align-items: end;
-            gap: 18px 36px;
+            grid-template-columns: minmax(260px, 390px) minmax(0, 1fr);
+            align-items: center;
+            gap: 34px;
+        }
+
+        .hero-portrait {
+            margin: 0;
+            padding: 8px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: #fbfcff;
+            box-shadow: 0 14px 36px rgba(32, 42, 68, 0.07);
+        }
+
+        .hero-portrait img {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            object-fit: cover;
+            object-position: center 58%;
+            border-radius: 6px;
+        }
+
+        .hero-intro {
+            display: grid;
+            align-content: center;
+            justify-items: start;
+            gap: 16px;
         }
 
         .hero-copy h1 {
-            grid-column: 1;
-            grid-row: 1;
             margin: 0;
             max-width: 760px;
-            font-size: clamp(3.1rem, 6.2vw, 5.2rem);
+            font-size: clamp(3.1rem, 6.2vw, 5.4rem);
             line-height: 0.94;
             letter-spacing: 0;
         }
@@ -170,70 +194,38 @@
             font-weight: 700;
         }
 
-        .hero-copy p {
-            grid-column: 1;
-            grid-row: 2;
-            max-width: 560px;
-            margin: 0;
-            color: var(--muted);
-            font-size: 1.04rem;
-        }
-
-        .focus-pairs {
-            grid-column: 2;
-            grid-row: 1;
-            display: grid;
-            gap: 12px;
-            margin: 0;
-        }
-
-        .focus-pill {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            max-width: 520px;
-            padding: 14px 15px;
+        .hero-about {
+            max-width: 760px;
+            padding: 17px 19px;
             border: 1px solid var(--line);
             border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.86);
+            color: #42506a;
+            font-size: 1rem;
+            line-height: 1.72;
+            box-shadow: 0 14px 36px rgba(32, 42, 68, 0.06);
         }
 
-        .focus-pill i {
-            width: 28px;
-            height: 28px;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            flex: 0 0 auto;
+        .hero-about p {
+            margin: 0;
         }
 
-        .focus-pill strong {
-            display: block;
-            font-size: 0.96rem;
-            line-height: 1.25;
+        .hero-about strong {
+            color: var(--ink);
+            font-weight: 800;
         }
 
-        .focus-pill span {
-            display: block;
-            color: var(--muted);
-            font-size: 0.86rem;
-            line-height: 1.55;
-            margin-top: 2px;
-        }
-
-        .focus-pill.efficiency i {
-            color: var(--green);
-            background: var(--green-soft);
-        }
-
-        .focus-pill.multimodal i {
+        .hero-about a {
             color: var(--blue);
-            background: var(--blue-soft);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .hero-about a:hover {
+            text-decoration: underline;
         }
 
         .quick-actions {
-            grid-column: 2;
-            grid-row: 2;
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
@@ -555,7 +547,6 @@
             font-size: 0.96rem;
         }
 
-        .about-panel,
         .news-panel,
         .visitor-widget-wrap {
             border: 1px solid var(--line);
@@ -564,26 +555,12 @@
             box-shadow: 0 14px 36px rgba(32, 42, 68, 0.07);
         }
 
-        .about-panel {
-            padding: 26px;
-            display: grid;
-            grid-template-columns: 1.45fr 0.8fr;
-            gap: 28px;
-        }
-
-        .about-panel p {
-            margin: 0;
-            color: #42506a;
-        }
-
-        .about-panel strong,
         .news-panel b,
         .item h3 strong {
             color: var(--ink);
             font-weight: 800;
         }
 
-        .about-panel a,
         .news-panel a,
         .venue a {
             color: var(--blue);
@@ -591,35 +568,9 @@
             font-weight: 700;
         }
 
-        .about-panel a:hover,
         .news-panel a:hover,
         .venue a:hover {
             text-decoration: underline;
-        }
-
-        .profile-facts {
-            display: grid;
-            gap: 12px;
-        }
-
-        .fact {
-            display: grid;
-            gap: 3px;
-            padding: 13px 14px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: #fbfcff;
-        }
-
-        .fact span {
-            color: var(--muted);
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .fact strong {
-            font-size: 0.94rem;
         }
 
         .news-panel {
@@ -841,12 +792,8 @@
                 grid-template-columns: 1fr;
                 align-items: start;
             }
-            .hero-copy h1,
-            .hero-copy p,
-            .focus-pairs,
-            .quick-actions {
-                grid-column: 1;
-                grid-row: auto;
+            .hero-portrait {
+                width: min(100%, 420px);
             }
             .research-map {
                 min-height: 0;
@@ -893,13 +840,17 @@
                 margin-top: 12px;
                 border-top-width: 2px;
             }
-            .about-panel { grid-template-columns: 1fr; }
             .section-heading { align-items: flex-start; flex-direction: column; }
         }
 
         @media (max-width: 720px) {
             .hero { padding-top: 34px; }
+            .hero-copy { gap: 18px; }
             .hero-copy h1 { font-size: clamp(3rem, 18vw, 4.4rem); }
+            .hero-about {
+                padding: 15px 16px;
+                font-size: 0.94rem;
+            }
             .research-map {
                 min-height: 0;
                 padding: 18px;
@@ -1008,41 +959,28 @@
             <section class="hero" aria-labelledby="hero-title">
                 <div class="hero-grid">
                     <div class="hero-copy">
-                        <h1 id="hero-title">
-                            <span lang="en">Jitai Hao</span>
-                            <span lang="zh-CN">郝继泰</span>
-                            <span class="cn-name" lang="en">郝继泰</span>
-                            <span class="cn-name" lang="zh-CN">Jitai Hao</span>
-                        </h1>
-                        <p lang="en">
-                            I work on two connected research lines: making large models more efficient, and building unified multimodal models that understand and generate across modalities.
-                        </p>
-                        <p lang="zh-CN">
-                            我的研究围绕两条主线展开：一条是让大模型更高效，另一条是构建能统一理解与生成的多模态模型。
-                        </p>
-
-                        <div class="focus-pairs" aria-label="Research focus">
-                            <div class="focus-pill efficiency">
-                                <i class="fa-solid fa-bolt"></i>
-                                <div>
-                                    <strong>Efficient AI / LLMs</strong>
-                                    <span lang="en">MEFT, OmniKV, DeltaKV, Sparse-vLLM, and LRC.</span>
-                                    <span lang="zh-CN">从 MEFT、OmniKV 到 DeltaKV / Sparse-vLLM，并分支到 LRC。</span>
-                                </div>
+                        <figure class="hero-portrait">
+                            <img src="assets/profile/jitai-hao.jpg" alt="Jitai Hao working on a laptop outdoors" width="900" height="900" loading="eager" decoding="async">
+                        </figure>
+                        <div class="hero-intro">
+                            <h1 id="hero-title">
+                                <span lang="en">Jitai Hao</span>
+                                <span lang="zh-CN">郝继泰</span>
+                                <span class="cn-name" lang="en">郝继泰</span>
+                                <span class="cn-name" lang="zh-CN">Jitai Hao</span>
+                            </h1>
+                            <div class="hero-about">
+                                <p lang="zh-CN">
+                                    我的主要研究方向为 <strong>Efficient AI/LLMs</strong> 与 <strong>统一多模态理解与生成模型</strong>。目前我在哈尔滨工业大学（深圳）攻读博士学位，导师为 <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank" rel="noreferrer">俞俊教授</a>，并与 <a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&hl=en" target="_blank" rel="noreferrer">黄强老师</a> 保持紧密合作。在此之前，我于 2022 和 2025 年分别在山东大学获得计算机科学学士和硕士学位，导师是 <a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">任昭春教授</a>。
+                                </p>
+                                <p lang="en">
+                                    My research interests include <strong>Efficient AI/LLMs</strong> and <strong>unified multimodal understanding & generation models</strong>. I am currently a Ph.D. student at Harbin Institute of Technology (Shenzhen), supervised by <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank" rel="noreferrer">Prof. Jun Yu</a>, and I also work closely with <a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&hl=en" target="_blank" rel="noreferrer">Prof. Qiang Huang</a>. Before that, I obtained my Bachelor's and Master's degrees in Computer Science from Shandong University in 2022 and 2025, respectively, under the supervision of <a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">Prof. Zhaochun Ren</a>.
+                                </p>
                             </div>
-                            <div class="focus-pill multimodal">
-                                <i class="fa-solid fa-layer-group"></i>
-                                <div>
-                                    <strong>Unified Multimodal Models</strong>
-                                    <span lang="en">Uni-X for mitigating modality conflict in unified models.</span>
-                                    <span lang="zh-CN">以 Uni-X 为代表，缓解统一多模态模型中的模态冲突。</span>
-                                </div>
+                            <div class="quick-actions">
+                                <a class="button primary" href="#research-map"><i class="fa-solid fa-diagram-project"></i> <span lang="en">Research Map</span><span lang="zh-CN">研究脉络</span></a>
+                                <a class="button" href="#publications"><i class="fa-solid fa-file-lines"></i> <span lang="en">Publications</span><span lang="zh-CN">研究成果</span></a>
                             </div>
-                        </div>
-
-                        <div class="quick-actions">
-                            <a class="button primary" href="#research-map"><i class="fa-solid fa-arrow-down"></i> <span lang="en">View Research Map</span><span lang="zh-CN">查看研究脉络</span></a>
-                            <a class="button" href="#publications"><i class="fa-solid fa-file-lines"></i> <span lang="en">Publications</span><span lang="zh-CN">研究成果</span></a>
                         </div>
                     </div>
 
@@ -1138,37 +1076,6 @@
 
                         </div>
                     </section>
-                </div>
-            </section>
-
-            <section id="about" class="section">
-                <div class="section-heading">
-                    <h2 lang="en">About Me</h2>
-                    <h2 lang="zh-CN">关于我</h2>
-                    <p lang="en">I am currently a Ph.D. student at Harbin Institute of Technology (Shenzhen).</p>
-                    <p lang="zh-CN">我目前在哈尔滨工业大学（深圳）攻读博士学位。</p>
-                </div>
-                <div class="about-panel">
-                    <p lang="zh-CN">
-                        我的主要研究方向为 <strong>Efficient AI/LLMs</strong> 与 <strong>统一多模态理解与生成模型</strong>。目前我在哈尔滨工业大学（深圳）攻读博士学位，导师为 <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank" rel="noreferrer">俞俊教授</a>，并与 <a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&hl=en" target="_blank" rel="noreferrer">黄强老师</a> 保持紧密合作。在此之前，我于 2022 和 2025 年分别在山东大学获得计算机科学学士和硕士学位，导师是 <a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">任昭春教授</a>。
-                    </p>
-                    <p lang="en">
-                        My research interests include <strong>Efficient AI/LLMs</strong> and <strong>unified multimodal understanding & generation models</strong>. I am currently a Ph.D. student at Harbin Institute of Technology (Shenzhen), supervised by <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank" rel="noreferrer">Prof. Jun Yu</a>, and I also work closely with <a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&hl=en" target="_blank" rel="noreferrer">Prof. Qiang Huang</a>. Before that, I obtained my Bachelor's and Master's degrees in Computer Science from Shandong University in 2022 and 2025, respectively, under the supervision of <a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">Prof. Zhaochun Ren</a>.
-                    </p>
-                    <div class="profile-facts">
-                        <div class="fact">
-                            <span lang="en">Current</span>
-                            <span lang="zh-CN">当前</span>
-                            <strong lang="en">Ph.D. student, HIT Shenzhen</strong>
-                            <strong lang="zh-CN">哈尔滨工业大学（深圳）博士生</strong>
-                        </div>
-                        <div class="fact">
-                            <span lang="en">Research</span>
-                            <span lang="zh-CN">研究方向</span>
-                            <strong lang="en">Efficient LLMs and multimodal models</strong>
-                            <strong lang="zh-CN">高效大模型与统一多模态模型</strong>
-                        </div>
-                    </div>
                 </div>
             </section>
 
