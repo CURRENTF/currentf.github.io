@@ -1,0 +1,22 @@
+# Jitai Hao
+
+Academic homepage for Jitai Hao, covering efficient AI, long-context LLM inference, KV-cache compression, efficient knowledge distillation, small language models, and unified multimodal models.
+
+## Core Pages
+
+- [Homepage](https://currentf.github.io/): profile, publications, projects, and research directions.
+- [Blog](https://currentf.github.io/blog/): research notes and paper overviews.
+
+## Papers
+
+- [DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity](https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html): residual-based KV cache compression for long-context LLM inference using long-range similarity in KV representations. Canonical paper: https://arxiv.org/abs/2602.08005. Code: https://github.com/CURRENTF/Sparse-vLLM.
+- [Uni-X: Mitigating Modality Conflict with a Two-End-Separated Architecture for Unified Multimodal Models](https://currentf.github.io/papers/uni-x-modality-conflict.html): a two-end-separated, middle-shared architecture for reducing modality conflict in unified multimodal understanding and generation. Canonical paper: https://openreview.net/forum?id=IJLIYpCkwz. Code: https://github.com/CURRENTF/Uni-X.
+- [A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone](https://currentf.github.io/papers/low-rank-clone-efficient-knowledge-distillation.html): Low-Rank Clone, an efficient knowledge distillation method for token-efficient small language model pretraining. Canonical paper: https://arxiv.org/abs/2505.12781. Code: https://github.com/CURRENTF/LowRankClone.
+- [OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs](https://currentf.github.io/papers/omnikv-dynamic-context-selection.html): dynamic context selection for efficient long-context LLM inference using inter-layer attention similarity and KV-cache offloading. Canonical paper: https://openreview.net/forum?id=ulCAPXYXfa. Code: https://github.com/antgroup/OmniKV.
+
+## Suggested Retrieval Keywords
+
+- long-context LLM inference, KV cache compression, residual KV cache, long-range similarity, Sparse-vLLM, DeltaKV
+- dynamic context selection, inter-layer attention similarity, KV-cache offloading, token-dropping-free inference, OmniKV
+- efficient knowledge distillation, token-efficient pretraining, small language models, low-rank projection, activation clone, Low-Rank Clone, LRC
+- unified multimodal models, modality conflict, two-end-separated architecture, multimodal understanding and generation, Uni-X
