@@ -1,22 +1,31 @@
 # Jitai Hao
 
-Academic homepage for Jitai Hao, covering efficient AI, long-context LLM inference, KV-cache compression, efficient knowledge distillation, small language models, and unified multimodal models.
+Academic homepage for Jitai Hao, covering efficient AI, long-context LLM inference, KV-cache compression, efficient knowledge distillation, small language models, sparse inference engines, streaming video understanding, agentic serving, and unified multimodal models. Ph.D. student at Harbin Institute of Technology (Shenzhen), advised by Jun Yu and Qiang Huang. Previously studied at Shandong University (2018-2025).
 
 ## Core Pages
 
 - [Homepage](https://currentf.github.io/): profile, publications, projects, and research directions.
 - [Blog](https://currentf.github.io/blog/): research notes and paper overviews.
 
-## Papers
+## Published Papers
 
-- [DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity](https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html): residual-based KV cache compression for long-context LLM inference using long-range similarity in KV representations. Canonical paper: https://arxiv.org/abs/2602.08005. Code: https://github.com/CURRENTF/Sparse-vLLM.
 - [Uni-X: Mitigating Modality Conflict with a Two-End-Separated Architecture for Unified Multimodal Models](https://currentf.github.io/papers/uni-x-modality-conflict.html): a two-end-separated, middle-shared architecture for reducing modality conflict in unified multimodal understanding and generation. Canonical paper: https://openreview.net/forum?id=IJLIYpCkwz. Code: https://github.com/CURRENTF/Uni-X.
 - [A Token is Worth over 1,000 Tokens: Efficient Knowledge Distillation through Low-Rank Clone](https://currentf.github.io/papers/low-rank-clone-efficient-knowledge-distillation.html): Low-Rank Clone, an efficient knowledge distillation method for token-efficient small language model pretraining. Canonical paper: https://arxiv.org/abs/2505.12781. Code: https://github.com/CURRENTF/LowRankClone.
 - [OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs](https://currentf.github.io/papers/omnikv-dynamic-context-selection.html): dynamic context selection for efficient long-context LLM inference using inter-layer attention similarity and KV-cache offloading. Canonical paper: https://openreview.net/forum?id=ulCAPXYXfa. Code: https://github.com/antgroup/OmniKV.
+- [MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter](https://arxiv.org/abs/2406.04984): ACL 2024. Sparse adapters and offloading for memory-efficient fine-tuning. Code: https://github.com/CURRENTF/MEFT.
+- [Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning](https://arxiv.org/abs/2312.05762): Findings of EMNLP 2023. Hierarchical reasoning for multi-defendant legal judgment prediction. Code: https://github.com/CURRENTF/HRN.
+
+## Recent Preprints and Submissions
+
+- [ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference](https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html): residual-based KV cache compression for long-context LLM inference using long-range similarity in KV representations. Canonical paper: https://arxiv.org/abs/2602.08005. Code: https://github.com/CURRENTF/ResidualKV. Formerly DeltaKV; arXiv v2, September 30, 2026. Submitted to IEEE TPAMI; under review.
+- [Can Agent Harnesses and Inference Engines Hear Each Other? The HEAR Protocol for Agentic LLM Serving](https://arxiv.org/abs/2610.06597): A bidirectional protocol lets agent harnesses share workflow intent and inference engines expose runtime state, enabling cache-aware scheduling and execution without changing workflow or model semantics. ICLR 2027 submission, under review.
+- [Beyond Refusal Patterns: Safe-Role Internalization for Robust and Generalizable LLM Safety Alignment](https://arxiv.org/abs/2610.07023): Supervised Safe-Role Fine-Tuning (SSRFT) teaches models to internalize a safe role, improving robustness to jailbreaks and generalization to unseen attacks while reducing over-refusal. Under review.
+- [SparseEngine: Sparse-First Inference Engine](https://arxiv.org/abs/2609.39068): A sparse-first engine coordinates KV representations, cache lifecycles, and execution across 15 methods. It reports over 10× throughput with KV eviction and over 2× end-to-end speedup on agent benchmarks while maintaining method quality. ICLR 2027 submission, under review. Code: https://github.com/CURRENTF/SparseEngine.
+- [ShallowStream: Index Shallow then Answer Deep for Streaming Video Understanding](https://arxiv.org/abs/2609.02780): Builds a lightweight video index with shallow MLLM layers, then retrieves relevant evidence for full-depth answering. This separates continuous stream processing from expensive query-time computation. ICLR 2027 submission, under review. Code: https://github.com/CURRENTF/ShallowStream.
 
 ## Suggested Retrieval Keywords
 
-- long-context LLM inference, KV cache compression, residual KV cache, long-range similarity, Sparse-vLLM, DeltaKV
+- long-context LLM inference, KV cache compression, residual KV cache, long-range similarity, SparseEngine, ResidualKV, DeltaKV
 - dynamic context selection, inter-layer attention similarity, KV-cache offloading, token-dropping-free inference, OmniKV
 - efficient knowledge distillation, token-efficient pretraining, small language models, low-rank projection, activation clone, Low-Rank Clone, LRC
 - unified multimodal models, modality conflict, two-end-separated architecture, multimodal understanding and generation, Uni-X

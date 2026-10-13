@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity</title>
-    <meta name="description" content="DeltaKV is an arXiv 2026 paper on residual-based KV cache compression for efficient long-context LLM inference, using long-range similarity in KV representations.">
+    <title>ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference</title>
+    <meta name="description" content="ResidualKV is an arXiv 2026 paper on residual-based KV cache compression for efficient long-context LLM inference, using long-range similarity in KV representations.">
     <link rel="canonical" href="https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html">
-    <meta name="citation_title" content="DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity">
+    <meta name="citation_title" content="ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference">
     <meta name="citation_author" content="Jitai Hao">
     <meta name="citation_author" content="Qiang Huang">
     <meta name="citation_author" content="Yaowei Wang">
@@ -15,12 +15,12 @@
     <meta name="citation_publication_date" content="2026">
     <meta name="citation_arxiv_id" content="2602.08005">
     <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2602.08005.pdf">
-    <meta name="citation_abstract" content="DeltaKV compresses KV cache for long-context LLM inference by encoding semantic residuals relative to historical references, reducing KV memory without discarding tokens.">
-    <meta name="citation_keywords" content="DeltaKV; KV cache compression; long-context LLMs; residual-based compression; long-range similarity; efficient inference; Sparse-vLLM">
+    <meta name="citation_abstract" content="ResidualKV compresses KV cache for long-context LLM inference by encoding quantized residuals relative to globally retrieved references, reducing KV memory without discarding tokens.">
+    <meta name="citation_keywords" content="ResidualKV; KV cache compression; long-context LLMs; residual-based compression; long-range similarity; efficient inference; SparseEngine">
     <meta name="citation_language" content="en">
     <meta name="citation_online_date" content="2026">
-    <meta property="og:title" content="DeltaKV: Residual-Based KV Cache Compression">
-    <meta property="og:description" content="Paper overview for DeltaKV, a residual-based KV cache compression method for efficient long-context LLM inference.">
+    <meta property="og:title" content="ResidualKV: Residual-Based KV Cache Compression">
+    <meta property="og:description" content="Paper overview for ResidualKV, a residual-based KV cache compression method for efficient long-context LLM inference.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html">
     <script type="application/ld+json">
@@ -28,9 +28,10 @@
         "@context": "https://schema.org",
         "@type": "ScholarlyArticle",
         "@id": "https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html#paper",
-        "name": "DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity",
-        "headline": "DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity",
-        "description": "DeltaKV uses long-range similarity in KV representations to encode semantic residuals relative to historical references, reducing KV memory for long-context LLM inference without discarding tokens.",
+        "name": "ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference",
+        "alternateName": "DeltaKV",
+        "headline": "ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference",
+        "description": "ResidualKV uses long-range similarity in KV representations to encode quantized residuals relative to globally retrieved references, reducing KV memory for long-context LLM inference without discarding tokens.",
         "author": [
             { "@type": "Person", "name": "Jitai Hao" },
             { "@type": "Person", "name": "Qiang Huang" },
@@ -39,33 +40,31 @@
             { "@type": "Person", "name": "Jun Yu" }
         ],
         "datePublished": "2026",
-        "dateModified": "2026-06-04",
+        "dateModified": "2026-10-13",
         "mainEntityOfPage": "https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html",
-        "keywords": "DeltaKV, KV cache compression, long-context LLMs, residual-based compression, long-range similarity, efficient inference, Sparse-vLLM",
+        "keywords": "ResidualKV, KV cache compression, long-context LLMs, residual-based compression, long-range similarity, efficient inference, SparseEngine",
         "about": [
             "KV cache compression",
             "long-context LLM inference",
             "residual-based compression",
             "long-range similarity",
             "efficient inference",
-            "Sparse-vLLM"
+            "SparseEngine"
         ],
         "identifier": "arXiv:2602.08005",
         "url": "https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html",
         "sameAs": [
             "https://arxiv.org/abs/2602.08005",
             "https://arxiv.org/pdf/2602.08005.pdf",
-            "https://github.com/CURRENTF/Sparse-vLLM"
+            "https://github.com/CURRENTF/ResidualKV"
         ]
     }
     </script>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/paper-pages.css">
-    <script defer src="../assets/paper-pages.js"></script>
+    <link rel="stylesheet" href="../assets/site.css?v=20261013-type">
+    <link rel="stylesheet" href="../assets/paper-pages.css?v=20261013-type">
+    <script defer src="../assets/paper-pages.js?v=20261013-modern"></script>
 </head>
 <body class="project-page theme-efficiency">
     <div class="site-shell">
@@ -80,13 +79,13 @@
                 </span>
             </a>
             <nav class="header-links" aria-label="Primary navigation">
-                <a class="nav-link" href="../index.html"><i class="fa-solid fa-house"></i> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
-                <a class="nav-link" href="../index.html#publications"><i class="fa-solid fa-book-open"></i> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
-                <a class="nav-link" href="../blog/index.html"><i class="fa-solid fa-pen-nib"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
-                <a class="nav-link" href="../index.html#projects"><i class="fa-solid fa-diagram-project"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
-                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope"></i> Email</a>
+                <a class="nav-link" href="../index.html"><i class="fa-solid fa-house" aria-hidden="true"></i> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+                <a class="nav-link" href="../index.html#publications"><i class="fa-solid fa-book-open" aria-hidden="true"></i> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+                <a class="nav-link" href="../blog/index.html"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+                <a class="nav-link" href="../index.html#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</a>
                 <button class="lang-switcher" type="button" onclick="toggleLanguage()">
-                    <i class="fa-solid fa-language"></i>
+                    <i class="fa-solid fa-language" aria-hidden="true"></i>
                     <span lang="zh-CN">English</span>
                     <span lang="en">中文</span>
                 </button>
@@ -97,28 +96,32 @@
             <section class="project-hero" aria-labelledby="paper-title">
                 <div class="project-hero-grid">
                     <div class="project-copy">
-                        <h1 id="paper-title" lang="en">DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity</h1>
-                        <h1 lang="zh-CN">DeltaKV：基于长程相似性的残差式 KV Cache 压缩</h1>
+                        <h1 id="paper-title" lang="en">ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference</h1>
+                        <h1 lang="zh-CN">ResidualKV：面向高效长上下文推理的残差式 KV Cache 压缩</h1>
+                        <p lang="en">Previously titled DeltaKV. This overview follows arXiv v2 (September 30, 2026). Submitted to IEEE TPAMI; under review.</p>
+                        <p lang="zh-CN">原名 DeltaKV。本页按 2026 年 9 月 30 日的 arXiv v2 更新。IEEE TPAMI 在投，尚未接收。</p>
                         <div class="paper-authors">
                             <span lang="en"><b>Jitai Hao</b>, Qiang Huang, Yaowei Wang, Min Zhang, Jun Yu</span>
                             <span lang="zh-CN"><b>Jitai Hao</b>, Qiang Huang, Yaowei Wang, Min Zhang, Jun Yu</span>
                         </div>
-                        <p lang="en">DeltaKV studies long-range similarity in KV representations and compresses long-context LLM memory by storing semantic residuals relative to historical references instead of discarding tokens.</p>
-                        <p lang="zh-CN">DeltaKV 研究 KV 表征中的长程相似性，通过将语义表示编码为相对历史参考的残差来压缩长上下文 LLM 显存，而不是直接丢弃 token。</p>
+                        <p class="contribution-note" lang="en">First author. <strong class="emphasis">KV storage reduced to as little as about 1/8</strong> with <strong>near-lossless quality</strong>, using a reference-plus-residual representation. See the benchmark-specific figures below.</p>
+                        <p class="contribution-note" lang="zh-CN">第一作者。通过<strong>参考 KV + 残差</strong>表示，在<strong>接近无损质量</strong>下将<strong class="emphasis">KV 缓存最低约为原来的 1/8</strong>；各实验设置的具体结果见下方。</p>
+                        <p lang="en">ResidualKV studies long-range similarity in KV representations and compresses long-context LLM memory by storing quantized residuals relative to globally retrieved references instead of discarding tokens.</p>
+                        <p lang="zh-CN">ResidualKV 研究 KV 表征中的长程相似性，通过将 KV 状态编码为相对全局检索参考的量化残差来压缩长上下文 LLM 显存，而不是直接丢弃 token。</p>
                         <div class="project-meta-row" aria-label="Paper metadata">
-                            <span class="project-pill"><i class="fa-solid fa-file-lines"></i> arXiv 2026</span>
-                            <span class="project-pill"><i class="fa-solid fa-database"></i> KV Cache Compression</span>
-                            <span class="project-pill"><i class="fa-solid fa-code-branch"></i> Sparse-vLLM</span>
+                            <span class="project-pill"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> arXiv 2026</span>
+                            <span class="project-pill"><i class="fa-solid fa-database" aria-hidden="true"></i> KV Cache Compression</span>
+                            <span class="project-pill"><i class="fa-solid fa-code-branch" aria-hidden="true"></i> arXiv v2</span>
                         </div>
                         <div class="project-actions">
-                            <a class="project-button primary" href="https://arxiv.org/pdf/2602.08005.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf"></i> PDF</a>
-                            <a class="project-button" href="https://arxiv.org/abs/2602.08005" target="_blank" rel="noreferrer"><i class="fa-solid fa-link"></i> arXiv</a>
-                            <a class="project-button" href="https://github.com/CURRENTF/Sparse-vLLM" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> Code</a>
-                            <a class="project-button" href="https://zhuanlan.zhihu.com/p/2004213586399106489" target="_blank" rel="noreferrer"><i class="fa-brands fa-zhihu"></i> Zhihu</a>
+                            <a class="project-button primary" href="https://arxiv.org/pdf/2602.08005.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                            <a class="project-button" href="https://arxiv.org/abs/2602.08005" target="_blank" rel="noreferrer"><i class="fa-solid fa-link" aria-hidden="true"></i> arXiv</a>
+                            <a class="project-button" href="https://github.com/CURRENTF/ResidualKV" target="_blank" rel="noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> Code</a>
+                            <a class="project-button" href="https://zhuanlan.zhihu.com/p/2004213586399106489" target="_blank" rel="noreferrer"><i class="fa-brands fa-zhihu" aria-hidden="true"></i> <span lang="en">DeltaKV v1 write-up</span><span lang="zh-CN">DeltaKV 初版解读</span></a>
                         </div>
                     </div>
 
-                    <aside class="project-visual" aria-label="DeltaKV method overview">
+                    <aside class="project-visual" aria-label="ResidualKV method overview">
                         <h2 class="visual-title" lang="en">Method View</h2>
                         <h2 class="visual-title" lang="zh-CN">方法示意</h2>
                         <div class="method-flow">
@@ -131,8 +134,8 @@
                             <div class="flow-node">
                                 <strong lang="en">Residual encoding</strong>
                                 <strong lang="zh-CN">残差编码</strong>
-                                <span lang="en">DeltaKV stores compact residuals relative to historical references.</span>
-                                <span lang="zh-CN">DeltaKV 存储相对历史参考的紧凑残差。</span>
+                                <span lang="en">ResidualKV stores quantized residuals relative to globally retrieved references, reconstructing selected states on demand.</span>
+                                <span lang="zh-CN">ResidualKV 存储相对全局检索参考的量化残差，并按需重建选中的状态。</span>
                             </div>
                             <div class="flow-node">
                                 <strong lang="en">Near-lossless decoding</strong>
@@ -142,8 +145,8 @@
                             </div>
                         </div>
                         <div class="project-metrics" aria-label="Paper metrics">
-                            <div class="metric"><strong>29%</strong><span lang="en">Reported KV memory target under DeltaKV compression</span><span lang="zh-CN">DeltaKV 报告的 KV 显存压缩比例</span></div>
-                            <div class="metric"><strong>2x</strong><span lang="en">Reported throughput gain in the paper overview</span><span lang="zh-CN">论文概览中报告的吞吐提升</span></div>
+                            <div class="metric"><strong>13%-16%</strong><span lang="en">KV storage on LongBench, relative to full cache</span><span lang="zh-CN">LongBench 上相对完整缓存的 KV 存储占比</span></div>
+                            <div class="metric"><strong>30%</strong><span lang="en">Attention computation on LongBench, relative to full attention</span><span lang="zh-CN">LongBench 上相对完整注意力的计算占比</span></div>
                             <div class="metric"><strong>Drop-free</strong><span lang="en">Compression without directly discarding tokens</span><span lang="zh-CN">不直接丢弃 token 的压缩路线</span></div>
                         </div>
                     </aside>
@@ -153,25 +156,25 @@
             <section class="project-section section-reveal">
                 <h2 lang="en">Overview</h2>
                 <h2 lang="zh-CN">论文概览</h2>
-                <p lang="en">DeltaKV belongs to the efficient long-context LLM inference line. It addresses the memory pressure of KV cache by exploiting redundancy across distant context positions rather than pruning away context outright.</p>
-                <p lang="zh-CN">DeltaKV 属于高效长上下文 LLM 推理方向，针对 KV cache 显存压力问题，利用远距离上下文位置之间的冗余，而不是直接剪掉上下文。</p>
+                <p lang="en">ResidualKV belongs to the efficient long-context LLM inference line. It addresses the memory pressure of KV cache by exploiting redundancy across distant context positions rather than pruning away context outright.</p>
+                <p lang="zh-CN">ResidualKV 属于高效长上下文 LLM 推理方向，针对 KV cache 显存压力问题，利用远距离上下文位置之间的冗余，而不是直接剪掉上下文。</p>
                 <div class="section-grid">
                     <article class="section-card">
-                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i>
                         <h3 lang="en">Find Similarity</h3>
                         <h3 lang="zh-CN">发现相似性</h3>
                         <p lang="en">Identifies long-range similarity in KV representations across extended contexts.</p>
                         <p lang="zh-CN">识别长上下文 KV 表征中的长程相似性。</p>
                     </article>
                     <article class="section-card">
-                        <i class="fa-solid fa-compress"></i>
+                        <i class="fa-solid fa-compress" aria-hidden="true"></i>
                         <h3 lang="en">Store Residuals</h3>
                         <h3 lang="zh-CN">存储残差</h3>
-                        <p lang="en">Encodes semantic residuals relative to historical references to reduce memory.</p>
-                        <p lang="zh-CN">将语义表示编码为相对历史参考的残差，以降低显存。</p>
+                        <p lang="en">Encodes quantized residuals relative to globally retrieved references to reduce memory.</p>
+                        <p lang="zh-CN">将 KV 状态编码为相对全局检索参考的量化残差，以降低显存。</p>
                     </article>
                     <article class="section-card">
-                        <i class="fa-solid fa-gauge-high"></i>
+                        <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
                         <h3 lang="en">Improve Serving</h3>
                         <h3 lang="zh-CN">提升服务效率</h3>
                         <p lang="en">Targets near-lossless long-context inference with better throughput.</p>
@@ -183,16 +186,16 @@
             <section class="project-section section-reveal">
                 <h2 lang="en">Related Research Areas</h2>
                 <h2 lang="zh-CN">相关研究方向</h2>
-                <p lang="en">DeltaKV connects residual-based representation compression, KV-cache memory reduction, and sparse-first LLM serving systems such as Sparse-vLLM.</p>
-                <p lang="zh-CN">DeltaKV 连接残差式表示压缩、KV-cache 显存优化，以及 Sparse-vLLM 这类稀疏优先的大模型服务系统。</p>
-                <div class="keyword-cloud" aria-label="DeltaKV research keywords">
-                    <span>DeltaKV</span>
+                <p lang="en">ResidualKV connects residual-based representation compression, KV-cache memory reduction, and sparse-first LLM serving systems such as SparseEngine.</p>
+                <p lang="zh-CN">ResidualKV 连接残差式表示压缩、KV-cache 显存优化，以及 SparseEngine 这类稀疏优先的大模型服务系统。</p>
+                <div class="keyword-cloud" aria-label="ResidualKV research keywords">
+                    <span>ResidualKV</span>
                     <span>KV cache compression</span>
                     <span>long-context LLMs</span>
                     <span>residual-based compression</span>
                     <span>long-range similarity</span>
                     <span>efficient inference</span>
-                    <span>Sparse-vLLM</span>
+                    <span>SparseEngine</span>
                 </div>
             </section>
 
@@ -202,10 +205,10 @@
                 <ul class="paper-detail-list">
                     <li lang="en"><b>Problem:</b> long-context LLM inference makes KV cache a dominant memory bottleneck.</li>
                     <li lang="zh-CN"><b>问题：</b>长上下文 LLM 推理中，KV cache 会成为主要显存瓶颈。</li>
-                    <li lang="en"><b>Idea:</b> use long-range similarity to encode current KV states as residuals relative to historical references.</li>
-                    <li lang="zh-CN"><b>核心想法：</b>利用长程相似性，把当前 KV 状态编码为相对历史参考的残差。</li>
-                    <li lang="en"><b>Evidence:</b> the paper overview reports KV memory reduced to 29%, near-lossless performance on SCBench and AIME, and 2x throughput gain.</li>
-                    <li lang="zh-CN"><b>实验结果：</b>论文概览报告 KV 显存降至 29%，在 SCBench、AIME 等任务上接近无损，并实现 2x 吞吐提升。</li>
+                    <li lang="en"><b>Idea:</b> use long-range similarity to encode current KV states as quantized residuals relative to globally retrieved references.</li>
+                    <li lang="zh-CN"><b>核心想法：</b>利用长程相似性，把当前 KV 状态编码为相对全局检索参考的量化残差。</li>
+                    <li lang="en"><b>Evidence:</b> arXiv v2 reports near-full-cache quality with 13%-16% KV storage and 30% attention computation on LongBench. Matched-budget multimodal experiments use 8%-10% storage and 10% computation; decoding speedups reach 1.5× with KV-cache quantization and 3.4× without it.</li>
+                    <li lang="zh-CN"><b>实验结果：</b>arXiv v2 在 LongBench 上使用 13%-16% KV 存储与 30% 注意力计算，保持接近完整缓存的质量。在匹配预算的多模态实验中使用 8%-10% 存储与 10% 计算；启用和不启用 KV-cache 量化时，解码最高分别加速 1.5× 与 3.4×。</li>
                 </ul>
             </section>
 
@@ -213,13 +216,13 @@
                 <div>
                     <h2 lang="en">Resources</h2>
                     <h2 lang="zh-CN">相关资源</h2>
-                    <p lang="en">Paper, implementation, and Chinese write-up for DeltaKV.</p>
-                    <p lang="zh-CN">DeltaKV 的论文、代码与中文解读。</p>
+                    <p lang="en">Revised paper and implementation for ResidualKV; the Chinese write-up covers the earlier DeltaKV version.</p>
+                    <p lang="zh-CN">ResidualKV 修订版论文与代码；中文解读对应早期 DeltaKV 版本。</p>
                 </div>
                 <div class="project-actions">
-                    <a class="project-button primary" href="https://arxiv.org/pdf/2602.08005.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf"></i> PDF</a>
-                    <a class="project-button" href="https://arxiv.org/abs/2602.08005" target="_blank" rel="noreferrer"><i class="fa-solid fa-link"></i> arXiv</a>
-                    <a class="project-button" href="../index.html#publications"><i class="fa-solid fa-arrow-left"></i> <span lang="en">Back</span><span lang="zh-CN">返回</span></a>
+                    <a class="project-button primary" href="https://arxiv.org/pdf/2602.08005.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                    <a class="project-button" href="https://arxiv.org/abs/2602.08005" target="_blank" rel="noreferrer"><i class="fa-solid fa-link" aria-hidden="true"></i> arXiv</a>
+                    <a class="project-button" href="../index.html#residualkv"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span lang="en">Back</span><span lang="zh-CN">返回</span></a>
                 </div>
             </section>
         </main>

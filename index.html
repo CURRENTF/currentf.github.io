@@ -6,10 +6,10 @@
     <title>Jitai Hao (郝继泰) - Personal Homepage</title>
     <meta name="google-site-verification" content="cXTn73NXGsmVAKXX_xllIL1a3BCPg5F-DAm5l50sVvE">
     <meta name="msvalidate.01" content="6A82AF78624B76A12D47AF8303410DD2">
-    <meta name="description" content="Jitai Hao's academic homepage, covering efficient AI, long-context LLM inference, KV-cache compression, knowledge distillation, and unified multimodal models.">
+    <meta name="description" content="Jitai Hao's academic homepage, covering efficient LLM training and inference, sparse inference engines, KV-cache compression, streaming video understanding, and unified multimodal models.">
     <link rel="canonical" href="https://currentf.github.io/">
     <meta property="og:title" content="Jitai Hao - Efficient AI and Multimodal Models">
-    <meta property="og:description" content="Research by Jitai Hao on efficient LLM inference, KV-cache compression, knowledge distillation, and unified multimodal models.">
+    <meta property="og:description" content="Research by Jitai Hao on efficient LLM training and serving, sparse inference engines, streaming video understanding, and unified multimodal models.">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="https://currentf.github.io/">
     <meta property="og:image" content="https://currentf.github.io/assets/profile/jitai-hao.jpg">
@@ -29,13 +29,26 @@
             "knowledge distillation",
             "small language models",
             "unified multimodal models",
-            "modality conflict"
+            "modality conflict",
+            "sparse inference engines",
+            "streaming video understanding",
+            "agentic LLM serving",
+            "LLM safety alignment"
         ],
+        "affiliation": {
+            "@type": "CollegeOrUniversity",
+            "name": "Harbin Institute of Technology (Shenzhen)"
+        },
+        "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Shandong University"
+        },
+        "jobTitle": "Ph.D. Student",
         "mainEntityOfPage": "https://currentf.github.io/",
         "subjectOf": [
             {
                 "@type": "ScholarlyArticle",
-                "name": "DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity",
+                "name": "ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference",
                 "url": "https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html",
                 "sameAs": "https://arxiv.org/abs/2602.08005"
             },
@@ -56,934 +69,51 @@
                 "name": "OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs",
                 "url": "https://currentf.github.io/papers/omnikv-dynamic-context-selection.html",
                 "sameAs": "https://openreview.net/forum?id=ulCAPXYXfa"
+            },
+            {
+                "@type": "ScholarlyArticle",
+                "name": "Can Agent Harnesses and Inference Engines Hear Each Other? The HEAR Protocol for Agentic LLM Serving",
+                "url": "https://currentf.github.io/#hear",
+                "sameAs": "https://arxiv.org/abs/2610.06597"
+            },
+            {
+                "@type": "ScholarlyArticle",
+                "name": "Beyond Refusal Patterns: Safe-Role Internalization for Robust and Generalizable LLM Safety Alignment",
+                "url": "https://currentf.github.io/#safe-role",
+                "sameAs": "https://arxiv.org/abs/2610.07023"
+            },
+            {
+                "@type": "ScholarlyArticle",
+                "name": "SparseEngine: Sparse-First Inference Engine",
+                "url": "https://currentf.github.io/#sparseengine",
+                "sameAs": "https://arxiv.org/abs/2609.39068"
+            },
+            {
+                "@type": "ScholarlyArticle",
+                "name": "ShallowStream: Index Shallow then Answer Deep for Streaming Video Understanding",
+                "url": "https://currentf.github.io/#shallowstream",
+                "sameAs": "https://arxiv.org/abs/2609.02780"
+            },
+            {
+                "@type": "ScholarlyArticle",
+                "name": "MEFT: Memory-Efficient Fine-Tuning through Sparse Adapter",
+                "sameAs": "https://arxiv.org/abs/2406.04984"
+            },
+            {
+                "@type": "ScholarlyArticle",
+                "name": "Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning",
+                "sameAs": "https://arxiv.org/abs/2312.05762"
             }
         ]
     }
     </script>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            --page: #f7f8fb;
-            --paper: #ffffff;
-            --ink: #172033;
-            --muted: #657083;
-            --soft: #eef2f7;
-            --line: #d8e0eb;
-            --blue: #2563eb;
-            --blue-soft: #eaf1ff;
-            --green: #059669;
-            --green-soft: #e8f7f1;
-            --rose: #e11d48;
-            --rose-soft: #fff0f3;
-            --gold: #c47a16;
-            --gold-soft: #fff6e6;
-            --violet: #7c3aed;
-            --violet-soft: #f2edff;
-            --shadow: 0 22px 60px rgba(32, 42, 68, 0.10);
-            --radius: 8px;
-            --font: "Inter", "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        html[lang="en"] [lang="zh-CN"] { display: none; }
-        html[lang="zh-CN"] [lang="en"] { display: none; }
-
-        * { box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            margin: 0;
-            color: var(--ink);
-            font-family: var(--font);
-            background:
-                linear-gradient(90deg, rgba(37, 99, 235, 0.04) 1px, transparent 1px),
-                linear-gradient(rgba(5, 150, 105, 0.035) 1px, transparent 1px),
-                linear-gradient(180deg, #fbfcff 0%, var(--page) 44%, #ffffff 100%);
-            background-size: 44px 44px, 44px 44px, auto;
-            line-height: 1.7;
-        }
-
-        a { color: inherit; }
-
-        .site-shell {
-            width: min(1180px, calc(100% - 40px));
-            margin: 0 auto;
-        }
-
-        .site-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-            padding: 28px 0 18px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .brand-mark {
-            width: 38px;
-            height: 38px;
-            display: grid;
-            place-items: center;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: var(--paper);
-            color: var(--blue);
-            font-weight: 800;
-            box-shadow: 0 8px 24px rgba(32, 42, 68, 0.08);
-        }
-
-        .brand-text {
-            display: grid;
-            gap: 1px;
-        }
-
-        .brand-text strong {
-            font-size: 1rem;
-            line-height: 1.1;
-        }
-
-        .brand-text span {
-            color: var(--muted);
-            font-size: 0.82rem;
-        }
-
-        .header-links {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .nav-link,
-        .lang-switcher {
-            min-height: 38px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0 12px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.78);
-            color: var(--ink);
-            font: 600 0.84rem/1 var(--font);
-            text-decoration: none;
-            cursor: pointer;
-            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
-        }
-
-        .nav-link:hover,
-        .lang-switcher:hover {
-            transform: translateY(-1px);
-            border-color: #b9c6d8;
-            background: #ffffff;
-            box-shadow: 0 10px 26px rgba(32, 42, 68, 0.08);
-        }
-
-        .hero {
-            position: relative;
-            padding: 24px 0 34px;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
-        }
-
-        .hero-copy {
-            display: grid;
-            grid-template-columns: minmax(260px, 390px) minmax(0, 1fr);
-            align-items: center;
-            gap: 34px;
-        }
-
-        .hero-portrait {
-            margin: 0;
-            padding: 8px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: #fbfcff;
-            box-shadow: 0 14px 36px rgba(32, 42, 68, 0.07);
-        }
-
-        .hero-portrait img {
-            display: block;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1;
-            object-fit: cover;
-            object-position: center 58%;
-            border-radius: 6px;
-        }
-
-        .hero-intro {
-            display: grid;
-            align-content: center;
-            justify-items: start;
-            gap: 16px;
-        }
-
-        .hero-copy h1 {
-            margin: 0;
-            max-width: 760px;
-            font-size: clamp(3.1rem, 6.2vw, 5.4rem);
-            line-height: 0.94;
-            letter-spacing: 0;
-        }
-
-        .hero-copy .cn-name {
-            display: block;
-            margin-top: 12px;
-            color: var(--muted);
-            font-size: clamp(1.4rem, 2.3vw, 2rem);
-            font-weight: 700;
-        }
-
-        .hero-about {
-            max-width: 760px;
-            padding: 17px 19px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.86);
-            color: #42506a;
-            font-size: 1rem;
-            line-height: 1.72;
-            box-shadow: 0 14px 36px rgba(32, 42, 68, 0.06);
-        }
-
-        .hero-about p {
-            margin: 0;
-        }
-
-        .hero-about strong {
-            color: var(--ink);
-            font-weight: 800;
-        }
-
-        .hero-about a {
-            color: var(--blue);
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .hero-about a:hover {
-            text-decoration: underline;
-        }
-
-        .quick-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 0;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            min-height: 42px;
-            padding: 0 14px;
-            border-radius: var(--radius);
-            border: 1px solid var(--line);
-            background: var(--paper);
-            color: var(--ink);
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-decoration: none;
-            transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-        }
-
-        .button.primary {
-            color: #ffffff;
-            border-color: var(--ink);
-            background: var(--ink);
-        }
-
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(32, 42, 68, 0.12);
-        }
-
-        .research-map {
-            position: relative;
-            min-height: 618px;
-            padding: 24px;
-            border: 1px solid #d5dfec;
-            border-radius: var(--radius);
-            background:
-                linear-gradient(135deg, rgba(37, 99, 235, 0.08), transparent 30%),
-                linear-gradient(315deg, rgba(5, 150, 105, 0.08), transparent 34%),
-                rgba(255, 255, 255, 0.92);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .map-topline {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 14px;
-        }
-
-        .map-title {
-            margin: 0;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            color: #485469;
-            font-weight: 800;
-        }
-
-        .map-note {
-            color: var(--muted);
-            font-size: 0.78rem;
-            font-weight: 600;
-        }
-
-        .map-canvas {
-            position: relative;
-            height: 520px;
-        }
-
-        .map-lane {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            border: 1px solid rgba(216, 224, 235, 0.86);
-            border-radius: var(--radius);
-            pointer-events: none;
-            z-index: 0;
-            transition: transform 240ms ease, border-color 240ms ease, background 240ms ease;
-        }
-
-        .map-lane::before {
-            position: absolute;
-            top: 14px;
-            left: 16px;
-            padding: 5px 9px;
-            border-radius: 999px;
-            font-size: 0.72rem;
-            font-weight: 800;
-            line-height: 1;
-            text-transform: uppercase;
-            letter-spacing: 0;
-        }
-
-        .lane-efficiency {
-            left: 0;
-            width: 68%;
-            background:
-                linear-gradient(180deg, rgba(5, 150, 105, 0.075), rgba(5, 150, 105, 0.018)),
-                rgba(255, 255, 255, 0.58);
-        }
-
-        .lane-efficiency::before {
-            content: "Efficiency line";
-            color: var(--green);
-            background: rgba(5, 150, 105, 0.12);
-        }
-
-        .lane-multimodal {
-            right: 0;
-            width: 28%;
-            background:
-                linear-gradient(180deg, rgba(37, 99, 235, 0.075), rgba(37, 99, 235, 0.018)),
-                rgba(255, 255, 255, 0.62);
-        }
-
-        .lane-multimodal::before {
-            content: "Unified multimodal line";
-            color: var(--blue);
-            background: rgba(37, 99, 235, 0.12);
-        }
-
-        html[lang="zh-CN"] .lane-efficiency::before { content: "效率主线"; }
-        html[lang="zh-CN"] .lane-multimodal::before { content: "统一多模态主线"; }
-
-        .map-divider {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 69.5%;
-            width: 1px;
-            background: linear-gradient(180deg, transparent, rgba(101, 112, 131, 0.26), transparent);
-            z-index: 0;
-            pointer-events: none;
-            transition: opacity 240ms ease, transform 240ms ease;
-        }
-
-        .research-map.is-repel .lane-efficiency {
-            transform: translateX(-8px);
-            border-color: rgba(5, 150, 105, 0.24);
-        }
-
-        .research-map.is-repel .lane-multimodal {
-            transform: translateX(8px);
-            border-color: rgba(37, 99, 235, 0.24);
-        }
-
-        .research-map.is-repel .map-divider {
-            opacity: 0.95;
-            transform: scaleY(1.04);
-        }
-
-        .map-lines {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .map-lines path {
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-width: 2.5;
-        }
-
-        .line-eff { stroke: rgba(5, 150, 105, 0.62); }
-        .line-branch { stroke: rgba(196, 122, 22, 0.66); }
-        .line-framework { stroke: rgba(225, 29, 72, 0.62); }
-        .line-mm { stroke: rgba(37, 99, 235, 0.66); }
-
-        .map-node {
-            position: absolute;
-            --repel-x: 0px;
-            --repel-y: 0px;
-            --lane-bias: 0px;
-            width: 188px;
-            min-height: 68px;
-            padding: 11px 12px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.94);
-            box-shadow: 0 14px 34px rgba(32, 42, 68, 0.10);
-            transform: translate(calc(var(--repel-x) + var(--lane-bias)), var(--repel-y));
-            transition: transform 180ms ease, box-shadow 180ms ease;
-            z-index: 2;
-            will-change: transform;
-        }
-
-        .map-node:hover {
-            transform: translate(calc(var(--repel-x) + var(--lane-bias)), calc(var(--repel-y) - 4px));
-            box-shadow: 0 20px 42px rgba(32, 42, 68, 0.14);
-        }
-
-        .map-node.root {
-            width: 218px;
-            min-height: 76px;
-            border-width: 2px;
-        }
-
-        .map-node h3 {
-            margin: 0;
-            font-size: 0.96rem;
-            line-height: 1.15;
-            letter-spacing: 0;
-        }
-
-        .map-node p {
-            margin: 8px 0 0;
-            color: var(--muted);
-            font-size: 0.72rem;
-            line-height: 1.45;
-        }
-
-        .map-node .tag {
-            display: inline-flex;
-            margin-top: 10px;
-            padding: 3px 7px;
-            border-radius: 999px;
-            font-size: 0.68rem;
-            font-weight: 800;
-            line-height: 1;
-        }
-
-        .node-efficiency { left: 3%; top: 70%; border-color: #a7d8c2; }
-        .node-meft { left: 18%; top: 51%; }
-        .node-omnikv { left: 31%; top: 31%; }
-        .node-deltakv { left: 45%; top: 9%; }
-        .node-sparse { left: 45%; top: 35%; }
-        .node-lrc { left: 31%; top: 72%; }
-        .node-multimodal { left: 74%; top: 68%; border-color: #afc8ff; }
-        .node-unix { left: 76%; top: 31%; }
-
-        .research-map.is-repel .map-node[data-route="efficiency"] { --lane-bias: -7px; }
-        .research-map.is-repel .map-node[data-route="multimodal"] { --lane-bias: 9px; }
-
-        .node-efficiency,
-        .node-meft,
-        .node-omnikv {
-            background: linear-gradient(180deg, #ffffff, var(--green-soft));
-        }
-
-        .node-deltakv,
-        .node-sparse {
-            background: linear-gradient(180deg, #ffffff, var(--rose-soft));
-        }
-
-        .node-lrc {
-            background: linear-gradient(180deg, #ffffff, var(--gold-soft));
-        }
-
-        .node-multimodal,
-        .node-unix {
-            background: linear-gradient(180deg, #ffffff, var(--blue-soft));
-        }
-
-        .node-efficiency .tag,
-        .node-meft .tag,
-        .node-omnikv .tag {
-            color: var(--green);
-            background: rgba(5, 150, 105, 0.12);
-        }
-
-        .node-deltakv .tag,
-        .node-sparse .tag {
-            color: var(--rose);
-            background: rgba(225, 29, 72, 0.10);
-        }
-
-        .node-lrc .tag {
-            color: var(--gold);
-            background: rgba(196, 122, 22, 0.12);
-        }
-
-        .node-multimodal .tag,
-        .node-unix .tag {
-            color: var(--blue);
-            background: rgba(37, 99, 235, 0.12);
-        }
-
-        .section {
-            padding: 56px 0;
-            border-top: 1px solid rgba(216, 224, 235, 0.8);
-            opacity: 0;
-            transform: translateY(26px);
-            transition: opacity 650ms ease, transform 650ms ease;
-        }
-
-        .section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-heading {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 24px;
-            margin-bottom: 26px;
-        }
-
-        .section h2 {
-            margin: 0;
-            color: var(--ink);
-            font-size: clamp(1.8rem, 3vw, 2.7rem);
-            line-height: 1.02;
-            letter-spacing: 0;
-        }
-
-        .section-heading p {
-            max-width: 470px;
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.96rem;
-        }
-
-        .news-panel,
-        .visitor-widget-wrap {
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.86);
-            box-shadow: 0 14px 36px rgba(32, 42, 68, 0.07);
-        }
-
-        .news-panel b,
-        .item h3 strong {
-            color: var(--ink);
-            font-weight: 800;
-        }
-
-        .news-panel a,
-        .venue a {
-            color: var(--blue);
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        .news-panel a:hover,
-        .venue a:hover {
-            text-decoration: underline;
-        }
-
-        .news-panel {
-            padding: 6px 24px;
-        }
-
-        .news-item {
-            display: grid;
-            grid-template-columns: 110px 1fr;
-            gap: 20px;
-            padding: 19px 0;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .news-item:last-child { border-bottom: 0; }
-
-        .date {
-            color: var(--ink);
-            font-size: 0.82rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .news-item p {
-            margin: 0;
-            color: #42506a;
-        }
-
-        .publication-list {
-            display: grid;
-            gap: 14px;
-        }
-
-        .item {
-            display: grid;
-            grid-template-columns: 150px minmax(0, 1fr);
-            gap: 22px;
-            padding: 24px 0;
-            border-top: 1px solid var(--line);
-        }
-
-        .item:first-child { border-top: 0; padding-top: 0; }
-
-        .item-meta {
-            display: grid;
-            align-content: start;
-            gap: 8px;
-        }
-
-        .venue-badge {
-            width: max-content;
-            max-width: 100%;
-            display: inline-flex;
-            padding: 5px 8px;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            background: var(--paper);
-            color: var(--ink);
-            font-size: 0.75rem;
-            font-weight: 800;
-            line-height: 1.15;
-        }
-
-        .track {
-            width: max-content;
-            max-width: 100%;
-            color: var(--muted);
-            font-size: 0.74rem;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .item h3 {
-            margin: 0;
-            font-size: 1.18rem;
-            line-height: 1.35;
-            letter-spacing: 0;
-        }
-
-        .authors {
-            margin-top: 7px;
-            color: var(--muted);
-            font-size: 0.92rem;
-            line-height: 1.55;
-        }
-
-        .authors b {
-            color: var(--ink);
-            font-weight: 800;
-        }
-
-        .pub-links {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .pub-links a {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            min-height: 30px;
-            padding: 0 9px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: #ffffff;
-            color: var(--ink);
-            font-size: 0.78rem;
-            font-weight: 800;
-            text-decoration: none;
-            transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
-        }
-
-        .pub-links a:hover {
-            transform: translateY(-1px);
-            border-color: #b9c6d8;
-            box-shadow: 0 8px 20px rgba(32, 42, 68, 0.08);
-        }
-
-        .tldr {
-            margin-top: 14px;
-            padding: 13px 14px;
-            border-left: 3px solid var(--line);
-            background: #fbfcff;
-            color: #536078;
-            font-size: 0.9rem;
-            line-height: 1.65;
-        }
-
-        .project-strip {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 28px;
-            align-items: center;
-            padding: 26px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: linear-gradient(135deg, #ffffff, #f7fbff);
-            box-shadow: 0 14px 36px rgba(32, 42, 68, 0.07);
-        }
-
-        .project-strip h3 {
-            margin: 0 0 8px;
-            font-size: 1.25rem;
-            line-height: 1.25;
-        }
-
-        .project-strip p {
-            margin: 0;
-            color: var(--muted);
-        }
-
-        .simple-list {
-            list-style: none;
-            display: grid;
-            gap: 13px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .simple-list li {
-            position: relative;
-            padding: 15px 18px 15px 42px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.78);
-        }
-
-        .simple-list li::before {
-            content: "";
-            position: absolute;
-            left: 18px;
-            top: 24px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--blue);
-            box-shadow: 0 0 0 5px var(--blue-soft);
-        }
-
-        .simple-list b { color: var(--ink); }
-
-        .visitor-widget-wrap {
-            margin: 34px 0 50px;
-            overflow: hidden;
-        }
-
-        .visitor-widget-wrap #mapmyvisitors-widget {
-            display: block;
-            width: 100% !important;
-            max-width: 100%;
-            border-radius: inherit;
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .visitor-widget-wrap .mapmyvisitors-map-container {
-            border-radius: inherit;
-            overflow: hidden;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                scroll-behavior: auto !important;
-                transition: none !important;
-                animation: none !important;
-            }
-        }
-
-        @media (max-width: 980px) {
-            .site-shell { width: min(100% - 28px, 760px); }
-            .site-header { align-items: flex-start; flex-direction: column; }
-            .header-links { justify-content: flex-start; }
-            .hero-grid { grid-template-columns: 1fr; }
-            .hero-copy {
-                grid-template-columns: 1fr;
-                align-items: start;
-            }
-            .hero-portrait {
-                width: min(100%, 420px);
-            }
-            .research-map {
-                min-height: 0;
-                padding: 18px;
-            }
-            .map-topline { align-items: flex-start; flex-direction: column; }
-            .map-canvas {
-                height: auto;
-                display: grid;
-                gap: 12px;
-            }
-            .map-lane,
-            .map-divider,
-            .map-lines { display: none; }
-            .map-node,
-            .map-node.root {
-                position: relative;
-                left: auto;
-                right: auto;
-                top: auto;
-                width: 100%;
-                min-height: 0;
-            }
-            .map-node::before {
-                content: "";
-                position: absolute;
-                left: 22px;
-                top: -13px;
-                width: 2px;
-                height: 12px;
-                background: var(--line);
-            }
-            .map-node:first-of-type::before,
-            .node-multimodal::before { display: none; }
-            .node-efficiency { order: 1; }
-            .node-meft { order: 2; }
-            .node-lrc { order: 3; }
-            .node-omnikv { order: 4; }
-            .node-deltakv { order: 5; }
-            .node-sparse { order: 6; }
-            .node-multimodal { order: 7; }
-            .node-unix { order: 8; }
-            .node-multimodal {
-                margin-top: 12px;
-                border-top-width: 2px;
-            }
-            .section-heading { align-items: flex-start; flex-direction: column; }
-        }
-
-        @media (max-width: 720px) {
-            .hero { padding-top: 34px; }
-            .hero-copy { gap: 18px; }
-            .hero-copy h1 { font-size: clamp(3rem, 18vw, 4.4rem); }
-            .hero-about {
-                padding: 15px 16px;
-                font-size: 0.94rem;
-            }
-            .research-map {
-                min-height: 0;
-                padding: 18px;
-            }
-            .map-topline { align-items: flex-start; flex-direction: column; }
-            .map-canvas {
-                height: auto;
-                display: grid;
-                gap: 12px;
-            }
-            .map-lane,
-            .map-divider,
-            .map-lines { display: none; }
-            .map-node,
-            .map-node.root {
-                position: relative;
-                left: auto;
-                right: auto;
-                top: auto;
-                width: 100%;
-                min-height: 0;
-            }
-            .map-node::before {
-                content: "";
-                position: absolute;
-                left: 22px;
-                top: -13px;
-                width: 2px;
-                height: 12px;
-                background: var(--line);
-            }
-            .map-node:first-of-type::before,
-            .node-multimodal::before { display: none; }
-            .node-efficiency { order: 1; }
-            .node-meft { order: 2; }
-            .node-lrc { order: 3; }
-            .node-omnikv { order: 4; }
-            .node-deltakv { order: 5; }
-            .node-sparse { order: 6; }
-            .node-multimodal { order: 7; }
-            .node-unix { order: 8; }
-            .node-multimodal {
-                margin-top: 12px;
-                border-top-width: 2px;
-            }
-            .news-item,
-            .item,
-            .project-strip {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            .date { white-space: normal; }
-            .project-strip .pub-links { justify-content: flex-start; }
-            .section { padding: 42px 0; }
-        }
-    </style>
-    <script>
-        let currentLang = "en";
-
-        function applyLanguage(lang) {
-            document.documentElement.lang = lang;
-            try { localStorage.setItem("lang", lang); } catch {}
-        }
-
-        function toggleLanguage() {
-            currentLang = currentLang === "en" ? "zh-CN" : "en";
-            applyLanguage(currentLang);
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            try {
-                const saved = localStorage.getItem("lang");
-                if (saved === "en" || saved === "zh-CN") currentLang = saved;
-            } catch {}
-            applyLanguage(currentLang);
-        });
-    </script>
+    <link rel="stylesheet" href="assets/site.css?v=20261013-type">
+    <link rel="stylesheet" href="assets/home.css?v=20261013-type">
+    <script defer src="assets/paper-pages.js?v=20261013-modern"></script>
+    <script defer src="assets/vendor/dagre/dagre-1.1.5.min.js"></script>
+    <script defer src="assets/research-map.js?v=20261013-modern"></script>
 </head>
 <body>
     <div class="site-shell">
@@ -998,13 +128,13 @@
                 </span>
             </a>
             <nav class="header-links" aria-label="Primary navigation">
-                <a class="nav-link" href="blog/index.html"><i class="fa-solid fa-pen-nib"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
-                <a class="nav-link" href="#projects"><i class="fa-solid fa-window-restore"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
-                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope"></i> Email</a>
-                <a class="nav-link" href="https://github.com/currentf" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
-                <a class="nav-link" href="https://scholar.google.com.hk/citations?user=mnCgkvYAAAAJ" target="_blank" rel="noreferrer"><i class="fa-solid fa-graduation-cap"></i> Scholar</a>
+                <a class="nav-link" href="blog/index.html"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+                <a class="nav-link" href="#projects"><i class="fa-solid fa-window-restore" aria-hidden="true"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</a>
+                <a class="nav-link" href="https://github.com/currentf" target="_blank" rel="noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a>
+                <a class="nav-link" href="https://scholar.google.com.hk/citations?user=mnCgkvYAAAAJ" target="_blank" rel="noreferrer"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> Scholar</a>
                 <button class="lang-switcher" type="button" onclick="toggleLanguage()">
-                    <i class="fa-solid fa-language"></i>
+                    <i class="fa-solid fa-language" aria-hidden="true"></i>
                     <span lang="zh-CN">English</span>
                     <span lang="en">中文</span>
                 </button>
@@ -1016,7 +146,7 @@
                 <div class="hero-grid">
                     <div class="hero-copy">
                         <figure class="hero-portrait">
-                            <img src="assets/profile/jitai-hao.jpg" alt="Jitai Hao working on a laptop outdoors" width="900" height="900" loading="eager" decoding="async">
+                            <img src="assets/profile/jitai-hao.jpg" alt="Jitai Hao working on a laptop outdoors" width="900" height="900" loading="eager" decoding="async" fetchpriority="high">
                         </figure>
                         <div class="hero-intro">
                             <h1 id="hero-title">
@@ -1026,108 +156,93 @@
                                 <span class="cn-name" lang="zh-CN">Jitai Hao</span>
                             </h1>
                             <div class="hero-about">
-                                <p lang="zh-CN">
-                                    我的主要研究方向为 <strong>Efficient AI/LLMs</strong> 与 <strong>统一多模态理解与生成模型</strong>。目前我在哈尔滨工业大学（深圳）攻读博士学位，导师为 <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank" rel="noreferrer">俞俊教授</a>，并与 <a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&hl=en" target="_blank" rel="noreferrer">黄强老师</a> 保持紧密合作。在此之前，我于 2022 和 2025 年分别在山东大学获得计算机科学学士和硕士学位，导师是 <a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">任昭春教授</a>。
-                                </p>
-                                <p lang="en">
-                                    My research interests include <strong>Efficient AI/LLMs</strong> and <strong>unified multimodal understanding & generation models</strong>. I am currently a Ph.D. student at Harbin Institute of Technology (Shenzhen), supervised by <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&hl=en" target="_blank" rel="noreferrer">Prof. Jun Yu</a>, and I also work closely with <a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&hl=en" target="_blank" rel="noreferrer">Prof. Qiang Huang</a>. Before that, I obtained my Bachelor's and Master's degrees in Computer Science from Shandong University in 2022 and 2025, respectively, under the supervision of <a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">Prof. Zhaochun Ren</a>.
-                                </p>
+                                <p lang="zh-CN">我在哈尔滨工业大学（深圳）攻读智能科学与技术博士学位，导师为 <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">俞俊教授</a>、<a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">黄强教授</a>。我的研究聚焦于<strong>大模型架构设计与高效训练、推理</strong>，涵盖长上下文、稀疏推理引擎、统一多模态模型与流式视频理解。</p>
+                                <p lang="en">I am a Ph.D. student in Intelligent Science and Technology at Harbin Institute of Technology (Shenzhen), supervised by <a href="https://scholar.google.com/citations?user=3XTEwtAAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Prof. Jun Yu</a> and <a href="https://scholar.google.com/citations?user=y7q6ZxUAAAAJ&amp;hl=en" target="_blank" rel="noreferrer">Prof. Qiang Huang</a>. I study <strong>LLM architectures and efficient training and inference</strong>, including long-context serving, sparse inference engines, unified multimodal models, and streaming video understanding.</p>
+                                <p class="profile-highlight" lang="zh-CN">以<strong>一作／共一第一发表 4 篇 CCF-A 类顶会论文</strong>，包括 <strong class="emphasis">NeurIPS 2025 Spotlight（Top 3.2%）</strong>。曾获<strong>国家奖学金、两枚 ACM/ICPC 亚洲区域赛银牌</strong>。</p>
+                                <p class="profile-highlight" lang="en"><strong>Four CCF-A conference papers as first author or first-listed co-first author</strong>, including a <strong class="emphasis">NeurIPS 2025 Spotlight (Top 3.2%)</strong>. Recipient of the <strong>National Scholarship and two ACM/ICPC Asia Regional silver medals</strong>.</p>
+                                <p class="profile-impact" lang="zh-CN"><a href="#omnikv">OmniKV</a> <strong>首次提出</strong><strong class="emphasis">跨层注意力索引复用</strong>，相关思路被<strong>智谱、腾讯混元等引用并用于基础模型</strong>，包括 <strong>GLM-5.2、GLM-5.3、Hy4、DeepSeek-V4.1</strong>。</p>
+                                <p class="profile-impact" lang="en"><a href="#omnikv">OmniKV</a> <strong>pioneered</strong> <strong class="emphasis">cross-layer attention-index reuse</strong>, an idea subsequently <strong>cited and adopted in foundation models by Zhipu, Tencent Hunyuan, and others</strong>, including <strong>GLM-5.2, GLM-5.3, Hy4, and DeepSeek-V4.1</strong>.</p>
                             </div>
                             <div class="quick-actions">
-                                <a class="button primary" href="#research-map"><i class="fa-solid fa-diagram-project"></i> <span lang="en">Research Map</span><span lang="zh-CN">研究脉络</span></a>
-                                <a class="button" href="#publications"><i class="fa-solid fa-file-lines"></i> <span lang="en">Publications</span><span lang="zh-CN">研究成果</span></a>
+                                <a class="button primary" href="#research-map"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> <span lang="en">Research Map</span><span lang="zh-CN">研究脉络</span></a>
+                                <a class="button" href="#publications"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> <span lang="en">Publications</span><span lang="zh-CN">研究成果</span></a>
+                                <a class="button" href="#preprints"><i class="fa-solid fa-book-open" aria-hidden="true"></i> <span lang="en">Preprints</span><span lang="zh-CN">预印本与在投</span></a>
                             </div>
                         </div>
                     </div>
 
                     <section id="research-map" class="research-map" aria-labelledby="map-title">
                         <div class="map-topline">
-                            <h2 id="map-title" class="map-title" lang="en">Research Lineage</h2>
-                            <h2 class="map-title" lang="zh-CN">研究脉络</h2>
-                            <span class="map-note" lang="en">Two lines, one long-term agenda</span>
-                            <span class="map-note" lang="zh-CN">两条主线，一个长期问题</span>
+                            <h2 id="map-title" class="map-title"><span lang="en">Research Lineage</span><span lang="zh-CN">研究脉络</span></h2>
+                            <span class="map-note" lang="en">Efficient training, inference, and multimodal models</span>
+                            <span class="map-note" lang="zh-CN">高效训练、推理与多模态模型</span>
                         </div>
-                        <div class="map-canvas">
-                            <div class="map-lane lane-efficiency"></div>
-                            <div class="map-lane lane-multimodal"></div>
-                            <div class="map-divider"></div>
-                            <svg class="map-lines" viewBox="0 0 720 520" preserveAspectRatio="none" aria-hidden="true">
-                                <defs>
-                                    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(5, 150, 105, 0.72)"></path>
-                                    </marker>
-                                    <marker id="arrow-gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(196, 122, 22, 0.76)"></path>
-                                    </marker>
-                                    <marker id="arrow-rose" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(225, 29, 72, 0.72)"></path>
-                                    </marker>
-                                    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(37, 99, 235, 0.76)"></path>
-                                    </marker>
-                                </defs>
-                                <path class="line-eff" marker-end="url(#arrow-green)" d="M 105 395 C 132 360, 160 335, 189 315"></path>
-                                <path class="line-eff" marker-end="url(#arrow-green)" d="M 245 285 C 260 248, 280 228, 300 214"></path>
-                                <path class="line-branch" marker-end="url(#arrow-gold)" d="M 245 335 C 270 365, 288 392, 302 408"></path>
-                                <path class="line-framework" marker-end="url(#arrow-rose)" d="M 360 178 C 378 142, 394 118, 420 106"></path>
-                                <path class="line-framework" marker-end="url(#arrow-rose)" d="M 365 216 C 392 225, 405 231, 418 240"></path>
-                                <path class="line-mm" marker-end="url(#arrow-blue)" d="M 592 357 C 592 315, 594 265, 598 232"></path>
-                            </svg>
+                        <div class="map-canvas" data-graph="efficiency">
+                            <svg class="map-lines" aria-hidden="true"><defs><marker id="arrow-efficiency" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="map-arrow" d="M 0 0 L 10 5 L 0 10 Z"></path></marker></defs></svg>
 
-                            <article class="map-node root node-efficiency" data-route="efficiency">
+                            <article class="map-node root node-efficiency" data-node="efficiency">
                                 <h3>Efficiency</h3>
                                 <p lang="en">The core thread: reduce memory, tokens, and inference cost.</p>
                                 <p lang="zh-CN">主线：降低显存、token 与推理成本。</p>
                                 <span class="tag"><span lang="en">Research line</span><span lang="zh-CN">研究主线</span></span>
                             </article>
 
-                            <article class="map-node node-meft" data-route="efficiency">
-                                <h3>MEFT</h3>
+                            <article class="map-node node-meft" data-node="meft" data-from="efficiency">
+                                <h3><a href="https://arxiv.org/abs/2406.04984">MEFT</a></h3>
                                 <p lang="en">Memory-efficient fine-tuning with sparse adapters.</p>
                                 <p lang="zh-CN">通过稀疏 adapter 做内存高效微调。</p>
                                 <span class="tag">ACL 2024</span>
+                                <p class="node-source"><span lang="en">From Efficiency</span><span lang="zh-CN">承接 Efficiency</span></p>
                             </article>
 
-                            <article class="map-node node-omnikv" data-route="efficiency">
-                                <h3>OmniKV</h3>
-                                <p lang="en">Dynamic context selection for long-context LLMs.</p>
-                                <p lang="zh-CN">长上下文 LLM 的动态上下文选择。</p>
+                            <article class="map-node node-omnikv" data-node="omnikv" data-from="meft">
+                                <h3><a href="#omnikv">OmniKV</a></h3>
+                                <p lang="en">Cross-layer attention-index reuse for long contexts.</p>
+                                <p lang="zh-CN">通过跨层注意力索引复用，加速长上下文推理。</p>
                                 <span class="tag">ICLR 2025</span>
+                                <p class="node-source"><span lang="en">From MEFT</span><span lang="zh-CN">承接 MEFT</span></p>
                             </article>
 
-                            <article class="map-node node-deltakv" data-route="efficiency">
-                                <h3>DeltaKV</h3>
+                            <article class="map-node node-deltakv" data-node="deltakv" data-from="omnikv">
+                                <h3><a href="#residualkv">ResidualKV</a></h3>
                                 <p lang="en">Residual-based KV cache compression.</p>
                                 <p lang="zh-CN">基于残差的 KV Cache 压缩。</p>
                                 <span class="tag">arXiv 2026</span>
+                                <p class="node-source"><span lang="en">From OmniKV</span><span lang="zh-CN">承接 OmniKV</span></p>
                             </article>
 
-                            <article class="map-node node-sparse" data-route="efficiency">
-                                <h3>Sparse-vLLM</h3>
-                                <p lang="en">Sparse-first inference framework.</p>
-                                <p lang="zh-CN">以稀疏性为核心的推理框架。</p>
-                                <span class="tag"><span lang="en">System</span><span lang="zh-CN">系统</span></span>
+                            <article class="map-node node-sparse" data-node="sparse" data-from="omnikv">
+                                <h3><a href="#sparseengine">SparseEngine</a></h3>
+                                <p lang="en">Sparse-first serving with 15 sparse methods.</p>
+                                <p lang="zh-CN">以稀疏性为核心，统一支持 15 种方法。</p>
+                                <span class="tag">arXiv 2026</span>
+                                <p class="node-source"><span lang="en">From OmniKV</span><span lang="zh-CN">承接 OmniKV</span></p>
                             </article>
 
-                            <article class="map-node node-lrc" data-route="efficiency">
-                                <h3>LRC</h3>
-                                <p lang="en">Branch from MEFT: low-rank modules clone teacher knowledge, making each training token far more valuable.</p>
-                                <p lang="zh-CN">从 MEFT 分支：用低秩模块克隆教师知识，让每个训练 token 承载更多监督信号。</p>
+                            <article class="map-node node-lrc" data-node="lrc" data-from="meft">
+                                <h3><a href="#low-rank-clone">LRC</a></h3>
+                                <p lang="en">Low-rank modules clone teacher knowledge for token-efficient training.</p>
+                                <p lang="zh-CN">用低秩模块克隆教师知识，提升每个训练 token 的效率。</p>
                                 <span class="tag">NeurIPS 2025 Spotlight</span>
+                                <p class="node-source"><span lang="en">From MEFT</span><span lang="zh-CN">承接 MEFT</span></p>
                             </article>
 
-                            <article class="map-node root node-multimodal" data-route="multimodal">
+                        </div>
+                        <div class="map-canvas" data-graph="multimodal">
+                            <svg class="map-lines" aria-hidden="true"><defs><marker id="arrow-multimodal" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="map-arrow" d="M 0 0 L 10 5 L 0 10 Z"></path></marker></defs></svg>
+                            <article class="map-node root node-multimodal" data-node="multimodal">
                                 <h3>Unified Multimodal Models</h3>
                                 <p lang="en">The second thread: unify understanding and generation.</p>
                                 <p lang="zh-CN">第二主线：统一理解与生成。</p>
                                 <span class="tag"><span lang="en">Research line</span><span lang="zh-CN">研究主线</span></span>
                             </article>
 
-                            <article class="map-node node-unix" data-route="multimodal">
-                                <h3>Uni-X</h3>
+                            <article class="map-node node-unix" data-node="unix" data-from="multimodal">
+                                <h3><a href="#uni-x">Uni-X</a></h3>
                                 <p lang="en">Two-end-separated architecture for modality conflict.</p>
                                 <p lang="zh-CN">两端分离架构，缓解模态冲突。</p>
                                 <span class="tag">ICLR 2026</span>
+                                <p class="node-source"><span lang="en">From Unified Multimodal Models</span><span lang="zh-CN">承接 Unified Multimodal Models</span></p>
                             </article>
 
                         </div>
@@ -1143,6 +258,18 @@
                     <p lang="zh-CN">两条研究主线上的近期论文与进展。</p>
                 </div>
                 <div class="news-panel">
+                    <div class="news-item">
+                        <span class="date" lang="en">Oct 2026</span>
+                        <span class="date" lang="zh-CN">2026年10月</span>
+                        <p lang="en">New preprints: <a href="#hear">HEAR</a> on bidirectional coordination between agent harnesses and inference engines, and <a href="#safe-role">Beyond Refusal Patterns</a> on safe-role internalization for LLM safety alignment.</p>
+                        <p lang="zh-CN">新预印本：<a href="#hear">HEAR</a> 探索 Agent 应用与推理引擎的双向协同；<a href="#safe-role">Beyond Refusal Patterns</a> 研究通过安全角色内化实现大模型安全对齐。</p>
+                    </div>
+                    <div class="news-item">
+                        <span class="date" lang="en">Sep 2026</span>
+                        <span class="date" lang="zh-CN">2026年9月</span>
+                        <p lang="en">Released <a href="#sparseengine">SparseEngine</a> and <a href="#shallowstream">ShallowStream</a>. The updated <a href="#residualkv">ResidualKV</a> preprint, previously titled DeltaKV, is also available.</p>
+                        <p lang="zh-CN">发布 <a href="#sparseengine">SparseEngine</a> 和 <a href="#shallowstream">ShallowStream</a> 预印本；<a href="#residualkv">ResidualKV</a>（原名 DeltaKV）的修订版也已公开。</p>
+                    </div>
                     <div class="news-item">
                         <span class="date" lang="en">Feb 2026</span>
                         <span class="date" lang="zh-CN">2026年2月</span>
@@ -1162,32 +289,12 @@
                 <div class="section-heading">
                     <h2 lang="en">Publications</h2>
                     <h2 lang="zh-CN">研究成果</h2>
-                    <p lang="en">The list below follows the same structure as the map: efficiency first, then unified multimodal models.</p>
-                    <p lang="zh-CN">下面的论文列表与上方脉络图一致：先展示效率主线，再展示统一多模态主线。</p>
+                    <p lang="en">Peer-reviewed papers. * denotes equal contribution; preprints and submissions are listed separately below.</p>
+                    <p lang="zh-CN">已发表论文。* 表示共同贡献；预印本与在投论文单独列于下方。</p>
                 </div>
 
                 <div class="publication-list">
-                    <article class="item">
-                        <div class="item-meta">
-                            <span class="venue-badge">arXiv 2026</span>
-                            <span class="track">Efficiency</span>
-                        </div>
-                        <div>
-                            <h3>DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity</h3>
-                            <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Yaowei Wang, Min Zhang, Jun Yu</div>
-                            <div class="pub-links">
-                                <a href="papers/deltakv-residual-kv-cache-compression.html"><i class="fas fa-file-lines"></i> Overview</a>
-                                <a href="https://arxiv.org/pdf/2602.08005.pdf" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf"></i> PDF</a>
-                                <a href="https://arxiv.org/abs/2602.08005" target="_blank" rel="noreferrer"><i class="fas fa-link"></i> arXiv</a>
-                                <a href="https://github.com/CURRENTF/Sparse-vLLM" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Code</a>
-                                <a href="https://zhuanlan.zhihu.com/p/2004213586399106489" target="_blank" rel="noreferrer"><i class="fab fa-zhihu"></i> Zhihu</a>
-                            </div>
-                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 我们发现 KV 表征中存在显著的长程相似性，据此提出 DeltaKV。通过将语义表示编码为相对历史参考的残差，在不丢弃 token 的情况下将 KV 内存降至 29%，在 SCBench、AIME 等任务上接近无损，并实现 2x 吞吐提升。</div>
-                            <div class="tldr" lang="en"><b>TL;DR:</b> Motivated by the long-range similarity in KV representations, we propose DeltaKV. It encodes semantic residuals relative to historical references, reducing KV memory to 29% without discarding tokens. It achieves near-lossless performance on SCBench and AIME, with 2x throughput gain.</div>
-                        </div>
-                    </article>
-
-                    <article class="item">
+                    <article class="item" id="uni-x">
                         <div class="item-meta">
                             <span class="venue-badge">ICLR 2026</span>
                             <span class="track">Multimodal</span>
@@ -1195,37 +302,39 @@
                         <div>
                             <h3>Uni-X: Mitigating Modality Conflict with a Two-End-Separated Architecture for Unified Multimodal Models</h3>
                             <div class="authors"><b>Jitai Hao</b>*, Hao Liu*, Xinyan Xiao, Qiang Huang, Jun Yu</div>
+                            <div class="paper-role"><span lang="en">Co-first author (listed first)</span><span lang="zh-CN">共一第一</span></div>
                             <div class="pub-links">
-                                <a href="papers/uni-x-modality-conflict.html"><i class="fas fa-file-lines"></i> Overview</a>
-                                <a href="https://arxiv.org/pdf/2509.24365.pdf" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf"></i> PDF</a>
-                                <a href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank" rel="noreferrer"><i class="fas fa-link"></i> OpenReview</a>
-                                <a href="https://github.com/CURRENTF/Uni-X" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Code</a>
+                                <a href="papers/uni-x-modality-conflict.html"><i class="fas fa-file-lines" aria-hidden="true"></i> Overview</a>
+                                <a href="https://arxiv.org/pdf/2509.24365.pdf" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank" rel="noreferrer"><i class="fas fa-link" aria-hidden="true"></i> OpenReview</a>
+                                <a href="https://github.com/CURRENTF/Uni-X" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
                             </div>
-                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 提出 Uni-X “两端分离，中间共享”架构，通过模态特定路径缓解统一多模态模型中的梯度冲突。3B 规模的 Uni-X 性能比肩 7B 模型，并在 GenEval 上达到 82.0。</div>
-                            <div class="tldr" lang="en"><b>TL;DR:</b> Uni-X uses an X-shaped two-end-separated architecture to mitigate modality conflicts in unified multimodal models. A 3B Uni-X matches or surpasses 7B models, achieving 82.0 on GenEval.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 提出<strong>“中间共享、两端分离”</strong>架构，缓解统一多模态模型中的模态冲突；<strong>Uni-X-3B 匹配当时 7B SOTA 模型的性能</strong>。积累了<strong class="emphasis">多机多卡训练经验（32 卡 H800）</strong>。</div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> A <strong>shared-middle, separated-ends architecture</strong> mitigates modality conflict, with <strong>Uni-X-3B matching contemporary 7B state-of-the-art models</strong>. This work gave me <strong class="emphasis">multi-node training experience on 32 H800 GPUs</strong>.</div>
                         </div>
                     </article>
 
-                    <article class="item">
+                    <article class="item" id="low-rank-clone">
                         <div class="item-meta">
-                            <span class="venue-badge">NeurIPS 2025 Spotlight</span>
+                            <span class="venue-badge spotlight"><span>NeurIPS 2025</span><span>Spotlight · Top 3.2%</span></span>
                             <span class="track">Efficiency</span>
                         </div>
                         <div>
                             <h3>A Token is Worth over 1,000 Tokens: <strong>Efficient</strong> Knowledge Distillation through Low-Rank Clone</h3>
                             <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Hao Liu, Xinyan Xiao, Zhaochun Ren, Jun Yu</div>
+                            <div class="paper-role"><span lang="en">First author</span><span lang="zh-CN">第一作者</span></div>
                             <div class="pub-links">
-                                <a href="papers/low-rank-clone-efficient-knowledge-distillation.html"><i class="fas fa-file-lines"></i> Overview</a>
-                                <a href="https://arxiv.org/pdf/2505.12781.pdf" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf"></i> PDF</a>
-                                <a href="https://github.com/CURRENTF/LowRankClone" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Code</a>
-                                <a href="https://zhuanlan.zhihu.com/p/1959655943672426991" target="_blank" rel="noreferrer"><i class="fab fa-zhihu"></i> Zhihu</a>
+                                <a href="papers/low-rank-clone-efficient-knowledge-distillation.html"><i class="fas fa-file-lines" aria-hidden="true"></i> Overview</a>
+                                <a href="https://arxiv.org/pdf/2505.12781.pdf" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://github.com/CURRENTF/LowRankClone" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
+                                <a href="https://zhuanlan.zhihu.com/p/1959655943672426991" target="_blank" rel="noreferrer"><i class="fab fa-zhihu" aria-hidden="true"></i> Zhihu</a>
                             </div>
-                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 我们提出 Low-Rank Clone (LRC)，一种能显著提高模型训练效率的方法。LRC 仅需约 10B-20B tokens 数据，就能达到甚至超越那些用数万亿 tokens 训练的顶尖模型性能。</div>
-                            <div class="tldr" lang="en"><b>TL;DR:</b> We propose Low-Rank Clone (LRC), a method to significantly improve model training efficiency. With only about 10B-20B tokens, LRC can match or even surpass the performance of SOTA models trained on trillions of tokens.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> Low-Rank Clone（LRC）仅训练一组<strong>低秩投影矩阵</strong>，使用<strong class="emphasis">仅 10B-20B tokens</strong> 即可<strong>从头训练、蒸馏出高性能小语言模型</strong>，达到与使用数万亿 tokens 预训练的模型相当的性能。</div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> Low-Rank Clone trains only <strong>low-rank projection matrices</strong>, using <strong class="emphasis">just 10B-20B tokens</strong> to <strong>train a high-performing small language model from scratch through distillation</strong>, competitive with models pretrained on trillions of tokens.</div>
                         </div>
                     </article>
 
-                    <article class="item">
+                    <article class="item" id="omnikv">
                         <div class="item-meta">
                             <span class="venue-badge">ICLR 2025</span>
                             <span class="track">Efficiency</span>
@@ -1233,18 +342,21 @@
                         <div>
                             <h3>OmniKV: Dynamic Context Selection for <strong>Efficient</strong> Long-Context LLMs</h3>
                             <div class="authors"><b>Jitai Hao*</b>, Yuke Zhu*, Tian Wang, Jun Yu, Xin Xin, Bo Zheng, Zhaochun Ren, Sheng Guo</div>
+                            <div class="paper-role"><span lang="en">Co-first author (listed first)</span><span lang="zh-CN">共一第一</span></div>
                             <div class="pub-links">
-                                <a href="papers/omnikv-dynamic-context-selection.html"><i class="fas fa-file-lines"></i> Overview</a>
-                                <a href="https://openreview.net/pdf?id=ulCAPXYXfa" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf"></i> PDF</a>
-                                <a href="https://github.com/antgroup/OmniKV" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Code</a>
-                                <a href="https://zhuanlan.zhihu.com/p/32154143967" target="_blank" rel="noreferrer"><i class="fab fa-zhihu"></i> Zhihu</a>
+                                <a href="papers/omnikv-dynamic-context-selection.html"><i class="fas fa-file-lines" aria-hidden="true"></i> Overview</a>
+                                <a href="https://openreview.net/pdf?id=ulCAPXYXfa" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://github.com/antgroup/OmniKV" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
+                                <a href="https://zhuanlan.zhihu.com/p/32154143967" target="_blank" rel="noreferrer"><i class="fab fa-zhihu" aria-hidden="true"></i> Zhihu</a>
                             </div>
-                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 通过提出层间注意力相似性，OmniKV 能够动态选择最重要的上下文信息，从而在处理长文本时提升 LLM 的效率和性能，同时降低计算成本。</div>
-                            <div class="tldr" lang="en"><b>TL;DR:</b> By proposing inter-layer attention similarity, OmniKV dynamically selects crucial context information, enhancing efficiency and performance for long-context tasks while reducing cost.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> <strong>首次提出</strong><strong class="emphasis">跨层注意力索引复用</strong>，利用层间注意力相似性，结合动态上下文选择与 KV-cache offloading，在保留完整历史信息的同时降低长上下文推理成本。</div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> <strong>Pioneered</strong> <strong class="emphasis">cross-layer attention-index reuse</strong>, combining inter-layer attention similarity, dynamic context selection, and KV-cache offloading to reduce long-context inference cost while retaining the full history.</div>
+                            <p class="research-impact" lang="en">The idea was <strong class="emphasis">cited by Zhipu's <a href="https://arxiv.org/html/2603.12201v1" target="_blank" rel="noreferrer">IndexCache (IndexShare)</a> and adopted in foundation models</strong>, including <strong>GLM-5.2, GLM-5.3, Hy4, and DeepSeek-V4.1</strong>.</p>
+                            <p class="research-impact" lang="zh-CN">相关思路被<strong class="emphasis">智谱 <a href="https://arxiv.org/html/2603.12201v1" target="_blank" rel="noreferrer">IndexCache（IndexShare）</a> 引用并应用于基础模型</strong>，包括 <strong>GLM-5.2、GLM-5.3、Hy4、DeepSeek-V4.1</strong>。</p>
                         </div>
                     </article>
 
-                    <article class="item">
+                    <article class="item" id="meft">
                         <div class="item-meta">
                             <span class="venue-badge">ACL 2024</span>
                             <span class="track">Efficiency</span>
@@ -1252,16 +364,17 @@
                         <div>
                             <h3>MEFT: Memory-<strong>Efficient</strong> Fine-Tuning through Sparse Adapter</h3>
                             <div class="authors"><b>Jitai Hao</b>, Weiwei Sun, Xin Xin, Qi Meng, Zhumin Chen, Pengjie Ren, Zhaochun Ren</div>
+                            <div class="paper-role"><span lang="en">First author</span><span lang="zh-CN">第一作者</span></div>
                             <div class="pub-links">
-                                <a href="https://arxiv.org/pdf/2406.04984" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf"></i> PDF</a>
-                                <a href="https://github.com/CURRENTF/MEFT" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Code</a>
+                                <a href="https://arxiv.org/pdf/2406.04984" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://github.com/CURRENTF/MEFT" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
                             </div>
-                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> MEFT 是一种内存效率更高的模型微调方法。它通过引入稀疏适配器来减少微调时占用的内存，使得在大模型上进行微调更加可行和高效。</div>
-                            <div class="tldr" lang="en"><b>TL;DR:</b> MEFT is a memory-efficient fine-tuning method. It reduces memory usage during fine-tuning by introducing a sparse adapter, making it more feasible to fine-tune large models.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 提出 MEFT，通过<strong>稀疏适配器与 offloading</strong> 实现<strong class="emphasis">内存高效微调</strong>，降低大模型微调的显存占用。</div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> MEFT combines <strong>sparse adapters and offloading</strong> for <strong class="emphasis">memory-efficient fine-tuning</strong>, reducing the GPU memory required to adapt large language models.</div>
                         </div>
                     </article>
 
-                    <article class="item">
+                    <article class="item" id="hierarchical-reasoning">
                         <div class="item-meta">
                             <span class="venue-badge">EMNLP 2023 Findings</span>
                             <span class="track">Reasoning</span>
@@ -1269,12 +382,130 @@
                         <div>
                             <h3>Multi-Defendant Legal Judgment Prediction via Hierarchical Reasoning</h3>
                             <div class="authors">Yougang Lyu*, <b>Jitai Hao*</b>, Zihan Wang, Kai Zhao, Shen Gao, Pengjie Ren, Zhumin Chen, Fang Wang, Zhaochun Ren</div>
+                            <div class="paper-role"><span lang="en">Co-first author (listed second)</span><span lang="zh-CN">共一第二</span></div>
                             <div class="pub-links">
-                                <a href="https://arxiv.org/pdf/2312.05762" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf"></i> PDF</a>
-                                <a href="https://github.com/CURRENTF/HRN" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> Code</a>
+                                <a href="https://arxiv.org/pdf/2312.05762" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://github.com/CURRENTF/HRN" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
                             </div>
-                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 本文研究如何通过分层推理来预测涉及多个被告的法律判决结果，旨在理解案件中复杂的实体关系和逻辑链条，以提高预测的准确性。</div>
-                            <div class="tldr" lang="en"><b>TL;DR:</b> This paper investigates how to predict legal judgment outcomes involving multiple defendants through hierarchical reasoning, aiming to understand complex relationships and logic chains.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 通过<strong>分层推理</strong>建模多被告案件中的复杂实体关系与推理链条，提高法律判决预测的准确性。</div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> Uses <strong>hierarchical reasoning</strong> to model relationships and reasoning chains in multi-defendant cases, improving legal judgment prediction.</div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="preprints" class="section">
+                <div class="section-heading">
+                    <h2 lang="en">Preprints &amp; Submissions</h2>
+                    <h2 lang="zh-CN">预印本与在投论文</h2>
+                    <p lang="en">Ongoing work; submission venues do not indicate acceptance. * Equal contribution.</p>
+                    <p lang="zh-CN">以下为预印本与在投工作，投稿会议／期刊不代表已接收。* 表示共同贡献。</p>
+                </div>
+                <div class="publication-list">
+                    <article class="item" id="sparseengine">
+                        <div class="item-meta">
+                            <span class="venue-badge">arXiv 2026</span>
+                            <span class="submission-status" lang="en">ICLR 2027 · Under review</span>
+                            <span class="submission-status" lang="zh-CN">ICLR 2027 · 在投</span>
+                            <span class="track">Sparse inference</span>
+                        </div>
+                        <div>
+                            <h3>SparseEngine: Sparse-First Inference Engine</h3>
+                            <div class="authors"><b>Jitai Hao*</b>, Quansheng Gu*, Qiang Huang, Jun Yu</div>
+                            <div class="paper-role"><span lang="en">Co-first author (listed first) · <strong class="emphasis">Project &amp; Paper</strong></span><span lang="zh-CN">共一第一 · <strong class="emphasis">Project &amp; Paper</strong></span></div>
+
+                            <div class="pub-links">
+                                <a href="https://arxiv.org/abs/2609.39068" target="_blank" rel="noreferrer"><i class="fas fa-link" aria-hidden="true"></i> arXiv</a>
+                                <a href="https://arxiv.org/pdf/2609.39068" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://github.com/CURRENTF/SparseEngine" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
+                            </div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> Designed around <strong class="emphasis">sparsity as a first principle</strong>, co-optimizing sparse attention, KV-cache management, and execution across <strong>15 sparse methods</strong>. It delivers <strong class="emphasis">over 10× decode throughput</strong> with KV eviction and <strong class="emphasis">over 2× end-to-end agent speedup</strong> while maintaining method quality.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 以<strong class="emphasis">稀疏性为第一性设计原则</strong>，协同优化稀疏注意力、KV 缓存管理与执行流程，统一支持<strong>15 种稀疏方法</strong>。在保持方法质量的实验设置下，KV 淘汰场景 Decode 吞吐提升<strong class="emphasis">超过 10×</strong>，Agent 基准端到端加速<strong class="emphasis">超过 2×</strong>。</div>
+                        </div>
+                    </article>
+
+                    <article class="item" id="shallowstream">
+                        <div class="item-meta">
+                            <span class="venue-badge">arXiv 2026</span>
+                            <span class="submission-status" lang="en">ICLR 2027 · Under review</span>
+                            <span class="submission-status" lang="zh-CN">ICLR 2027 · 在投</span>
+                            <span class="track">Streaming video</span>
+                        </div>
+                        <div>
+                            <h3>ShallowStream: Index Shallow then Answer Deep for Streaming Video Understanding</h3>
+                            <div class="authors"><b>Jitai Hao*</b>, Ke Yang*, Di Yan, Fan Liu, Qiang Huang, Jun Yu</div>
+                            <div class="paper-role"><span lang="en">Co-first author (listed first)</span><span lang="zh-CN">共一第一</span></div>
+
+                            <div class="pub-links">
+                                <a href="https://arxiv.org/abs/2609.02780" target="_blank" rel="noreferrer"><i class="fas fa-link" aria-hidden="true"></i> arXiv</a>
+                                <a href="https://arxiv.org/pdf/2609.02780" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://github.com/CURRENTF/ShallowStream" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
+                            </div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> <strong>Index with shallow layers, answer with the full model.</strong> A lightweight video index supports evidence retrieval at query time, reducing <strong class="emphasis">stream-processing time to about one third</strong>.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 提出<strong>浅层定位证据、完整深层回答</strong>：以浅层 KV 建立轻量视频索引，提问时检索相关证据并执行完整深层推理，将<strong class="emphasis">视频流式处理时间缩短至约 1/3</strong>。</div>
+                        </div>
+                    </article>
+
+                    <article class="item" id="hear">
+                        <div class="item-meta">
+                            <span class="venue-badge">arXiv 2026</span>
+                            <span class="submission-status" lang="en">ICLR 2027 · Under review</span>
+                            <span class="submission-status" lang="zh-CN">ICLR 2027 · 在投</span>
+                            <span class="track">Agentic serving</span>
+                        </div>
+                        <div>
+                            <h3>Can Agent Harnesses and Inference Engines Hear Each Other? The HEAR Protocol for Agentic LLM Serving</h3>
+                            <div class="authors">Jiaqi Zhao*, Haodong Chen*, <b>Jitai Hao*</b>, Wei Zhao, Jinghao Pang, Qiang Huang, Jun Yu</div>
+                            <div class="paper-role"><span lang="en">Co-first author (listed third) · <strong class="emphasis">Project Leader</strong></span><span lang="zh-CN">共一第三 · <strong class="emphasis">项目负责人</strong></span></div>
+                            <div class="pub-links">
+                                <a href="https://arxiv.org/abs/2610.06597" target="_blank" rel="noreferrer"><i class="fas fa-link" aria-hidden="true"></i> arXiv</a>
+                                <a href="https://arxiv.org/pdf/2610.06597" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                            </div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> I <strong class="emphasis">originated the core idea and led the project</strong>. HEAR provides a <strong>bidirectional harness-engine protocol</strong>, exposing prefix-cache matches and engine load so agents can schedule requests more intelligently and smooth workload peaks.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 我<strong class="emphasis">提出核心 idea 并负责项目</strong>。HEAR 构建 Agent 应用与推理引擎之间的<strong>双向通信协议</strong>，让应用获知当前请求可命中的 prefix cache 与引擎负载，从而更智能地排布请求、削峰填谷。</div>
+                        </div>
+                    </article>
+
+                    <article class="item" id="residualkv">
+                        <div class="item-meta">
+                            <span class="venue-badge">arXiv 2026</span>
+                            <span class="submission-status" lang="en">IEEE TPAMI · Under review</span>
+                            <span class="submission-status" lang="zh-CN">IEEE TPAMI · 在投</span>
+                            <span class="track">KV compression</span>
+                        </div>
+                        <div>
+                            <h3>ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference</h3>
+                            <div class="authors"><b>Jitai Hao</b>, Qiang Huang, Yaowei Wang, Min Zhang, Jun Yu</div>
+                            <div class="paper-role"><span lang="en">First author</span><span lang="zh-CN">第一作者</span></div>
+
+                            <div class="pub-links">
+                                <a href="papers/deltakv-residual-kv-cache-compression.html"><i class="fas fa-file-lines" aria-hidden="true"></i> <span lang="en">Overview</span><span lang="zh-CN">概览</span></a>
+                                <a href="https://arxiv.org/abs/2602.08005" target="_blank" rel="noreferrer"><i class="fas fa-link" aria-hidden="true"></i> arXiv</a>
+                                <a href="https://arxiv.org/pdf/2602.08005" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                                <a href="https://github.com/CURRENTF/ResidualKV" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> Code</a>
+                            </div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> Formerly DeltaKV. Encodes each token as <strong>reference KV + quantized residual</strong> and reconstructs selected states on demand, shrinking <strong class="emphasis">KV storage to as little as about 1/8</strong> with <strong>near-lossless quality</strong>. Revised LongBench results use 13%-16% KV storage and 30% attention computation.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 原名 DeltaKV。将 token 的 KV 表示为<strong>reference KV + 量化 residual</strong>，按需重建选中的状态，在<strong>接近无损质量</strong>下将<strong class="emphasis">KV 缓存最低约为原来的 1/8</strong>。修订版 LongBench 实验使用 13%-16% 的 KV 存储与 30% 的注意力计算。</div>
+                        </div>
+                    </article>
+
+                    <article class="item" id="safe-role">
+                        <div class="item-meta">
+                            <span class="venue-badge">arXiv 2026</span>
+                            <span class="submission-status" lang="en">Under review</span>
+                            <span class="submission-status" lang="zh-CN">在投</span>
+                            <span class="track">Safety alignment</span>
+                        </div>
+                        <div>
+                            <h3>Beyond Refusal Patterns: Safe-Role Internalization for Robust and Generalizable LLM Safety Alignment</h3>
+                            <div class="authors">Jinghao Pang, <b>Jitai Hao</b>, Qiang Huang, Zhaochun Ren, Jun Yu</div>
+
+                            <div class="pub-links">
+                                <a href="https://arxiv.org/abs/2610.07023" target="_blank" rel="noreferrer"><i class="fas fa-link" aria-hidden="true"></i> arXiv</a>
+                                <a href="https://arxiv.org/pdf/2610.07023" target="_blank" rel="noreferrer"><i class="fas fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                            </div>
+                            <div class="tldr" lang="en"><b>TL;DR:</b> Supervised Safe-Role Fine-Tuning (SSRFT) teaches models to internalize a safe role, improving robustness to jailbreaks and generalization to unseen attacks while reducing over-refusal.</div>
+                            <div class="tldr" lang="zh-CN"><b>TL;DR:</b> 提出 Supervised Safe-Role Fine-Tuning（SSRFT），通过内化安全角色提升对越狱攻击的鲁棒性和对未见攻击的泛化能力，并减少对正常问题的过度拒答。</div>
                         </div>
                     </article>
                 </div>
@@ -1289,15 +520,58 @@
                 </div>
                 <div class="project-strip">
                     <div>
-                        <h3>Sparse-vLLM: A Sparse-First Inference Framework for Long-Context LLMs</h3>
-                        <p lang="zh-CN">统一稀疏推理框架，支持物理淘汰、逻辑掩码与混合压缩。</p>
-                        <p lang="en">A unified sparse inference engine supporting physical eviction, logical masking, and hybrid compression.</p>
+                        <h3>SparseEngine</h3>
+                        <p lang="zh-CN">稀疏优先的推理引擎，支持 15 种方法，并通过 Chain Cache 与可控 Prefix-Cache Pruning 协调跨请求缓存状态。</p>
+                        <p lang="en">A sparse-first inference engine with 15 methods, Chain Cache, and controllable Prefix-Cache Pruning for cross-request state management.</p>
                     </div>
                     <div class="pub-links">
-                        <a href="https://github.com/CURRENTF/Sparse-vLLM" target="_blank" rel="noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="https://deepwiki.com/CURRENTF/Sparse-vLLM" target="_blank" rel="noreferrer"><i class="fas fa-book-open"></i> DeepWiki</a>
-                        <a href="https://arxiv.org/abs/2602.08005" target="_blank" rel="noreferrer"><i class="fas fa-file-lines"></i> DeltaKV Paper</a>
+                        <a href="https://github.com/CURRENTF/SparseEngine" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+                        <a href="#sparseengine"><i class="fas fa-file-lines" aria-hidden="true"></i> <span lang="en">Paper</span><span lang="zh-CN">论文</span></a>
                     </div>
+                </div>
+                <div class="project-strip">
+                    <div>
+                        <h3>ShallowStream</h3>
+                        <p lang="zh-CN">浅层索引、深层回答：面向实时视频流的高效多模态推理。</p>
+                        <p lang="en">Shallow indexing and deep answering for efficient multimodal inference over continuous video streams.</p>
+                    </div>
+                    <div class="pub-links">
+                        <a href="https://github.com/CURRENTF/ShallowStream" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+                        <a href="#shallowstream"><i class="fas fa-file-lines" aria-hidden="true"></i> <span lang="en">Paper</span><span lang="zh-CN">论文</span></a>
+                    </div>
+                </div>
+                <div class="project-strip">
+                    <div>
+                        <h3 lang="zh-CN">哈尔滨工业大学点子基金</h3>
+                        <h3 lang="en">HIT Idea Fund</h3>
+                        <p lang="zh-CN"><strong class="emphasis">主持 · 项目负责人</strong>。研究统一多模态模型的架构改良，以及高效训练与推理。</p>
+                        <p lang="en"><strong class="emphasis">Project lead</strong>. Research on unified multimodal architectures and efficient training and inference.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="section">
+                <div class="section-heading">
+                    <h2 lang="en">Education</h2>
+                    <h2 lang="zh-CN">教育背景</h2>
+                </div>
+                <div class="education-list">
+                    <article class="education-entry">
+                        <h3 lang="en">Harbin Institute of Technology (Shenzhen)</h3>
+                        <h3 lang="zh-CN">哈尔滨工业大学（深圳）</h3>
+                        <p lang="en">Ph.D. student in Intelligent Science and Technology</p>
+                        <p lang="zh-CN">智能科学与技术 · 博士在读</p>
+                        <p lang="en">Advisors: Prof. Jun Yu and Prof. Qiang Huang</p>
+                        <p lang="zh-CN">导师：俞俊教授、黄强教授</p>
+                    </article>
+                    <article class="education-entry">
+                        <h3 lang="en">Shandong University</h3>
+                        <h3 lang="zh-CN">山东大学</h3>
+                        <p lang="en">B.Sc. and M.Sc. in Computer Science and Technology · 2018-2025</p>
+                        <p lang="zh-CN">计算机科学与技术 · 学士与硕士 · 2018-2025</p>
+                        <p lang="en">Advisor: <a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">Prof. Zhaochun Ren</a></p>
+                        <p lang="zh-CN">导师：<a href="https://renzhaochun.github.io/" target="_blank" rel="noreferrer">任昭春教授</a></p>
+                    </article>
                 </div>
             </section>
 
@@ -1307,12 +581,12 @@
                     <h2 lang="zh-CN">实习经历</h2>
                 </div>
                 <ul class="simple-list" lang="zh-CN">
-                    <li><b>百度</b>，研究实习生，2025年3月 - 2025年10月</li>
-                    <li><b>蚂蚁集团</b>，研究实习生，2024年5月 - 2024年10月</li>
+                    <li><b>百度文心一言</b>，研究实习生，2025年3月 - 2025年10月<br>研究成果：Low-Rank Clone（NeurIPS 2025 Spotlight）、Uni-X（ICLR 2026）。</li>
+                    <li><b>蚂蚁集团</b>，研究实习生，2024年5月 - 2024年10月<br>研究成果：OmniKV（ICLR 2025）。</li>
                 </ul>
                 <ul class="simple-list" lang="en">
-                    <li><b>Baidu</b>, Research Intern, Mar. 2025 - Oct. 2025</li>
-                    <li><b>Ant Group</b>, Research Intern, May 2024 - Oct. 2024</li>
+                    <li><b>Baidu, ERNIE</b>, Research Intern, Mar. 2025 - Oct. 2025<br>Research: Low-Rank Clone (NeurIPS 2025 Spotlight) and Uni-X (ICLR 2026).</li>
+                    <li><b>Ant Group</b>, Research Intern, May 2024 - Oct. 2024<br>Research: OmniKV (ICLR 2025).</li>
                 </ul>
             </section>
 
@@ -1322,12 +596,12 @@
                     <h2 lang="zh-CN">奖项与荣誉</h2>
                 </div>
                 <ul class="simple-list" lang="zh-CN">
-                    <li><b>国家奖学金</b>，一等学业奖学金等</li>
+                    <li><b>国家奖学金</b></li>
                     <li><b>ACM/ICPC 亚洲区域赛银牌</b>，2 枚</li>
                     <li><b>大学生软件创新大赛 OPPO 杯</b>，国家一等奖</li>
                 </ul>
                 <ul class="simple-list" lang="en">
-                    <li><b>National Scholarship</b>, First-Class Academic Scholarship, etc.</li>
+                    <li><b>National Scholarship</b></li>
                     <li><b>ACM/ICPC Asia Regional Contest, Silver Medal</b>, x2</li>
                     <li><b>National First Prize</b>, University Student Software Innovation Competition, OPPO Cup</li>
                 </ul>
@@ -1339,58 +613,5 @@
         </div>
     </div>
 
-    <script>
-        const sections = document.querySelectorAll(".section");
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add("is-visible");
-            });
-        }, { threshold: 0.08 });
-
-        sections.forEach(section => observer.observe(section));
-
-        const researchMap = document.querySelector(".research-map");
-        const mapNodes = researchMap ? Array.from(researchMap.querySelectorAll(".map-node")) : [];
-        const canAnimateMap = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-        function resetMapRepulsion() {
-            if (!researchMap) return;
-            researchMap.classList.remove("is-repel");
-            mapNodes.forEach(node => {
-                node.style.setProperty("--repel-x", "0px");
-                node.style.setProperty("--repel-y", "0px");
-            });
-        }
-
-        if (researchMap && canAnimateMap) {
-            researchMap.addEventListener("pointermove", event => {
-                researchMap.classList.add("is-repel");
-                const mapRect = researchMap.getBoundingClientRect();
-                const pointerX = event.clientX;
-                const pointerY = event.clientY;
-
-                mapNodes.forEach(node => {
-                    const rect = node.getBoundingClientRect();
-                    const nodeX = rect.left + rect.width / 2;
-                    const nodeY = rect.top + rect.height / 2;
-                    const dx = nodeX - pointerX;
-                    const dy = nodeY - pointerY;
-                    const distance = Math.max(Math.hypot(dx, dy), 1);
-                    const influence = Math.max(0, 1 - distance / 310);
-                    const force = influence * 17;
-                    const routeBias = node.dataset.route === "multimodal" ? 1 : -1;
-                    const dividerPush = Math.max(0, 1 - Math.abs(pointerX - (mapRect.left + mapRect.width * 0.7)) / 240) * 5 * routeBias;
-                    const repelX = (dx / distance) * force + dividerPush;
-                    const repelY = (dy / distance) * force * 0.42;
-
-                    node.style.setProperty("--repel-x", `${repelX.toFixed(2)}px`);
-                    node.style.setProperty("--repel-y", `${repelY.toFixed(2)}px`);
-                });
-            });
-
-            researchMap.addEventListener("pointerleave", resetMapRepulsion);
-            window.addEventListener("blur", resetMapRepulsion);
-        }
-    </script>
 </body>
 </html>

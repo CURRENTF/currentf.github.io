@@ -41,7 +41,7 @@
             { "@type": "Person", "name": "Jun Yu" }
         ],
         "datePublished": "2026",
-        "dateModified": "2026-06-04",
+        "dateModified": "2026-10-13",
         "isPartOf": { "@type": "Event", "name": "ICLR 2026" },
         "image": "https://currentf.github.io/assets/papers/unix-framework.png",
         "mainEntityOfPage": "https://currentf.github.io/papers/uni-x-modality-conflict.html",
@@ -65,12 +65,10 @@
     }
     </script>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/paper-pages.css">
-    <script defer src="../assets/paper-pages.js"></script>
+    <link rel="stylesheet" href="../assets/site.css?v=20261013-type">
+    <link rel="stylesheet" href="../assets/paper-pages.css?v=20261013-type">
+    <script defer src="../assets/paper-pages.js?v=20261013-modern"></script>
 </head>
 <body class="project-page theme-multimodal">
     <div class="site-shell">
@@ -85,13 +83,13 @@
                 </span>
             </a>
             <nav class="header-links" aria-label="Primary navigation">
-                <a class="nav-link" href="../index.html"><i class="fa-solid fa-house"></i> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
-                <a class="nav-link" href="../index.html#publications"><i class="fa-solid fa-book-open"></i> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
-                <a class="nav-link" href="../blog/index.html"><i class="fa-solid fa-pen-nib"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
-                <a class="nav-link" href="../index.html#projects"><i class="fa-solid fa-diagram-project"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
-                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope"></i> Email</a>
+                <a class="nav-link" href="../index.html"><i class="fa-solid fa-house" aria-hidden="true"></i> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+                <a class="nav-link" href="../index.html#publications"><i class="fa-solid fa-book-open" aria-hidden="true"></i> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+                <a class="nav-link" href="../blog/index.html"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+                <a class="nav-link" href="../index.html#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</a>
                 <button class="lang-switcher" type="button" onclick="toggleLanguage()">
-                    <i class="fa-solid fa-language"></i>
+                    <i class="fa-solid fa-language" aria-hidden="true"></i>
                     <span lang="zh-CN">English</span>
                     <span lang="en">中文</span>
                 </button>
@@ -108,17 +106,19 @@
                             <span lang="en"><b>Jitai Hao</b>*, Hao Liu*, Xinyan Xiao, Qiang Huang, Jun Yu</span>
                             <span lang="zh-CN"><b>Jitai Hao</b>*, Hao Liu*, Xinyan Xiao, Qiang Huang, Jun Yu</span>
                         </div>
+                        <p class="contribution-note" lang="en">Co-first author (listed first). <strong class="emphasis">Multi-node training on 32 H800 GPUs.</strong> The <strong>shared-middle, separated-ends architecture</strong> enables a 3B model to match contemporary 7B models.</p>
+                        <p class="contribution-note" lang="zh-CN">共一第一。<strong class="emphasis">多机多卡训练经验：32 卡 H800。</strong>通过<strong>中间共享、两端分离</strong>架构，让 3B 模型匹配当时 7B 模型的性能。</p>
                         <p lang="en">Uni-X targets modality conflict in unified multimodal models. Its X-shaped, two-end-separated design keeps modality-specific paths at the ends while sharing a middle representation space.</p>
                         <p lang="zh-CN">Uni-X 面向统一多模态模型中的模态冲突问题。它采用 X-shaped “两端分离，中间共享”设计，在两端保留模态特定路径，同时共享中间表示空间。</p>
                         <div class="project-meta-row" aria-label="Paper metadata">
-                            <span class="project-pill"><i class="fa-solid fa-award"></i> ICLR 2026 Poster</span>
-                            <span class="project-pill"><i class="fa-solid fa-layer-group"></i> Unified Multimodal</span>
-                            <span class="project-pill"><i class="fa-solid fa-code-branch"></i> Two-End-Separated</span>
+                            <span class="project-pill"><i class="fa-solid fa-award" aria-hidden="true"></i> ICLR 2026 Poster</span>
+                            <span class="project-pill"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Unified Multimodal</span>
+                            <span class="project-pill"><i class="fa-solid fa-code-branch" aria-hidden="true"></i> Two-End-Separated</span>
                         </div>
                         <div class="project-actions">
-                            <a class="project-button primary" href="https://arxiv.org/pdf/2509.24365.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf"></i> PDF</a>
-                            <a class="project-button" href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank" rel="noreferrer"><i class="fa-solid fa-link"></i> OpenReview</a>
-                            <a class="project-button" href="https://github.com/CURRENTF/Uni-X" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> Code</a>
+                            <a class="project-button primary" href="https://arxiv.org/pdf/2509.24365.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                            <a class="project-button" href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank" rel="noreferrer"><i class="fa-solid fa-link" aria-hidden="true"></i> OpenReview</a>
+                            <a class="project-button" href="https://github.com/CURRENTF/Uni-X" target="_blank" rel="noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i> Code</a>
                         </div>
                     </div>
 
@@ -161,21 +161,21 @@
                 <p lang="zh-CN">Uni-X 属于统一多模态研究主线，关注一个核心训练矛盾：单一模型需要支持多模态、多任务，但完全共享容易引发模态冲突。</p>
                 <div class="section-grid">
                     <article class="section-card">
-                        <i class="fa-solid fa-code-branch"></i>
+                        <i class="fa-solid fa-code-branch" aria-hidden="true"></i>
                         <h3 lang="en">Separate the Ends</h3>
                         <h3 lang="zh-CN">两端分离</h3>
                         <p lang="en">Keeps modality-specific components where conflicts are most direct.</p>
                         <p lang="zh-CN">在冲突最直接的位置保留模态特定组件。</p>
                     </article>
                     <article class="section-card">
-                        <i class="fa-solid fa-share-nodes"></i>
+                        <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
                         <h3 lang="en">Share the Middle</h3>
                         <h3 lang="zh-CN">中间共享</h3>
                         <p lang="en">Maintains a shared representation space for unified multimodal capability.</p>
                         <p lang="zh-CN">保留共享表示空间，以支持统一多模态能力。</p>
                     </article>
                     <article class="section-card">
-                        <i class="fa-solid fa-scale-balanced"></i>
+                        <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
                         <h3 lang="en">Balance Tasks</h3>
                         <h3 lang="zh-CN">平衡任务</h3>
                         <p lang="en">Mitigates conflicts between multimodal understanding and generation objectives.</p>
@@ -259,9 +259,9 @@
                     <p lang="zh-CN">Uni-X 的论文、OpenReview 页面与代码。</p>
                 </div>
                 <div class="project-actions">
-                    <a class="project-button primary" href="https://arxiv.org/pdf/2509.24365.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf"></i> PDF</a>
-                    <a class="project-button" href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank" rel="noreferrer"><i class="fa-solid fa-link"></i> OpenReview</a>
-                    <a class="project-button" href="../index.html#publications"><i class="fa-solid fa-arrow-left"></i> <span lang="en">Back</span><span lang="zh-CN">返回</span></a>
+                    <a class="project-button primary" href="https://arxiv.org/pdf/2509.24365.pdf" target="_blank" rel="noreferrer"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF</a>
+                    <a class="project-button" href="https://openreview.net/forum?id=IJLIYpCkwz" target="_blank" rel="noreferrer"><i class="fa-solid fa-link" aria-hidden="true"></i> OpenReview</a>
+                    <a class="project-button" href="../index.html#publications"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span lang="en">Back</span><span lang="zh-CN">返回</span></a>
                 </div>
             </section>
         </main>

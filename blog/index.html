@@ -20,7 +20,7 @@
         "blogPost": [
             {
                 "@type": "BlogPosting",
-                "headline": "DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity",
+                "headline": "ResidualKV: Residual-Based KV Cache Compression for Efficient Long-Context Inference",
                 "url": "https://currentf.github.io/papers/deltakv-residual-kv-cache-compression.html",
                 "author": { "@type": "Person", "name": "Jitai Hao" }
             },
@@ -46,12 +46,10 @@
     }
     </script>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/paper-pages.css">
-    <script defer src="../assets/paper-pages.js"></script>
+    <link rel="stylesheet" href="../assets/site.css?v=20261013-type">
+    <link rel="stylesheet" href="../assets/paper-pages.css?v=20261013-type">
+    <script defer src="../assets/paper-pages.js?v=20261013-modern"></script>
 </head>
 <body class="project-page blog-page">
     <div class="site-shell">
@@ -66,13 +64,13 @@
                 </span>
             </a>
             <nav class="header-links" aria-label="Primary navigation">
-                <a class="nav-link" href="../index.html"><i class="fa-solid fa-house"></i> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
-                <a class="nav-link" aria-current="page" href="index.html"><i class="fa-solid fa-pen-nib"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
-                <a class="nav-link" href="../index.html#publications"><i class="fa-solid fa-book-open"></i> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
-                <a class="nav-link" href="../index.html#projects"><i class="fa-solid fa-diagram-project"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
-                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope"></i> Email</a>
+                <a class="nav-link" href="../index.html"><i class="fa-solid fa-house" aria-hidden="true"></i> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+                <a class="nav-link" aria-current="page" href="index.html"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+                <a class="nav-link" href="../index.html#publications"><i class="fa-solid fa-book-open" aria-hidden="true"></i> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+                <a class="nav-link" href="../index.html#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+                <a class="nav-link" href="mailto:jitaihao@outlook.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</a>
                 <button class="lang-switcher" type="button" onclick="toggleLanguage()">
-                    <i class="fa-solid fa-language"></i>
+                    <i class="fa-solid fa-language" aria-hidden="true"></i>
                     <span lang="zh-CN">English</span>
                     <span lang="en">中文</span>
                 </button>
@@ -88,9 +86,9 @@
                         <p lang="en">Research notes, paper overviews, and technical write-ups on efficient AI and unified multimodal models.</p>
                         <p lang="zh-CN">关于高效 AI 与统一多模态模型的研究笔记、论文概览和技术文章。</p>
                         <div class="project-meta-row" aria-label="Blog topics">
-                            <span class="project-pill"><i class="fa-solid fa-bolt"></i> Efficient AI</span>
-                            <span class="project-pill"><i class="fa-solid fa-book-open-reader"></i> Paper Overview</span>
-                            <span class="project-pill"><i class="fa-solid fa-layer-group"></i> Multimodal Models</span>
+                            <span class="project-pill"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Efficient AI</span>
+                            <span class="project-pill"><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i> Paper Overview</span>
+                            <span class="project-pill"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Multimodal Models</span>
                         </div>
                     </div>
                 </div>
@@ -106,17 +104,17 @@
                     <article class="blog-card">
                         <div>
                             <div class="blog-kicker">Paper Overview · arXiv 2026</div>
-                            <h3 lang="en">DeltaKV: Residual-Based KV Cache Compression</h3>
-                            <h3 lang="zh-CN">DeltaKV：残差式 KV Cache 压缩</h3>
-                            <p lang="en">A paper overview for residual-based KV-cache compression through long-range similarity in long-context LLM inference.</p>
-                            <p lang="zh-CN">概览 DeltaKV 如何利用长上下文 KV 表征中的长程相似性，实现残差式 KV-cache 压缩。</p>
+                            <h3 lang="en">ResidualKV: Residual-Based KV Cache Compression</h3>
+                            <h3 lang="zh-CN">ResidualKV：残差式 KV Cache 压缩</h3>
+                            <p lang="en">Updated for arXiv v2: global KV references and quantized residuals for efficient long-context inference. Previously titled DeltaKV.</p>
+                            <p lang="zh-CN">按 arXiv v2 更新：利用全局 KV 参考与量化残差实现高效长上下文推理。原名 DeltaKV。</p>
                             <div class="blog-tags">
                                 <span>KV cache compression</span>
                                 <span>Long-context LLMs</span>
                                 <span>Residual compression</span>
                             </div>
                         </div>
-                        <a class="project-button primary" href="../papers/deltakv-residual-kv-cache-compression.html"><i class="fa-solid fa-arrow-right"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
+                        <a class="project-button primary" href="../papers/deltakv-residual-kv-cache-compression.html"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
                     </article>
 
                     <article class="blog-card">
@@ -132,7 +130,7 @@
                                 <span>GenEval</span>
                             </div>
                         </div>
-                        <a class="project-button primary" href="../papers/uni-x-modality-conflict.html"><i class="fa-solid fa-arrow-right"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
+                        <a class="project-button primary" href="../papers/uni-x-modality-conflict.html"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
                     </article>
 
                     <article class="blog-card">
@@ -148,7 +146,7 @@
                                 <span>Low-rank clone</span>
                             </div>
                         </div>
-                        <a class="project-button primary" href="../papers/low-rank-clone-efficient-knowledge-distillation.html"><i class="fa-solid fa-arrow-right"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
+                        <a class="project-button primary" href="../papers/low-rank-clone-efficient-knowledge-distillation.html"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
                     </article>
 
                     <article class="blog-card">
@@ -164,7 +162,7 @@
                                 <span>Efficient inference</span>
                             </div>
                         </div>
-                        <a class="project-button primary" href="../papers/omnikv-dynamic-context-selection.html"><i class="fa-solid fa-arrow-right"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
+                        <a class="project-button primary" href="../papers/omnikv-dynamic-context-selection.html"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> <span lang="en">Read</span><span lang="zh-CN">阅读</span></a>
                     </article>
                 </div>
             </section>
