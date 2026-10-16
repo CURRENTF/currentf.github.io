@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Low-Rank Clone: From FFN Memory to Efficient Distillation | Jitai Hao</title>
+<meta content="Treating FFNs as key-value memories, and transferring their knowledge through low-rank projection and activation clone." name="description"/>
+<link href="https://currentf.github.io/blog/low-rank-clone.html" rel="canonical"/>
+<meta content="Low-Rank Clone: From FFN Memory to Efficient Distillation" property="og:title"/>
+<meta content="Treating FFNs as key-value memories, and transferring their knowledge through low-rank projection and activation clone." property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://currentf.github.io/blog/low-rank-clone.html" property="og:url"/>
+<meta content="https://currentf.github.io/assets/blog/low-rank-clone-01.webp" property="og:image"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link href="../assets/site.css?v=20261013-type" rel="stylesheet"/>
+<link href="../assets/blog.css?v=20261015-bilingual" rel="stylesheet"/>
+<script defer="" src="../assets/paper-pages.js?v=20261015-bilingual"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Low-Rank Clone: From FFN Memory to Efficient Distillation", "description": "Treating FFNs as key-value memories, and transferring their knowledge through low-rank projection and activation clone.", "url": "https://currentf.github.io/blog/low-rank-clone.html", "dateModified": "2025-11-30", "inLanguage": ["en", "zh-CN"], "author": {"@type": "Person", "name": "Jitai Hao", "url": "https://currentf.github.io/"}, "image": "https://currentf.github.io/assets/blog/low-rank-clone-01.webp", "isBasedOn": ["https://zhuanlan.zhihu.com/p/1959655943672426991", "https://www.xiaohongshu.com/explore/68e76eb1000000000503151c"]}</script>
+</head>
+<body class="blog-page" data-description-en="Treating FFNs as key-value memories, and transferring their knowledge through low-rank projection and activation clone." data-description-zh="把 FFN 看作 Key-Value Memory，用低秩投影与激活克隆将教师的知识带入小模型。" data-title-en="Low-Rank Clone: From FFN Memory to Efficient Distillation" data-title-zh="Low-Rank Clone：从 FFN 记忆到高效蒸馏">
+<a class="skip-link" href="#main"><span lang="en">Skip to content</span><span lang="zh-CN">跳至正文</span></a>
+<div class="site-shell"><header class="site-header">
+<a aria-label="Jitai Hao homepage" class="brand" href="../index.html">
+<span class="brand-mark">JH</span>
+<span class="brand-text">
+<strong lang="en">Jitai Hao</strong>
+<strong lang="zh-CN">郝继泰</strong>
+<span lang="en">Efficient AI and multimodal models</span>
+<span lang="zh-CN">高效 AI 与统一多模态模型</span>
+</span>
+</a>
+<nav aria-label="Primary navigation" class="header-links">
+<a class="nav-link" href="../index.html"> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+<a aria-current="page" class="nav-link" href="./"> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+<a class="nav-link" href="../index.html#publications"> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+<a class="nav-link" href="../index.html#projects"> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+<a class="nav-link" href="mailto:jitaihao@outlook.com"> Email</a>
+<button class="lang-switcher" onclick="toggleLanguage()" type="button">
+<span lang="zh-CN">English</span>
+<span lang="en">中文</span>
+</button>
+</nav>
+
+</header>
+
+<main class="article-layout" id="main">
+<a class="back-link" href="./"><span lang="zh-CN">← 全部文章</span><span lang="en">← All posts</span></a>
+<article class="original" lang="zh-CN">
+<header class="article-header"><h1>Low-Rank Clone：从 FFN 记忆到高效蒸馏</h1>
+
+<div class="article-meta"><span>郝继泰</span><span>更新于 <time datetime="2025-11-30">2025-11-30</time></span><a href="https://zhuanlan.zhihu.com/p/1959655943672426991">知乎原文</a><a href="https://www.xiaohongshu.com/explore/68e76eb1000000000503151c">小红书原文</a></div></header>
+
+<details class="article-toc"><summary>文章目录</summary><ol><li><a href="#section-1">一、一些insights：既然FFN是key-value memory，能否进行压缩？</a></li><li><a href="#section-2">二、LRC 方法</a></li><li><a href="#section-5">三、实验</a></li><li><a href="#section-6">学生模型成功继承了教师的知识分布</a></li></ol>
+
+</details>
+<div class="post-body"><p>最近我们高效蒸馏的工作 <b>“Low-Rank Clone (LRC)”</b> 非常幸运被 NeurIPS 2025 接收为 Spotlight。</p>
+
+<p><b>TL;DR:</b> 我们通过训练一组 <b>Low-Rank Projection (低秩投影)</b> 矩阵，将一个强大的教师大模型（Teacher LLM）直接“投影”成一个更小的学生模型（Student SLM）。我们不需要从头创建或训练学生模型的庞大权重，只需训练这些投影矩阵。最终，仅用 <b>20B</b> 训练数据，我们得到的 <code>LRC-1.7B</code> 模型就能超越使用 <b>36T</b> 数据训练的 SOTA 模型 <code>Qwen3-1.7B</code> ，实现了超过1000倍的训练效率提升 。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/low-rank-clone-01.webp"><img alt="Low-Rank Clone 原文配图 1" decoding="async" height="790" loading="lazy" src="../assets/blog/low-rank-clone-01.webp" width="862"/></a></figure>
+
+<p><b>论文链接:</b> <a href="http://arxiv.org/abs/2505.12781">arxiv.org/abs/2505.12781</a></p>
+
+<p><b>代码和权重链接:</b><a href="https://github.com/CURRENTF/LowRankClone">https://github.com/CURRENTF/LowRankClone</a> <a href="https://huggingface.co/JitaiHao/LRC-4B-SFT">https://huggingface.co/JitaiHao/LRC-4B-SFT</a> </p>
+
+<hr/><h2 id="section-1">一、一些insights：既然FFN是key-value memory，能否进行压缩？</h2>
+
+<p>在介绍我们的方法前，我想先分享一下最初的思考，希望能给大家一些启发。</p>
+
+<p>LRC 的核心灵感直接来源于一篇经典工作 <b>“Transformer Feed-Forward Layers Are Key-Value Memories” (Geva et al., 2021)</b> 。这篇文章了认为FFN 模块可以理解为：它其实扮演了一个键值记忆库（Key-Value Memory）的角色 。</p>
+
+<p>我们来回顾一下 FFN 的计算过程，以 SwiGLU 激活函数为例 ： </p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>o</mi><mrow><mi>f</mi><mi>f</mi><mi>n</mi></mrow></msub><mo>=</mo><mtext>SwiGLU</mtext><mo stretchy="false">(</mo><mi>x</mi><msubsup><mi>W</mi><mrow><mi>u</mi><mi>p</mi></mrow><mi mathvariant="normal">⊤</mi></msubsup><mo separator="true">,</mo><mi>x</mi><msubsup><mi>W</mi><mrow><mi>g</mi><mi>a</mi><mi>t</mi><mi>e</mi></mrow><mi mathvariant="normal">⊤</mi></msubsup><mo stretchy="false">)</mo><msub><mi>W</mi><mrow><mi>d</mi><mi>o</mi><mi>w</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">o_{ffn} = \text{SwiGLU}(xW_{up}^{\top}, xW_{gate}^{\top})W_{down}</annotation></semantics></math></p>
+
+<p>这个过程可以直观地理解为：</p>
+
+<ol><li><b>查询与匹配</b>：输入向量 <code>x</code> 分别与 <code>W_up</code> 和 <code>W_gate</code> (可以理解为 <b>Key</b> 矩阵) 进行矩阵乘法，计算相似度并生成一个激活值分布 。</li><li><b>内容提取</b>：用上一步得到的激活值，对 <code>W_down</code> (可以理解为 <b>Value</b> 矩阵) 进行加权求和，从而提取出存储的知识 。</li></ol>
+
+<p>既然 FFN 是一个 Key-Value Memory，那么一个自然而然的问题就来了：<b>我们能否在不显著损害其存储知识的前提下，对 Key 和 Value 矩阵进行压缩？</b></p>
+
+<p>这便是 LRC 方法的起点。</p>
+
+<h2 id="section-2">二、LRC 方法</h2>
+
+<p>为了实现对 FFN 记忆的压缩，我们设计了一个统一的框架，包含两个核心步骤：<b>低秩投影 (Low-Rank Projection)</b> 和 <b>激活克隆 (Activation Clone)</b> 。</p>
+
+<h3 id="section-3">1. Low-Rank Projection：用投影生成学生权重</h3>
+
+<p>传统方法要么从头训练学生模型 ，要么通过“硬剪枝”粗暴地丢掉教师模型的部分权重 ，这两种方式都会导致信息丢失或效率低下 。</p>
+
+<p>LRC 另辟蹊径，我们不训练学生模型的权重，而是训练一组轻量级的 <b>投影矩阵</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mi>m</mi><mi>P</mi></msubsup></mrow><annotation encoding="application/x-tex">W_m^P</annotation></semantics></math> 。学生模型的权重 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mi>m</mi><mi>S</mi></msubsup></mrow><annotation encoding="application/x-tex">W_m^S</annotation></semantics></math> 由教师模型的权重 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mi>m</mi><mi>T</mi></msubsup></mrow><annotation encoding="application/x-tex">W_m^T</annotation></semantics></math> 直接投影生成 。</p>
+
+<p>对于 Transformer 的每一层 <code>i</code> 中的每一个权重矩阵 <code>m</code> (例如 <code>q, k, v, o, up, gate, down</code>)，其生成公式如下 ： </p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo>=</mo><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup></mrow><annotation encoding="application/x-tex">W_{m,i}^S = W_{m,i}^T W_{m,i}^P</annotation></semantics></math></p>
+
+<p> 这里，<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><msubsup><mi>d</mi><mi>m</mi><mi>T</mi></msubsup><mo>×</mo><msup><mi>d</mi><mi>T</mi></msup></mrow></msup></mrow><annotation encoding="application/x-tex">W_{m,i}^T \in \mathbb{R}^{d_{m}^{T}\times d^{T}}</annotation></semantics></math> 是教师模型的权重，<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><msup><mi>d</mi><mi>T</mi></msup><mo>×</mo><msup><mi>d</mi><mi>S</mi></msup></mrow></msup></mrow><annotation encoding="application/x-tex">W_{m,i}^P \in \mathbb{R}^{d^{T}\times d^{S}}</annotation></semantics></math> 是我们唯一需要训练的低秩投影矩阵 。通过这种方式，我们将教师模型庞大的权重“软压缩”到了学生模型的维度空间，最大限度地保留了原始知识结构 。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/low-rank-clone-02.webp"><img alt="Method" decoding="async" height="675" loading="lazy" src="../assets/blog/low-rank-clone-02.webp" width="1440"/></a><figcaption>Method</figcaption></figure>
+
+<h3 id="section-4">2. Activation Clone：确保投影后产生一致的相似度</h3>
+
+<p>仅仅投影权重还不够，我们还需要确保压缩后的 Key-Value Memory 在面对相同的输入时，能产生和教师模型相似的“反应”。</p>
+
+<p>因此，我们引入了 <b>激活克隆</b> 机制，通过均方误差（MSE）损失函数，强制学生模型在各个中间步骤的激活值与教师模型的激活值保持一致 。</p>
+
+<p>我们的克隆损失函数 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{clone}</annotation></semantics></math> 覆盖了注意力模块和 FFN 模块的多个中间输出 ： </p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>e</mi></mrow></msub><mo>=</mo><msubsup><mo>∑</mo><mi>i</mi><mi>l</mi></msubsup><mrow><mo fence="true">[</mo><mi mathvariant="script">E</mi><mo stretchy="false">(</mo><msubsup><mi>o</mi><mrow><mi>a</mi><mi>t</mi><mi>t</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo separator="true">,</mo><msubsup><mi>o</mi><mrow><mi>a</mi><mi>t</mi><mi>t</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><msubsup><mi>W</mi><mrow><mi>o</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup><mo stretchy="false">)</mo><mo>+</mo><mi mathvariant="script">E</mi><mo stretchy="false">(</mo><msubsup><mi>o</mi><mrow><mi>f</mi><mi>f</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo separator="true">,</mo><msubsup><mi>o</mi><mrow><mi>f</mi><mi>f</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><msubsup><mi>W</mi><mrow><mi>d</mi><mi>o</mi><mi>w</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup><mo stretchy="false">)</mo><mo>+</mo><msub><mo>∑</mo><mrow><mi>m</mi><mo>∈</mo><mo stretchy="false">{</mo><mi>q</mi><mo separator="true">,</mo><mi>k</mi><mo separator="true">,</mo><mi>v</mi><mo separator="true">,</mo><mi>u</mi><mi>p</mi><mo separator="true">,</mo><mi>g</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo stretchy="false">}</mo></mrow></msub><mi mathvariant="script">E</mi><mo stretchy="false">(</mo><msubsup><mi>h</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo separator="true">,</mo><msubsup><mi>h</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><mo stretchy="false">)</mo><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{L}_{clone} = \sum_{i}^{l} \left[ \mathcal{E}(o_{attn,i}^S, o_{attn,i}^T W_{o,i}^P) + \mathcal{E}(o_{ffn,i}^S, o_{ffn,i}^T W_{down,i}^P) + \sum_{m \in \{q,k,v,up,gate\}} \mathcal{E}(h_{m,i}^S, h_{m,i}^T) \right]</annotation></semantics></math></p>
+
+<p> 其中，<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">E</mi></mrow><annotation encoding="application/x-tex">\mathcal{E}</annotation></semantics></math> 代表 MSE Loss 。这个公式确保了学生模型不仅在最终输出层，更在模型的“思考”过程的每一步，都尽可能地模仿教师模型的行为 。</p>
+
+<p>最终，模型的总训练目标由三部分组成：传统的 <b>KL散度损失</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{KL}</annotation></semantics></math>、<b>语言模型损失</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>L</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{LM}</annotation></semantics></math>，以及我们的 <b>克隆损失</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{clone}</annotation></semantics></math> 。</p>
+
+<h2 id="section-5">三、实验</h2>
+
+<p>LRC 的有效性在实验中得到了充分验证。我们用 <code>Llama-3.2-3B</code>、<code>Qwen2.5-3B/7B</code> 等开源模型作为教师，训练了一系列 LRC 学生模型 。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/low-rank-clone-03.webp"><img alt="Low-Rank Clone 原文配图 3" decoding="async" height="718" loading="lazy" src="../assets/blog/low-rank-clone-03.webp" width="1440"/></a></figure>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/low-rank-clone-04.webp"><img alt="Low-Rank Clone 原文配图 4" decoding="async" height="655" loading="lazy" src="../assets/blog/low-rank-clone-04.webp" width="1440"/></a></figure>
+
+<p>如上表所示，我们的 <code>LRC-1.7B</code> 模型仅用 <b>20B</b> tokens，平均分达到 <b>64.98</b>，超过了使用 <b>36T</b> tokens 训练的 <code>Qwen3-1.7B</code> (<b>63.17</b>) 。同时，<code>LRC-4B</code> 模型使用约 <b>18B</b> 训练 tokens，平均分达到 <b>70.30</b>，与使用 <b>36T</b> tokens 训练的 <code>Qwen3-4B</code> (<b>70.29</b>) 性能相当 。（均使用 lm-eval==0.4.8 进行测试，补充自 2025-11-30 小红书更新。）</p>
+
+<h2 id="section-6">学生模型成功继承了教师的知识分布</h2>
+
+<p>为了验证我们的核心假设，我们进行了一项神经元掩码实验 。我们发现，在教师模型中对事实性知识反应强烈的“重要神经元”，在学生模型的<b>相同位置</b>也扮演着同样的角色 。当我们掩盖这些神经元时，师生模型的性能都会同步大幅下降，这有力地证明了学生模型成功继承了教师的知识结构 。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/low-rank-clone-05.webp"><img alt="Low-Rank Clone 原文配图 5" decoding="async" height="318" loading="lazy" src="../assets/blog/low-rank-clone-05.webp" width="878"/></a></figure>
+
+<p>如果大家对我们的工作感兴趣，欢迎阅读论文，也给我们 GitHub 点点 Star，我们会继续优化代码让LRC更易用！</p>
+
+</div>
+<footer class="article-footer"><p>整理自本人已发布的文章。<a href="https://zhuanlan.zhihu.com/p/1959655943672426991">知乎版本</a> · <a href="https://www.xiaohongshu.com/explore/68e76eb1000000000503151c">小红书版本</a></p>
+
+<a href="./">← 返回文章列表</a></footer>
+
+</article>
+<article class="translation" lang="en">
+<header class="article-header"><h1>Low-Rank Clone: From FFN Memory to Efficient Distillation</h1>
+
+<div class="article-meta"><span>Jitai Hao</span><span>Updated <time datetime="2025-11-30">2025-11-30</time></span><a href="https://zhuanlan.zhihu.com/p/1959655943672426991">Zhihu original</a><a href="https://www.xiaohongshu.com/explore/68e76eb1000000000503151c">Xiaohongshu original</a></div></header>
+
+<details class="article-toc"><summary>Contents</summary><ol><li><a href="#section-1-en">1. The initial insight: if an FFN is a key-value memory, can we compress it?</a></li><li><a href="#section-2-en">2. The LRC method</a></li><li><a href="#section-5-en">3. Experiments</a></li><li><a href="#section-6-en">The student inherits the teacher’s knowledge structure</a></li></ol>
+
+</details>
+<div class="post-body"><p>Our work on efficient distillation, <b>Low-Rank Clone (LRC)</b>, was selected as a Spotlight at NeurIPS 2025.</p>
+
+<p><b>TL;DR:</b> We train a set of <b>low-rank projection</b> matrices that directly project a strong teacher LLM into a smaller student language model. Instead of creating or training the student’s large weight matrices from scratch, we train only these projections. With just <b>20B</b> training tokens, our <code>LRC-1.7B</code> outperforms <code>Qwen3-1.7B</code>, a state-of-the-art model trained on <b>36T</b> tokens, yielding a more than 1,000-fold improvement in training-token efficiency.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/low-rank-clone-01.webp"><img alt="Low-Rank Clone: original figure 1" decoding="async" height="790" loading="lazy" src="../assets/blog/low-rank-clone-01.webp" width="862"/></a></figure>
+
+<p><b>Paper:</b> <a href="http://arxiv.org/abs/2505.12781">arxiv.org/abs/2505.12781</a></p>
+
+<p><b>Code and weights:</b> <a href="https://github.com/CURRENTF/LowRankClone">https://github.com/CURRENTF/LowRankClone</a> <a href="https://huggingface.co/JitaiHao/LRC-4B-SFT">https://huggingface.co/JitaiHao/LRC-4B-SFT</a></p>
+
+<hr/><h2 id="section-1-en">1. The initial insight: if an FFN is a key-value memory, can we compress it?</h2>
+
+<p>Before introducing the method, I would like to share the thinking that led to it, in the hope that it offers a useful perspective.</p>
+
+<p>LRC takes direct inspiration from the classic paper <b>“Transformer Feed-Forward Layers Are Key-Value Memories” (Geva et al., 2021)</b>, which interprets the FFN module as a key-value memory.</p>
+
+<p>Let us revisit the FFN computation, using SwiGLU as an example:</p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>o</mi><mrow><mi>f</mi><mi>f</mi><mi>n</mi></mrow></msub><mo>=</mo><mtext>SwiGLU</mtext><mo stretchy="false">(</mo><mi>x</mi><msubsup><mi>W</mi><mrow><mi>u</mi><mi>p</mi></mrow><mi mathvariant="normal">⊤</mi></msubsup><mo separator="true">,</mo><mi>x</mi><msubsup><mi>W</mi><mrow><mi>g</mi><mi>a</mi><mi>t</mi><mi>e</mi></mrow><mi mathvariant="normal">⊤</mi></msubsup><mo stretchy="false">)</mo><msub><mi>W</mi><mrow><mi>d</mi><mi>o</mi><mi>w</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">o_{ffn} = \text{SwiGLU}(xW_{up}^{\top}, xW_{gate}^{\top})W_{down}</annotation></semantics></math></p>
+
+<p>Intuitively, this computation has two stages:</p>
+
+<ol><li><b>Querying and matching:</b> the input vector <code>x</code> is multiplied by <code>W_up</code> and <code>W_gate</code>, which can be viewed as <b>key</b> matrices, to compute similarities and produce an activation distribution.</li><li><b>Retrieving content:</b> those activations weight the rows of <code>W_down</code>, which can be viewed as a <b>value</b> matrix, to retrieve the stored knowledge.</li></ol>
+
+<p>If an FFN is a key-value memory, a natural question follows: <b>can we compress its key and value matrices without substantially damaging the knowledge they store?</b></p>
+
+<p>That question is the starting point for LRC.</p>
+
+<h2 id="section-2-en">2. The LRC method</h2>
+
+<p>To compress FFN memory, we designed a unified framework with two core components: <b>low-rank projection</b> and <b>activation clone</b>.</p>
+
+<h3 id="section-3-en">1. Low-rank projection: generating student weights through projection</h3>
+
+<p>Conventional methods either train a student from scratch or discard parts of the teacher’s weights through hard pruning. These approaches can be inefficient or lose valuable information.</p>
+
+<p>LRC takes a different approach. We train lightweight <b>projection matrices</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mi>m</mi><mi>P</mi></msubsup></mrow><annotation encoding="application/x-tex">W_m^P</annotation></semantics></math>, rather than the student’s weights. The student weights <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mi>m</mi><mi>S</mi></msubsup></mrow><annotation encoding="application/x-tex">W_m^S</annotation></semantics></math> are generated directly by projecting the teacher weights <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mi>m</mi><mi>T</mi></msubsup></mrow><annotation encoding="application/x-tex">W_m^T</annotation></semantics></math>.</p>
+
+<p>For each weight matrix <code>m</code>, such as <code>q, k, v, o, up, gate, down</code>, in each Transformer layer <code>i</code>, the student weights are generated as follows:</p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo>=</mo><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup></mrow><annotation encoding="application/x-tex">W_{m,i}^S = W_{m,i}^T W_{m,i}^P</annotation></semantics></math></p>
+
+<p>Here, <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><msubsup><mi>d</mi><mi>m</mi><mi>T</mi></msubsup><mo>×</mo><msup><mi>d</mi><mi>T</mi></msup></mrow></msup></mrow><annotation encoding="application/x-tex">W_{m,i}^T \in \mathbb{R}^{d_{m}^{T}\times d^{T}}</annotation></semantics></math> denotes the teacher weights, and <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>W</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><msup><mi>d</mi><mi>T</mi></msup><mo>×</mo><msup><mi>d</mi><mi>S</mi></msup></mrow></msup></mrow><annotation encoding="application/x-tex">W_{m,i}^P \in \mathbb{R}^{d^{T}\times d^{S}}</annotation></semantics></math> is the low-rank projection matrix we train. This softly compresses the teacher’s large weight matrices into the student’s dimensional space while preserving as much of the original knowledge structure as possible.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/low-rank-clone-02.webp"><img alt="Method overview." decoding="async" height="675" loading="lazy" src="../assets/blog/low-rank-clone-02.webp" width="1440"/></a><figcaption>Method overview.</figcaption></figure>
+
+<h3 id="section-4-en">2. Activation clone: preserving similarity after projection</h3>
+
+<p>Projecting the weights alone is not enough. We also need the compressed key-value memory to respond similarly to the teacher when given the same input.</p>
+
+<p>We therefore introduce <b>activation clone</b>, using a mean squared error (MSE) loss to align the student’s intermediate activations with the teacher’s.</p>
+
+<p>Our clone loss <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{clone}</annotation></semantics></math> covers multiple intermediate outputs in both the attention and FFN modules:</p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>e</mi></mrow></msub><mo>=</mo><msubsup><mo>∑</mo><mi>i</mi><mi>l</mi></msubsup><mrow><mo fence="true">[</mo><mi mathvariant="script">E</mi><mo stretchy="false">(</mo><msubsup><mi>o</mi><mrow><mi>a</mi><mi>t</mi><mi>t</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo separator="true">,</mo><msubsup><mi>o</mi><mrow><mi>a</mi><mi>t</mi><mi>t</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><msubsup><mi>W</mi><mrow><mi>o</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup><mo stretchy="false">)</mo><mo>+</mo><mi mathvariant="script">E</mi><mo stretchy="false">(</mo><msubsup><mi>o</mi><mrow><mi>f</mi><mi>f</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo separator="true">,</mo><msubsup><mi>o</mi><mrow><mi>f</mi><mi>f</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><msubsup><mi>W</mi><mrow><mi>d</mi><mi>o</mi><mi>w</mi><mi>n</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>P</mi></msubsup><mo stretchy="false">)</mo><mo>+</mo><msub><mo>∑</mo><mrow><mi>m</mi><mo>∈</mo><mo stretchy="false">{</mo><mi>q</mi><mo separator="true">,</mo><mi>k</mi><mo separator="true">,</mo><mi>v</mi><mo separator="true">,</mo><mi>u</mi><mi>p</mi><mo separator="true">,</mo><mi>g</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo stretchy="false">}</mo></mrow></msub><mi mathvariant="script">E</mi><mo stretchy="false">(</mo><msubsup><mi>h</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>S</mi></msubsup><mo separator="true">,</mo><msubsup><mi>h</mi><mrow><mi>m</mi><mo separator="true">,</mo><mi>i</mi></mrow><mi>T</mi></msubsup><mo stretchy="false">)</mo><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{L}_{clone} = \sum_{i}^{l} \left[ \mathcal{E}(o_{attn,i}^S, o_{attn,i}^T W_{o,i}^P) + \mathcal{E}(o_{ffn,i}^S, o_{ffn,i}^T W_{down,i}^P) + \sum_{m \in \{q,k,v,up,gate\}} \mathcal{E}(h_{m,i}^S, h_{m,i}^T) \right]</annotation></semantics></math></p>
+
+<p>Here, <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">E</mi></mrow><annotation encoding="application/x-tex">\mathcal{E}</annotation></semantics></math> denotes the MSE loss. This objective encourages the student to imitate the teacher not only at the final output layer, but also throughout its intermediate computation.</p>
+
+<p>The complete training objective combines three terms: the conventional <b>KL divergence loss</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>K</mi><mi>L</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{KL}</annotation></semantics></math>, the <b>language modeling loss</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>L</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{LM}</annotation></semantics></math>, and our <b>clone loss</b> <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">L</mi><mrow><mi>c</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{L}_{clone}</annotation></semantics></math>.</p>
+
+<h2 id="section-5-en">3. Experiments</h2>
+
+<p>We evaluated LRC by training a series of student models using open-source teachers such as <code>Llama-3.2-3B</code> and <code>Qwen2.5-3B/7B</code>.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/low-rank-clone-03.webp"><img alt="Low-Rank Clone: original figure 3" decoding="async" height="718" loading="lazy" src="../assets/blog/low-rank-clone-03.webp" width="1440"/></a></figure>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/low-rank-clone-04.webp"><img alt="Low-Rank Clone: original figure 4" decoding="async" height="655" loading="lazy" src="../assets/blog/low-rank-clone-04.webp" width="1440"/></a></figure>
+
+<p>As shown in the table above, <code>LRC-1.7B</code> achieves an average score of <b>64.98</b> with only <b>20B</b> training tokens, exceeding <code>Qwen3-1.7B</code> (<b>63.17</b>), which was trained on <b>36T</b> tokens. Meanwhile, <code>LRC-4B</code> reaches <b>70.30</b> with approximately <b>18B</b> training tokens, matching <code>Qwen3-4B</code> (<b>70.29</b>), also trained on <b>36T</b> tokens. All models were evaluated with lm-eval==0.4.8, as clarified in the Xiaohongshu update of November 30, 2025.</p>
+
+<h2 id="section-6-en">The student inherits the teacher’s knowledge structure</h2>
+
+<p>To test our central hypothesis, we conducted a neuron-masking experiment. We found that neurons strongly associated with factual knowledge in the teacher play similar roles at the <b>same positions</b> in the student. Masking those neurons causes a substantial performance drop in both models, providing strong evidence that the student inherits the teacher’s knowledge structure.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/low-rank-clone-05.webp"><img alt="Low-Rank Clone: original figure 5" decoding="async" height="318" loading="lazy" src="../assets/blog/low-rank-clone-05.webp" width="878"/></a></figure>
+
+<p>If you are interested in the work, please read the paper and consider starring the GitHub repository. We will continue improving the code to make LRC easier to use!</p>
+
+</div>
+<footer class="article-footer"><p>Translated from my published Chinese posts. <a href="https://zhuanlan.zhihu.com/p/1959655943672426991">Zhihu version</a> · <a href="https://www.xiaohongshu.com/explore/68e76eb1000000000503151c">Xiaohongshu version</a></p>
+
+<a href="./">← Back to all posts</a></footer>
+
+</article>
+
+</main></div></body></html>

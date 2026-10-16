@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>SparseEngine: An Inference Engine for Sparse Attention | Jitai Hao</title>
+<meta content="From KV management to Chain Cache: making sparse methods part of engine execution and cache reuse across turns." name="description"/>
+<link href="https://currentf.github.io/blog/sparseengine.html" rel="canonical"/>
+<meta content="SparseEngine: An Inference Engine for Sparse Attention" property="og:title"/>
+<meta content="From KV management to Chain Cache: making sparse methods part of engine execution and cache reuse across turns." property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://currentf.github.io/blog/sparseengine.html" property="og:url"/>
+<meta content="https://currentf.github.io/assets/blog/sparseengine-01.webp" property="og:image"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link href="../assets/site.css?v=20261013-type" rel="stylesheet"/>
+<link href="../assets/blog.css?v=20261015-bilingual" rel="stylesheet"/>
+<script defer="" src="../assets/paper-pages.js?v=20261015-bilingual"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "SparseEngine: An Inference Engine for Sparse Attention", "description": "From KV management to Chain Cache: making sparse methods part of engine execution and cache reuse across turns.", "url": "https://currentf.github.io/blog/sparseengine.html", "dateModified": "2026-10-15", "inLanguage": ["en", "zh-CN"], "author": {"@type": "Person", "name": "Jitai Hao", "url": "https://currentf.github.io/"}, "image": "https://currentf.github.io/assets/blog/sparseengine-01.webp", "isBasedOn": ["https://zhuanlan.zhihu.com/p/2093815551642674020", "https://www.xiaohongshu.com/explore/6acf626e000000001b023a97"]}</script>
+</head>
+<body class="blog-page" data-description-en="From KV management to Chain Cache: making sparse methods part of engine execution and cache reuse across turns." data-description-zh="从 KV 管理到 Chain Cache，让稀疏方法真正参与推理引擎的执行与跨轮缓存复用。" data-title-en="SparseEngine: An Inference Engine for Sparse Attention" data-title-zh="SparseEngine：面向稀疏注意力的推理引擎">
+<a class="skip-link" href="#main"><span lang="en">Skip to content</span><span lang="zh-CN">跳至正文</span></a>
+<div class="site-shell"><header class="site-header">
+<a aria-label="Jitai Hao homepage" class="brand" href="../index.html">
+<span class="brand-mark">JH</span>
+<span class="brand-text">
+<strong lang="en">Jitai Hao</strong>
+<strong lang="zh-CN">郝继泰</strong>
+<span lang="en">Efficient AI and multimodal models</span>
+<span lang="zh-CN">高效 AI 与统一多模态模型</span>
+</span>
+</a>
+<nav aria-label="Primary navigation" class="header-links">
+<a class="nav-link" href="../index.html"> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+<a aria-current="page" class="nav-link" href="./"> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+<a class="nav-link" href="../index.html#publications"> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+<a class="nav-link" href="../index.html#projects"> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+<a class="nav-link" href="mailto:jitaihao@outlook.com"> Email</a>
+<button class="lang-switcher" onclick="toggleLanguage()" type="button">
+<span lang="zh-CN">English</span>
+<span lang="en">中文</span>
+</button>
+</nav>
+
+</header>
+
+<main class="article-layout" id="main">
+<a class="back-link" href="./"><span lang="zh-CN">← 全部文章</span><span lang="en">← All posts</span></a>
+<article class="original" lang="zh-CN">
+<header class="article-header"><h1>SparseEngine：面向稀疏注意力的推理引擎</h1>
+
+<div class="article-meta"><span>郝继泰</span><span>更新于 <time datetime="2026-10-15">2026-10-15</time></span><a href="https://zhuanlan.zhihu.com/p/2093815551642674020">知乎原文</a><a href="https://www.xiaohongshu.com/explore/6acf626e000000001b023a97">小红书原文</a></div></header>
+
+<details class="article-toc"><summary>文章目录</summary><ol><li><a href="#section-1">为什么需要一个 Sparse-First 引擎？</a></li><li><a href="#section-2">让稀疏计算成为引擎的原生能力</a></li><li><a href="#section-3">让稀疏方法参与跨请求的状态管理</a></li><li><a href="#section-6">实验结果</a></li><li><a href="#section-7">论文与代码</a></li></ol>
+
+</details>
+<div class="post-body"><p>关于 <b>KV Cache 压缩 / 稀疏注意力</b>，已经有非常多的研究工作了。但真正把这些方法部署到 vLLM、SGLang 等推理引擎中，依然存在很多挑战，而这些问题在相关论文中往往很少被讨论。</p>
+
+<p>在我们最近的工作 <b>SparseEngine: Sparse-First Inference Engine</b> 中，我们重新设计了推理引擎的抽象，尝试真正在推理引擎中 Serve 这些稀疏方法。</p>
+
+<h2 id="section-1">为什么需要一个 Sparse-First 引擎？</h2>
+
+<p>一个主要难点是，<b>不同方法对 KV 的存储、访问和更新方式有很大区别</b>。比如：</p>
+
+<ul><li><b>SnapKV、H2O</b> 需要物理淘汰 KV，涉及不规则的 KV 存储和显存回收。</li><li><b>RetroInfer</b> 需要维护基于聚类的 KV 索引，并采用特殊的 Attention 计算流程。</li><li><b>KIVI、Palu</b> 改变了 KV 的存储格式，需要额外管理 量化参数或者压缩后的表示。</li></ul>
+
+<p>这意味着很难用一套传统的 KV Cache 抽象来统一适配这些方法。目前也已经有一些工作比如Vortex[1], Tangram[2]开始尝试支持serve一些稀疏方法，但仍局限于一些固定的定义与抽象，使得超出抽象边界的方法难以支持。</p>
+
+<h2 id="section-2">让稀疏计算成为引擎的原生能力</h2>
+
+<p>因此，我们从头设计了 <b>Sparse-First 推理引擎 SparseEngine</b>，让稀疏计算成为引擎的原生能力。目前，SparseEngine 已支持 <b>4 大类、15 种稀疏方法</b>，包括 SnapKV、H2O、Quest、KVzip、OmniKV 等，同时兼容 <b>Continuous Batching、Prefix Caching</b> 等必要的推理引擎能力。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/sparseengine-01.webp"><img alt="图 1：方法覆盖与 Serving 能力。" decoding="async" height="730" loading="lazy" src="../assets/blog/sparseengine-01.webp" width="1087"/></a><figcaption>图 1：方法覆盖与 Serving 能力。</figcaption></figure>
+
+<p>我们已经支持了 <b>14 种模型变体</b>，包括 Qwen、Llama、GLM-4.7-Flash、Gemma 4、MiniMax-M2.7 等，覆盖 GQA、MLA、Linear Attention、SWA 等不同架构，以及 Dense 和 MoE 模型。目标是完成一个真正可用的推理引擎。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/sparseengine-02.webp"><img alt="图 2：SparseEngine 的整体架构，以及 SnapKV、Quest 的实现示例。" decoding="async" height="1131" loading="lazy" src="../assets/blog/sparseengine-02.webp" width="1440"/></a><figcaption>图 2：SparseEngine 的整体架构，以及 SnapKV、Quest 的实现示例。</figcaption></figure>
+
+<h2 id="section-3">让稀疏方法参与跨请求的状态管理</h2>
+
+<p>进一步，我们还让稀疏方法参与跨请求的状态管理。目前在agent场景下，prefix cache命中率是一个重要的考虑因素，在常见agent场景中，如果进行了context compression，prefix cache就无法再正常命中，从而产生比较高额的prefill开销。我们在如下两个方面让稀疏方法介入状态管理。</p>
+
+<h3 id="section-4">1. Chain Cache</h3>
+
+<p>让经过 <b>KV Eviction</b> 的历史缓存也能跨轮次复用，避免重复 Prefill。在类似SnapKV，KVzip这种静态驱逐的方法中，token会被驱逐，使得prefix cache被破坏，无法正常匹配。为了让这类方法在agent场景下也能高效执行，我们为这类方法定义了一个chain cache的概念，与radix prefix tree不同，我们只维护一个链，并在逻辑上直接匹配token ids（不管对应cache是否被删除），如果能匹配，就直接接续。所以，如果用户不fork对话，理论上就能正常接续（目前codex似乎也维护了一个session id，如果fork对话似乎是要支付prefix miss的费用的，或许也有类似的实现）。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/sparseengine-03.webp"><img alt="图 3：Radix Prefix Cache 与 Chain Cache。物理 KV 被淘汰后，仍保留逻辑 token 前缀，并复用留下的 KV。" decoding="async" height="734" loading="lazy" src="../assets/blog/sparseengine-03.webp" width="1440"/></a><figcaption>图 3：Radix Prefix Cache 与 Chain Cache。物理 KV 被淘汰后，仍保留逻辑 token 前缀，并复用留下的 KV。</figcaption></figure>
+
+<h3 id="section-5">2. Prefix-Cache Pruning</h3>
+
+<p>支持对指定历史区域进行 <b>KV Pruning</b>，比如清理较早的工具调用结果，进行上下文的压缩，同时保留前缀匹配能力。比如在agent coding中，tool可能返回超长的log输出，或者是之前浏览过的超长代码，有时已经不再需要，我们支持使用snapkv、kvzip等剪枝方法，去修剪一下已经无用的上下文，从而减少整体的context长度。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/sparseengine-04.webp"><img alt="图 4：按需裁剪历史 KV，保留前缀缓存复用能力。" decoding="async" height="696" loading="lazy" src="../assets/blog/sparseengine-04.webp" width="1120"/></a><figcaption>图 4：按需裁剪历史 KV，保留前缀缓存复用能力。</figcaption></figure>
+
+<h2 id="section-6">实验结果</h2>
+
+<ul><li>长上下文场景下，通过 KV 淘汰支持更高并发，<b>解码总吞吐相比 vLLM 提升 10 倍以上</b>。</li><li>相同并发下，<b>解码吞吐最高提升 2.5 倍以上</b>。</li><li>多轮 Agent 场景下，<b>端到端最高加速 2.2 倍</b>。</li></ul>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/sparseengine-05.webp"><img alt="图 5：Qwen3-30B-A3B 与 GLM-4.7-Flash 的解码吞吐。上排比较相同并发，下方比较各系统最大成功测试 batch size 下的吞吐。" decoding="async" height="1312" loading="lazy" src="../assets/blog/sparseengine-05.webp" width="1440"/></a><figcaption>图 5：Qwen3-30B-A3B 与 GLM-4.7-Flash 的解码吞吐。上排比较相同并发，下方比较各系统最大成功测试 batch size 下的吞吐。</figcaption></figure>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/sparseengine-06.webp"><img alt="图 6：SparseEngine 在多轮 Agent 场景下的端到端加速效果。" decoding="async" height="1164" loading="lazy" src="../assets/blog/sparseengine-06.webp" width="1440"/></a><figcaption>图 6：SparseEngine 在多轮 Agent 场景下的端到端加速效果。</figcaption></figure>
+
+<h2 id="section-7">论文与代码</h2>
+
+<p>随着 KV Cache 压缩和稀疏注意力逐渐被引入基础模型训练，我们希望 SparseEngine 不仅能加速现有模型，也能为后续原生稀疏模型，以及新的 KV Cache 优化方法提供更灵活的基础设施。</p>
+
+<p>论文和代码都已开源，欢迎对推理引擎、稀疏注意力和 Agent Infra 感兴趣的朋友交流！</p>
+
+<a href="https://arxiv.org/abs/2609.39068">SparseEngine: Sparse-First Inference Engine</a><a href="https://github.com/CURRENTF/SparseEngine">CURRENTF/SparseEngine</a></div>
+<footer class="article-footer"><p>整理自本人已发布的文章。<a href="https://zhuanlan.zhihu.com/p/2093815551642674020">知乎版本</a> · <a href="https://www.xiaohongshu.com/explore/6acf626e000000001b023a97">小红书版本</a></p>
+
+<a href="./">← 返回文章列表</a></footer>
+
+</article>
+<article class="translation" lang="en">
+<header class="article-header"><h1>SparseEngine: An Inference Engine for Sparse Attention</h1>
+
+<div class="article-meta"><span>Jitai Hao</span><span>Updated <time datetime="2026-10-15">2026-10-15</time></span><a href="https://zhuanlan.zhihu.com/p/2093815551642674020">Zhihu original</a><a href="https://www.xiaohongshu.com/explore/6acf626e000000001b023a97">Xiaohongshu original</a></div></header>
+
+<details class="article-toc"><summary>Contents</summary><ol><li><a href="#section-1-en">Why do we need a sparse-first engine?</a></li><li><a href="#section-2-en">Making sparse computation a native engine capability</a></li><li><a href="#section-3-en">Involving sparse methods in cross-request state management</a></li><li><a href="#section-6-en">Experimental results</a></li><li><a href="#section-7-en">Paper and code</a></li></ol>
+
+</details>
+<div class="post-body"><p>There is already a substantial body of research on <b>KV cache compression and sparse attention</b>. Yet deploying these methods in inference engines such as vLLM and SGLang remains challenging, and the papers often say little about these practical issues.</p>
+
+<p>In our recent work, <b>SparseEngine: Sparse-First Inference Engine</b>, we redesigned the abstractions of an inference engine to make it possible to serve these sparse methods in practice.</p>
+
+<h2 id="section-1-en">Why do we need a sparse-first engine?</h2>
+
+<p>One major challenge is that <b>different methods store, access, and update KV states in very different ways</b>. For example:</p>
+
+<ul><li><b>SnapKV and H2O</b> physically evict KV states, requiring irregular KV storage and GPU memory reclamation.</li><li><b>RetroInfer</b> maintains a cluster-based KV index and uses a specialized attention computation workflow.</li><li><b>KIVI and Palu</b> change the KV storage format, requiring additional management of quantization parameters or compressed representations.</li></ul>
+
+<p>This makes it difficult to accommodate all these methods within a conventional KV cache abstraction. Recent efforts such as Vortex [1] and Tangram [2] have started to support serving some sparse methods, but their fixed definitions and abstractions still make it difficult to support methods that fall outside those boundaries.</p>
+
+<h2 id="section-2-en">Making sparse computation a native engine capability</h2>
+
+<p>We therefore designed <b>SparseEngine, a sparse-first inference engine,</b> from the ground up. It currently supports <b>15 sparse methods across four categories</b>, including SnapKV, H2O, Quest, KVzip, and OmniKV, while retaining essential serving capabilities such as <b>continuous batching and prefix caching</b>.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/sparseengine-01.webp"><img alt="Figure 1. Method coverage and serving capabilities." decoding="async" height="730" loading="lazy" src="../assets/blog/sparseengine-01.webp" width="1087"/></a><figcaption>Figure 1. Method coverage and serving capabilities.</figcaption></figure>
+
+<p>We support <b>14 model variants</b>, including Qwen, Llama, GLM-4.7-Flash, Gemma 4, and MiniMax-M2.7. These span GQA, MLA, linear attention, and SWA architectures, as well as dense and MoE models. Our goal is to build an inference engine that is usable in practice.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/sparseengine-02.webp"><img alt="Figure 2. The overall architecture of SparseEngine, with implementation examples for SnapKV and Quest." decoding="async" height="1131" loading="lazy" src="../assets/blog/sparseengine-02.webp" width="1440"/></a><figcaption>Figure 2. The overall architecture of SparseEngine, with implementation examples for SnapKV and Quest.</figcaption></figure>
+
+<h2 id="section-3-en">Involving sparse methods in cross-request state management</h2>
+
+<p>We also let sparse methods participate in state management across requests. Prefix cache hit rate is an important consideration for agent workloads. In common agent scenarios, context compression can break prefix cache matching and incur substantial additional prefill cost. We bring sparse methods into state management through two mechanisms.</p>
+
+<h3 id="section-4-en">1. Chain Cache</h3>
+
+<p>Chain Cache allows historical caches that have undergone <b>KV eviction</b> to be reused across turns, avoiding repeated prefill. Static eviction methods such as SnapKV and KVzip remove tokens, disrupting conventional prefix cache matching. To make these methods efficient in agent workloads, we introduce a chain cache. Unlike a radix prefix tree, it maintains a single chain and matches logical token IDs directly, regardless of whether their corresponding KV states have been deleted. If the token IDs match, execution can continue from the retained cache. In principle, this allows a conversation to continue as long as it is not forked. Codex also appears to maintain a session ID, and forking a conversation seems to incur a prefix cache miss; it may use a related approach.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/sparseengine-03.webp"><img alt="Figure 3. Radix Prefix Cache and Chain Cache. The logical token prefix is retained after physical KV eviction, allowing the remaining KV states to be reused." decoding="async" height="734" loading="lazy" src="../assets/blog/sparseengine-03.webp" width="1440"/></a><figcaption>Figure 3. Radix Prefix Cache and Chain Cache. The logical token prefix is retained after physical KV eviction, allowing the remaining KV states to be reused.</figcaption></figure>
+
+<h3 id="section-5-en">2. Prefix-Cache Pruning</h3>
+
+<p>Prefix-Cache Pruning supports <b>KV pruning</b> over specified regions of the history, such as older tool outputs, to compress the context while preserving prefix matching. In coding agents, for example, tools may return very long logs or source files that are no longer needed later. We support pruning methods such as SnapKV and KVzip to trim these historical regions and reduce the overall context footprint.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/sparseengine-04.webp"><img alt="Figure 4. Pruning historical KV states on demand while preserving prefix cache reuse." decoding="async" height="696" loading="lazy" src="../assets/blog/sparseengine-04.webp" width="1120"/></a><figcaption>Figure 4. Pruning historical KV states on demand while preserving prefix cache reuse.</figcaption></figure>
+
+<h2 id="section-6-en">Experimental results</h2>
+
+<ul><li>For long-context workloads, KV eviction enables higher concurrency, delivering <b>more than 10× the aggregate decoding throughput of vLLM</b>.</li><li>At matched concurrency, the <b>best decoding throughput speedup exceeds 2.5×</b>.</li><li>For multi-turn agent workloads, the <b>best end-to-end speedup reaches 2.2×</b>.</li></ul>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/sparseengine-05.webp"><img alt="Figure 5. Decoding throughput for Qwen3-30B-A3B and GLM-4.7-Flash. The top row compares matched concurrency; the bottom row compares throughput at each system’s largest successfully tested batch size." decoding="async" height="1312" loading="lazy" src="../assets/blog/sparseengine-05.webp" width="1440"/></a><figcaption>Figure 5. Decoding throughput for Qwen3-30B-A3B and GLM-4.7-Flash. The top row compares matched concurrency; the bottom row compares throughput at each system’s largest successfully tested batch size.</figcaption></figure>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/sparseengine-06.webp"><img alt="Figure 6. End-to-end speedups of SparseEngine on multi-turn agent workloads." decoding="async" height="1164" loading="lazy" src="../assets/blog/sparseengine-06.webp" width="1440"/></a><figcaption>Figure 6. End-to-end speedups of SparseEngine on multi-turn agent workloads.</figcaption></figure>
+
+<h2 id="section-7-en">Paper and code</h2>
+
+<p>As KV cache compression and sparse attention are increasingly incorporated into foundation model training, we hope SparseEngine can both accelerate existing models and provide more flexible infrastructure for future natively sparse models and new KV cache optimization methods.</p>
+
+<p>The paper and code are publicly available. We welcome discussions with anyone interested in inference engines, sparse attention, and agent infrastructure!</p>
+
+<a href="https://arxiv.org/abs/2609.39068">SparseEngine: Sparse-First Inference Engine</a><a href="https://github.com/CURRENTF/SparseEngine">CURRENTF/SparseEngine</a></div>
+<footer class="article-footer"><p>Translated from my published Chinese posts. <a href="https://zhuanlan.zhihu.com/p/2093815551642674020">Zhihu version</a> · <a href="https://www.xiaohongshu.com/explore/6acf626e000000001b023a97">Xiaohongshu version</a></p>
+
+<a href="./">← Back to all posts</a></footer>
+
+</article>
+
+</main></div></body></html>

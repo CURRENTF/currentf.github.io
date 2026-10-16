@@ -1,0 +1,98 @@
+{
+  "retrieved": "2026-10-15",
+  "policy": "One introduction per project. Excludes recruitment, private posts and superseded introductions.",
+  "posts": [
+    {
+      "project": "SparseEngine",
+      "page": "sparseengine.html",
+      "updated": "2026-10-15",
+      "sources": [
+        {
+          "platform": "zhihu",
+          "url": "https://zhuanlan.zhihu.com/p/2093815551642674020",
+          "title": "我们做了一个面向稀疏注意力的推理引擎：SparseEngine",
+          "displayed_date": "发布于 2026-10-15 19:43・广东"
+        },
+        {
+          "platform": "xiaohongshu",
+          "url": "https://www.xiaohongshu.com/explore/6acf626e000000001b023a97",
+          "title": "我们做了一个面向稀疏注意力的推理引擎",
+          "displayed_date": "昨天 19:07 广东"
+        }
+      ],
+      "selection": "Latest project introduction; Zhihu long-form text with Xiaohongshu updates and imagery where relevant."
+    },
+    {
+      "project": "OmniKV",
+      "page": "omnikv.html",
+      "updated": "2026-06-22",
+      "sources": [
+        {
+          "platform": "zhihu",
+          "url": "https://zhuanlan.zhihu.com/p/2052362294198383392",
+          "title": "非常开心我们的工作被应用到了GLM-5.2中",
+          "displayed_date": "编辑于 2026-06-22 12:10・广东"
+        },
+        {
+          "platform": "xiaohongshu",
+          "url": "https://www.xiaohongshu.com/explore/6a3295cc000000001c027868",
+          "title": "",
+          "displayed_date": "06-17 "
+        },
+        {
+          "platform": "zhihu",
+          "url": "https://zhuanlan.zhihu.com/p/32154143967",
+          "title": "【ICLR25】更适合CoT的大模型长文本推理加速？kv cache compression/select",
+          "displayed_date": "编辑于 2025-04-10 20:22・北京",
+          "role": "Method introduction, combined with the newer IndexCache update in one article."
+        }
+      ],
+      "selection": "Latest project introduction; Zhihu long-form text with Xiaohongshu updates and imagery where relevant."
+    },
+    {
+      "project": "Uni-X",
+      "page": "uni-x.html",
+      "updated": "2026-03-03",
+      "sources": [
+        {
+          "platform": "zhihu",
+          "url": "https://zhuanlan.zhihu.com/p/2011911325794714946",
+          "title": "ICLR 2026 | Uni-X：用“两端分离，中间共享”架构化解纯自回归多模态模型的梯度冲突",
+          "displayed_date": "编辑于 2026-03-02 21:37・广东"
+        },
+        {
+          "platform": "xiaohongshu",
+          "url": "https://www.xiaohongshu.com/explore/69a6852d000000000d00b09c",
+          "title": "ICLR 2026 架构探索缓解UMMs模态间梯度冲突",
+          "displayed_date": "03-03 "
+        }
+      ],
+      "selection": "Latest project introduction; Zhihu long-form text with Xiaohongshu updates and imagery where relevant."
+    },
+    {
+      "project": "Low-Rank Clone",
+      "page": "low-rank-clone.html",
+      "updated": "2025-11-30",
+      "sources": [
+        {
+          "platform": "zhihu",
+          "url": "https://zhuanlan.zhihu.com/p/1959655943672426991",
+          "title": "NeurIPS25 Spotlight! Low-Rank Clone高效蒸馏",
+          "displayed_date": "编辑于 2025-10-10 14:31・广东"
+        },
+        {
+          "platform": "xiaohongshu",
+          "url": "https://www.xiaohongshu.com/explore/68e76eb1000000000503151c",
+          "title": "NIPS25 Spotlight! 20B Tokens训练你的LLM",
+          "displayed_date": "编辑于 2025-11-30 "
+        }
+      ],
+      "selection": "Latest project introduction; Zhihu long-form text with Xiaohongshu updates and imagery where relevant."
+    }
+  ],
+  "translations": {
+    "language": "en",
+    "translated_on": "2026-10-15",
+    "basis": "Chinese article text on this site, with original equations, figures, and source links retained."
+  }
+}

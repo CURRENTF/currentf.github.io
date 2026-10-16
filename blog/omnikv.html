@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse | Jitai Hao</title>
+<meta content="Retain the full KV cache while selecting attention context dynamically, with later developments in IndexCache." name="description"/>
+<link href="https://currentf.github.io/blog/omnikv.html" rel="canonical"/>
+<meta content="OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse" property="og:title"/>
+<meta content="Retain the full KV cache while selecting attention context dynamically, with later developments in IndexCache." property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://currentf.github.io/blog/omnikv.html" property="og:url"/>
+<meta content="https://currentf.github.io/assets/blog/omnikv-01.webp" property="og:image"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link href="../assets/site.css?v=20261013-type" rel="stylesheet"/>
+<link href="../assets/blog.css?v=20261015-bilingual" rel="stylesheet"/>
+<script defer="" src="../assets/paper-pages.js?v=20261015-bilingual"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse", "description": "Retain the full KV cache while selecting attention context dynamically, with later developments in IndexCache.", "url": "https://currentf.github.io/blog/omnikv.html", "dateModified": "2026-06-22", "inLanguage": ["en", "zh-CN"], "author": {"@type": "Person", "name": "Jitai Hao", "url": "https://currentf.github.io/"}, "image": "https://currentf.github.io/assets/blog/omnikv-01.webp", "isBasedOn": ["https://zhuanlan.zhihu.com/p/2052362294198383392", "https://www.xiaohongshu.com/explore/6a3295cc000000001c027868"]}</script>
+</head>
+<body class="blog-page" data-description-en="Retain the full KV cache while selecting attention context dynamically, with later developments in IndexCache." data-description-zh="保留完整 KV，动态选择注意力上下文；以及这一思路在 IndexCache 中的延伸。" data-title-en="OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse" data-title-zh="OmniKV：动态上下文选择与层间注意力复用">
+<a class="skip-link" href="#main"><span lang="en">Skip to content</span><span lang="zh-CN">跳至正文</span></a>
+<div class="site-shell"><header class="site-header">
+<a aria-label="Jitai Hao homepage" class="brand" href="../index.html">
+<span class="brand-mark">JH</span>
+<span class="brand-text">
+<strong lang="en">Jitai Hao</strong>
+<strong lang="zh-CN">郝继泰</strong>
+<span lang="en">Efficient AI and multimodal models</span>
+<span lang="zh-CN">高效 AI 与统一多模态模型</span>
+</span>
+</a>
+<nav aria-label="Primary navigation" class="header-links">
+<a class="nav-link" href="../index.html"> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+<a aria-current="page" class="nav-link" href="./"> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+<a class="nav-link" href="../index.html#publications"> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+<a class="nav-link" href="../index.html#projects"> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+<a class="nav-link" href="mailto:jitaihao@outlook.com"> Email</a>
+<button class="lang-switcher" onclick="toggleLanguage()" type="button">
+<span lang="zh-CN">English</span>
+<span lang="en">中文</span>
+</button>
+</nav>
+
+</header>
+
+<main class="article-layout" id="main">
+<a class="back-link" href="./"><span lang="zh-CN">← 全部文章</span><span lang="en">← All posts</span></a>
+<article class="original" lang="zh-CN">
+<header class="article-header"><h1>OmniKV：动态上下文选择与层间注意力复用</h1>
+
+<div class="article-meta"><span>郝继泰</span><span>更新于 <time datetime="2026-06-22">2026-06-22</time></span><a href="https://zhuanlan.zhihu.com/p/2052362294198383392">知乎原文</a><a href="https://www.xiaohongshu.com/explore/6a3295cc000000001c027868">小红书原文</a></div></header>
+
+<details class="article-toc"><summary>文章目录</summary><ol><li><a href="#section-1">研究背景与动机</a></li><li><a href="#section-2">关键观察</a></li><li><a href="#section-3">方法介绍</a></li><li><a href="#section-4">实验结果</a></li><li><a href="#section-5">后续进展：IndexCache 与 GLM-5.2</a></li></ol>
+
+</details>
+<div class="post-body"><p>这种方法可能会更适合R1，O1这种推理模型，也可能更适合multi round的这种对话形式？</p>
+
+<p>OMNIKV: DYNAMIC CONTEXT SELECTION FOR EFFICIENT LONG-CONTEXT LLMS</p>
+
+<p>代码：<a href="https://github.com/antgroup/OmniKV.git">https://github.com/antgroup/OmniKV.git</a></p>
+
+<h2 id="section-1">研究背景与动机</h2>
+
+<p>现有推理加速方法尝试通过丢弃"不重要"的token来减少内存占用，但这些方法存在致命缺陷——它们依赖当前状态下的注意力权重来判断token重要性，忽略了token在后续生成阶段可能发挥的关键作用。这种静态的重要性评估机制无法适应动态变化的上下文需求，限制了模型的性能。 </p>
+
+<h2 id="section-2">关键观察</h2>
+
+<p>研究团队通过深入分析发现了一个重要现象：在单个decode step内，模型<b>连续层之间识别出的重要token具有高度相似性</b>。这一发现为设计更高效的推理方法提供了全新思路。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/omnikv-01.webp"><img alt="OmniKV 原文配图 1" decoding="async" height="1016" loading="lazy" src="../assets/blog/omnikv-01.webp" width="1380"/></a></figure>
+
+<h2 id="section-3">方法介绍</h2>
+
+<p>基于上述观察，研究团队提出了OmniKV——一种无token丢弃、无需额外训练的创新推理方法。OmniKV的核心思想包括：</p>
+
+<p>动态上下文选择：在解码阶段，先利用注意力图的稀疏性，从"filter"层中选择少量重要token，然后根据“层间相似性”，让其他层直接使用这些被选中的token子集作为上下文。</p>
+
+<p>全token保留：与现有方法不同，OmniKV保留所有token的KV缓存，确保模型可以在需要时访问完整信息，有效避免了信息丢失带来的性能下降。 </p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/omnikv-02.webp"><img alt="OmniKV 原文配图 2" decoding="async" height="985" loading="lazy" src="../assets/blog/omnikv-02.webp" width="1440"/></a></figure>
+
+<h2 id="section-4">实验结果</h2>
+
+<p>在LongBench和InfiniteBench等评测中几乎不影响原有模型性能；在多步推理场景（如CoT）中表现尤为出色；成功将单个A100 GPU上Llama-3-8B模型的最大上下文长度从128K扩展到450K，提升幅度超过3.5倍；在Huggingface transformers和轻量级大模型推理框架Lightllm上都实现了1.7x的加速比，且借助Lightllm支持了Tensor Parallelism，允许多卡并行。 </p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/omnikv-03.webp"><img alt="OmniKV 原文配图 3" decoding="async" height="900" loading="lazy" src="../assets/blog/omnikv-03.webp" width="1382"/></a></figure>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/omnikv-04.webp"><img alt="OmniKV 原文配图 4" decoding="async" height="454" loading="lazy" src="../assets/blog/omnikv-04.webp" width="1410"/></a></figure>
+
+<h2 id="section-5">后续进展：IndexCache 与 GLM-5.2</h2>
+
+<p>我们ICLR25的工作OmniKV[1]发现层间的注意力分布是非常相似的，也就是我们可以让某几层作为 选择层 选择出关键token，其他层做稀疏注意力只用 最近一个选择层选择出的关键token计算稀疏注意力即可，在我们后续的工作DeltaKV[2]中我们又一次验证OmniKV性能确实很强。同期还有类似工作比如TidalDecode[3]。</p>
+
+<p>GLM最近的工作IndexCache将该思想简单扩展到了DSA上（也引用了我们），也就是某几个Lightning indexer可以作为 选择层 存在，最近性能比肩claude-4.8的glm-5.2应用了该技术，也算是我们的工作应用在了最新强基模上，非常开心</p>
+
+<p>[1] OmniKV: Dynamic context selection for efficient long-context llms</p>
+
+<p>[2] DeltaKV: Residual-based KV cache compression via long-range similarity</p>
+
+<p>[3] Tidaldecode: Fast and accurate llm decoding with position persistent sparse attention</p>
+
+</div>
+<footer class="article-footer"><p>整理自本人已发布的文章。<a href="https://zhuanlan.zhihu.com/p/32154143967">OmniKV 方法介绍原文</a> · <a href="https://zhuanlan.zhihu.com/p/2052362294198383392">知乎版本</a> · <a href="https://www.xiaohongshu.com/explore/6a3295cc000000001c027868">小红书版本</a></p>
+
+<a href="./">← 返回文章列表</a></footer>
+
+</article>
+<article class="translation" lang="en">
+<header class="article-header"><h1>OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse</h1>
+
+<div class="article-meta"><span>Jitai Hao</span><span>Updated <time datetime="2026-06-22">2026-06-22</time></span><a href="https://zhuanlan.zhihu.com/p/2052362294198383392">Zhihu original</a><a href="https://www.xiaohongshu.com/explore/6a3295cc000000001c027868">Xiaohongshu original</a></div></header>
+
+<details class="article-toc"><summary>Contents</summary><ol><li><a href="#section-1-en">Background and motivation</a></li><li><a href="#section-2-en">Key observation</a></li><li><a href="#section-3-en">Method</a></li><li><a href="#section-4-en">Experimental results</a></li><li><a href="#section-5-en">Later developments: IndexCache and GLM-5.2</a></li></ol>
+
+</details>
+<div class="post-body"><p>Could this approach be particularly useful for reasoning models such as R1 and o1, or for multi-turn conversations?</p>
+
+<p>OMNIKV: DYNAMIC CONTEXT SELECTION FOR EFFICIENT LONG-CONTEXT LLMS</p>
+
+<p>Code: <a href="https://github.com/antgroup/OmniKV.git">https://github.com/antgroup/OmniKV.git</a></p>
+
+<h2 id="section-1-en">Background and motivation</h2>
+
+<p>Existing inference acceleration methods often reduce memory usage by discarding “unimportant” tokens. A critical limitation is that they judge importance using current attention weights, overlooking tokens that may become important later in generation. This static assessment cannot adapt to changing context requirements and can limit model performance.</p>
+
+<h2 id="section-2-en">Key observation</h2>
+
+<p>Our analysis revealed an important pattern: within a single decoding step, <b>consecutive layers identify highly similar sets of important tokens</b>. This observation suggests a different route to more efficient inference.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/omnikv-01.webp"><img alt="OmniKV: original figure 1" decoding="async" height="1016" loading="lazy" src="../assets/blog/omnikv-01.webp" width="1380"/></a></figure>
+
+<h2 id="section-3-en">Method</h2>
+
+<p>Based on this observation, we proposed OmniKV, an inference method that requires no additional training and does not discard tokens. Its core ideas are:</p>
+
+<p>Dynamic context selection: during decoding, a “filter” layer uses attention sparsity to select a small set of important tokens. Other layers then reuse this token subset as their attention context, exploiting the similarity across layers.</p>
+
+<p>Retaining all tokens: OmniKV preserves the KV cache for every token so that the model can access the full history when needed. This avoids the performance degradation caused by permanently losing information.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/omnikv-02.webp"><img alt="OmniKV: original figure 2" decoding="async" height="985" loading="lazy" src="../assets/blog/omnikv-02.webp" width="1440"/></a></figure>
+
+<h2 id="section-4-en">Experimental results</h2>
+
+<p>OmniKV has little impact on model quality in benchmarks such as LongBench and InfiniteBench, and performs particularly well in multi-step reasoning scenarios such as chain-of-thought. It extends the maximum context length of Llama-3-8B on a single A100 GPU from 128K to 450K, an increase of more than 3.5×. It achieves a 1.7× speedup in both Hugging Face Transformers and the lightweight inference engine LightLLM. Through LightLLM, it also supports tensor parallelism for multi-GPU execution.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/omnikv-03.webp"><img alt="OmniKV: original figure 3" decoding="async" height="900" loading="lazy" src="../assets/blog/omnikv-03.webp" width="1382"/></a></figure>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/omnikv-04.webp"><img alt="OmniKV: original figure 4" decoding="async" height="454" loading="lazy" src="../assets/blog/omnikv-04.webp" width="1410"/></a></figure>
+
+<h2 id="section-5-en">Later developments: IndexCache and GLM-5.2</h2>
+
+<p>In our ICLR 2025 work, OmniKV [1], we found that attention distributions are highly similar across layers. A subset of layers can therefore act as selection layers, identifying important tokens, while other layers compute sparse attention using the tokens chosen by the nearest preceding selection layer. Our subsequent work, DeltaKV [2], again confirmed OmniKV’s strong performance. Contemporaneous work such as TidalDecode [3] explored related ideas.</p>
+
+<p>The GLM team’s more recent work, IndexCache, extends this idea to DSA and cites OmniKV. Some Lightning indexers serve as selection layers. GLM-5.2, whose performance was recently reported to be comparable to Claude 4.8, uses this technique. It is exciting to see an idea from our work finding its way into a new foundation model.</p>
+
+<p>[1] OmniKV: Dynamic Context Selection for Efficient Long-Context LLMs</p>
+
+<p>[2] DeltaKV: Residual-Based KV Cache Compression via Long-Range Similarity</p>
+
+<p>[3] TidalDecode: Fast and Accurate LLM Decoding with Position Persistent Sparse Attention</p>
+
+</div>
+<footer class="article-footer"><p>Translated from my published Chinese posts. <a href="https://zhuanlan.zhihu.com/p/32154143967">Original OmniKV introduction</a> · <a href="https://zhuanlan.zhihu.com/p/2052362294198383392">Zhihu version</a> · <a href="https://www.xiaohongshu.com/explore/6a3295cc000000001c027868">Xiaohongshu version</a></p>
+
+<a href="./">← Back to all posts</a></footer>
+
+</article>
+
+</main></div></body></html>

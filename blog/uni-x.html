@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle | Jitai Hao</title>
+<meta content="An autoregressive architecture for unified understanding, generation, and editing, motivated by text–vision gradient conflict." name="description"/>
+<link href="https://currentf.github.io/blog/uni-x.html" rel="canonical"/>
+<meta content="Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle" property="og:title"/>
+<meta content="An autoregressive architecture for unified understanding, generation, and editing, motivated by text–vision gradient conflict." property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://currentf.github.io/blog/uni-x.html" property="og:url"/>
+<meta content="https://currentf.github.io/assets/blog/uni-x-03.webp" property="og:image"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link href="../assets/site.css?v=20261013-type" rel="stylesheet"/>
+<link href="../assets/blog.css?v=20261015-bilingual" rel="stylesheet"/>
+<script defer="" src="../assets/paper-pages.js?v=20261015-bilingual"></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle", "description": "An autoregressive architecture for unified understanding, generation, and editing, motivated by text–vision gradient conflict.", "url": "https://currentf.github.io/blog/uni-x.html", "dateModified": "2026-03-03", "inLanguage": ["en", "zh-CN"], "author": {"@type": "Person", "name": "Jitai Hao", "url": "https://currentf.github.io/"}, "image": "https://currentf.github.io/assets/blog/uni-x-03.webp", "isBasedOn": ["https://zhuanlan.zhihu.com/p/2011911325794714946", "https://www.xiaohongshu.com/explore/69a6852d000000000d00b09c"]}</script>
+</head>
+<body class="blog-page" data-description-en="An autoregressive architecture for unified understanding, generation, and editing, motivated by text–vision gradient conflict." data-description-zh="从文本与视觉的梯度冲突出发，探索统一理解、生成和编辑的自回归架构。" data-title-en="Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle" data-title-zh="Uni-X：用“两端分离，中间共享”缓解模态冲突">
+<a class="skip-link" href="#main"><span lang="en">Skip to content</span><span lang="zh-CN">跳至正文</span></a>
+<div class="site-shell"><header class="site-header">
+<a aria-label="Jitai Hao homepage" class="brand" href="../index.html">
+<span class="brand-mark">JH</span>
+<span class="brand-text">
+<strong lang="en">Jitai Hao</strong>
+<strong lang="zh-CN">郝继泰</strong>
+<span lang="en">Efficient AI and multimodal models</span>
+<span lang="zh-CN">高效 AI 与统一多模态模型</span>
+</span>
+</a>
+<nav aria-label="Primary navigation" class="header-links">
+<a class="nav-link" href="../index.html"> <span lang="en">Home</span><span lang="zh-CN">主页</span></a>
+<a aria-current="page" class="nav-link" href="./"> <span lang="en">Blog</span><span lang="zh-CN">博客</span></a>
+<a class="nav-link" href="../index.html#publications"> <span lang="en">Publications</span><span lang="zh-CN">成果</span></a>
+<a class="nav-link" href="../index.html#projects"> <span lang="en">Projects</span><span lang="zh-CN">项目</span></a>
+<a class="nav-link" href="mailto:jitaihao@outlook.com"> Email</a>
+<button class="lang-switcher" onclick="toggleLanguage()" type="button">
+<span lang="zh-CN">English</span>
+<span lang="en">中文</span>
+</button>
+</nav>
+
+</header>
+
+<main class="article-layout" id="main">
+<a class="back-link" href="./"><span lang="zh-CN">← 全部文章</span><span lang="en">← All posts</span></a>
+<article class="original" lang="zh-CN">
+<header class="article-header"><h1>Uni-X：用“两端分离，中间共享”缓解模态冲突</h1>
+
+<div class="article-meta"><span>郝继泰</span><span>更新于 <time datetime="2026-03-03">2026-03-03</time></span><a href="https://zhuanlan.zhihu.com/p/2011911325794714946">知乎原文</a><a href="https://www.xiaohongshu.com/explore/69a6852d000000000d00b09c">小红书原文</a></div></header>
+
+<details class="article-toc"><summary>文章目录</summary><ol><li><a href="#section-1">Motivation：模态间梯度冲突</a></li><li><a href="#section-2">冲突来源：底层表示的信息熵差异</a></li><li><a href="#section-3">2. Uni-X (Two-End-Separated, Middle-Shared)</a></li><li><a href="#section-4">和 Encoder/Decoder 的关系</a></li><li><a href="#section-5">理论计算效率的额外增益</a></li><li><a href="#section-6">3. 实验结果</a></li><li><a href="#section-7">Future Work</a></li></ol>
+
+</details>
+<div class="post-body"><p>我们关于统一多模态生成与理解模型（Unified Multimodal Models, UMMs）架构探索的论文 <b>Uni-X</b> 被 <b>ICLR 2026</b> 接收。在该工作中，我们在最简洁的自回归（Autoregressive, AR）范式下，尝试给“文本”和“视觉”模态之间的互相冲突问题一个优雅的解决方案。简单来说，我们在模型的浅层和深层设置了不同分支来专门处理文本或者视觉模态。</p>
+
+<p>📄 论文 <a href="https://openreview.net/forum?id=IJLIYpCkwz">https://openreview.net/forum?id=IJLIYpCkwz</a><br/>💻 代码 <a href="https://github.com/CURRENTF/Uni-X">https://github.com/CURRENTF/Uni-X</a><br/>🤗 权重 <a href="https://huggingface.co/JitaiHao/Uni-X-3B">https://huggingface.co/JitaiHao/Uni-X-3B</a></p>
+
+<h2 id="section-1">Motivation：模态间梯度冲突</h2>
+
+<p>将视觉输入通过向量量化（Vector Quantization）转化为离散 Token，从而将文本和视觉统一为单一序列进行预测，是目前构建 AR UMMs 的主流思路 。然而，通过实验分析，我们发现：使用一个完全共享参数的<b>标准</b> Transformer 在处理这种多模态输入时，会遭遇严重的“<b>梯度冲突</b>”（Gradient Conflict）。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/uni-x-01.webp"><img alt="标准 Transformer 的 FFN 下采样权重梯度冲突分析。浅层和深层的梯度冲突极为剧烈，而在中间层有所缓解。应用Uni-X结构后，梯度冲突得到了进一步地缓解。" decoding="async" height="584" loading="lazy" src="../assets/blog/uni-x-01.webp" width="755"/></a><figcaption>标准 Transformer 的 FFN 下采样权重梯度冲突分析。浅层和深层的梯度冲突极为剧烈，而在中间层有所缓解。应用Uni-X结构后，梯度冲突得到了进一步地缓解。</figcaption></figure>
+
+<p>为了精确描述这一现象，我们定义了层级的梯度冲突指标 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>g</mi></msub></mrow><annotation encoding="application/x-tex">c_{g}</annotation></semantics></math> 。通过计算纯文本数据梯度 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mrow><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">g_{text}</annotation></semantics></math> 与图文对数据梯度 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mrow><mi>i</mi><mi>m</mi><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">g_{img}</annotation></semantics></math> 之间的余弦相似度 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>i</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{inter}</annotation></semantics></math>，并<b>减去</b>模型在混合模态数据分布下的基线梯度相似度 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{base}</annotation></semantics></math>，我们得到 ： </p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>g</mi></msub><mo>=</mo><mo>−</mo><mo stretchy="false">(</mo><msub><mi>S</mi><mrow><mi>i</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi></mrow></msub><mo>−</mo><msub><mi>S</mi><mrow><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> c_{g}=-(S_{inter}-S_{base}) </annotation></semantics></math></p>
+
+<h2 id="section-2">冲突来源：底层表示的信息熵差异</h2>
+
+<p>为什么会出现这种现象？我们尝试从信息论角度提供一个解释：VQ得到的视觉序列与于自然语言的差异极大 。我们计算了基于 N-gram 的条件熵，结果表明，视觉 Token 序列的条件熵显著高于英语、德语或中文等自然语言。这种极高的信息熵意味着视觉序列的预测难度更大，需要模型建模更长程、空间纠缠更深的依赖关系。</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/uni-x-02.webp"><img alt="视觉 Token 序列的条件熵显著高于英语、德语或中文等自然语言" decoding="async" height="595" loading="lazy" src="../assets/blog/uni-x-02.webp" width="785"/></a><figcaption>视觉 Token 序列的条件熵显著高于英语、德语或中文等自然语言</figcaption></figure>
+
+<p>当单一网络强制同时处理低熵的语法化文本和高熵的空间化视觉时，模型的浅层（负责底层特征提取）和深层（负责目标分布预测）会被迫调和截然不同的底层统计特性，从而引发强烈的梯度拉扯。相反，在网络的中间层，特征表征逐渐抽象化和语义化，模态间的对齐变得更加自然，冲突显著减小。</p>
+
+<h2 id="section-3">2. Uni-X (Two-End-Separated, Middle-Shared)</h2>
+
+<p>基于上述底层逻辑，我们不再一味地引入外部视觉语义编码器或复杂的任务分支结构，而是让模型架构的物理设计去贴合不同模态的固有特性 。我们提出了 Uni-X，一种“两端分离、中间共享”的 X 型架构 ：</p>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/uni-x-03.webp"><img alt="Uni-X 架构与标准共享 Transformer 的对比。X 型结构通过两端分离避免了极端的梯度冲突，同时依靠共享核心实现了特征对齐。" decoding="async" height="786" loading="lazy" src="../assets/blog/uni-x-03.webp" width="1440"/></a><figcaption>Uni-X 架构与标准共享 Transformer 的对比。X 型结构通过两端分离避免了极端的梯度冲突，同时依靠共享核心实现了特征对齐。</figcaption></figure>
+
+<ul><li><b>分离层（Separated Layers）：</b> 将 Transformer 的初始 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> 层和最后 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> 层拆分为平行的模态专用分支 。这保证了在早期特征提取和最终 Token 投射阶段，文本和视觉信息能够被独立处理，彻底隔绝底层分布差异带来的优化冲突 。</li><li><b>共享层（Shared Layers）：</b> 中间层保持参数共享，专注于高维语义的跨模态融合与推理。</li></ul>
+
+<h2 id="section-4">和 Encoder/Decoder 的关系</h2>
+
+<p>我们的模型设计一定程度上也受到了 Encoder/Decoder 这种经典架构的启发，我们希望分离层能分别起到 Encoder和Decoder 的作用，由于时间和资源限制我们没有进行相关分析实验。<i>一个有趣的探索是，直接拿出浅分离层作为双塔模型，能不能有一个还不错的检索性能？</i></p>
+
+<h2 id="section-5">理论计算效率的额外增益</h2>
+
+<p>除了优化上的优势，由于分离层中视觉和文本处于严格隔离的计算流，对于长度为 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math> 的序列（其中视觉 Token 长 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math>，文本 Token 长 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math>），自注意力机制的计算复杂度从全共享的 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mi>a</mi><mo>+</mo><mi>b</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O((a+b)^{2})</annotation></semantics></math> 下降到了与 <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^{2}+b^{2}</annotation></semantics></math> 成正比 。这意味着在同等参数规模下，Uni-X 的训练和推理吞吐量具有更高的理论上限。</p>
+
+<h2 id="section-6">3. 实验结果</h2>
+
+<p>我们在一致训练预算下进行实验对比，Uni-X 的 3B 参数版本展现出了极强的 Scaling 能力与任务竞争力 ：</p>
+
+<ul><li><b>图像生成与理解：</b> 在未引入额外语义 Encoder 的前提下，模型在 GenEval 基准测试中达到了 82 分的优异成绩，匹配甚至超越了一些 7B 规模的自回归 UMMs 。</li><li><b>图像编辑（Zero-Shot 泛化）：</b> 在仅使用约 90k 图像编辑数据微调的情况下，Uni-X 凭借中间共享层积累的强大语义对齐能力，在 ImgEdit 榜单上的综合表现与使用了更多数据和更大参数量的 Bagel 相当。 </li></ul>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/uni-x-04.webp"><img alt="Uni-X 原文配图 4" decoding="async" height="1091" loading="lazy" src="../assets/blog/uni-x-04.webp" width="1440"/></a></figure>
+
+<figure><a aria-label="查看完整配图" href="../assets/blog/uni-x-05.webp"><img alt="Uni-X 原文配图 5" decoding="async" height="429" loading="lazy" src="../assets/blog/uni-x-05.webp" width="1440"/></a></figure>
+
+<h2 id="section-7">Future Work</h2>
+
+<p>不依赖外部视觉特征提取器（CLIP）确实在一定程度上限制了Uni-X的多模态理解性能 。但我们计划进一步探索：未来能否进一步移除 VQ-VAE 这一用来 tokenization 的中间件？如果让 Uni-X 架构中“X”的分叉部分直接承担起 Tokenizer 与 Detokenizer 的映射功能，我们或许能实现真正意义上的 Pixel-to-Pixel、端到端的原生多模态统一。</p>
+
+</div>
+<footer class="article-footer"><p>整理自本人已发布的文章。<a href="https://zhuanlan.zhihu.com/p/2011911325794714946">知乎版本</a> · <a href="https://www.xiaohongshu.com/explore/69a6852d000000000d00b09c">小红书版本</a></p>
+
+<a href="./">← 返回文章列表</a></footer>
+
+</article>
+<article class="translation" lang="en">
+<header class="article-header"><h1>Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle</h1>
+
+<div class="article-meta"><span>Jitai Hao</span><span>Updated <time datetime="2026-03-03">2026-03-03</time></span><a href="https://zhuanlan.zhihu.com/p/2011911325794714946">Zhihu original</a><a href="https://www.xiaohongshu.com/explore/69a6852d000000000d00b09c">Xiaohongshu original</a></div></header>
+
+<details class="article-toc"><summary>Contents</summary><ol><li><a href="#section-1-en">Motivation: gradient conflict across modalities</a></li><li><a href="#section-2-en">Where conflict comes from: entropy differences in low-level representations</a></li><li><a href="#section-3-en">2. Uni-X: two-end-separated, middle-shared</a></li><li><a href="#section-4-en">Connections to encoder–decoder architectures</a></li><li><a href="#section-5-en">An additional benefit in theoretical compute efficiency</a></li><li><a href="#section-6-en">3. Experimental results</a></li><li><a href="#section-7-en">Future work</a></li></ol>
+
+</details>
+<div class="post-body"><p>Our paper <b>Uni-X</b>, which explores architectures for unified multimodal models (UMMs) that support both generation and understanding, was accepted to <b>ICLR 2026</b>. Within a simple autoregressive (AR) framework, we aim to resolve the conflict between text and vision. In brief, we introduce separate branches for the two modalities in the shallow and deep layers of the model.</p>
+
+<p>📄 Paper <a href="https://openreview.net/forum?id=IJLIYpCkwz">https://openreview.net/forum?id=IJLIYpCkwz</a><br/>💻 Code <a href="https://github.com/CURRENTF/Uni-X">https://github.com/CURRENTF/Uni-X</a><br/>🤗 Weights <a href="https://huggingface.co/JitaiHao/Uni-X-3B">https://huggingface.co/JitaiHao/Uni-X-3B</a></p>
+
+<h2 id="section-1-en">Motivation: gradient conflict across modalities</h2>
+
+<p>A common approach to building AR UMMs is to convert visual inputs into discrete tokens through vector quantization, then model text and vision as a single sequence. Our experiments show, however, that a <b>standard</b> Transformer with fully shared parameters encounters severe <b>gradient conflict</b> when processing these multimodal inputs.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/uni-x-01.webp"><img alt="Gradient conflict in the FFN down-projection weights of a standard Transformer. Conflict is particularly severe in the shallow and deep layers and weaker in the middle layers. The Uni-X architecture reduces it further." decoding="async" height="584" loading="lazy" src="../assets/blog/uni-x-01.webp" width="755"/></a><figcaption>Gradient conflict in the FFN down-projection weights of a standard Transformer. Conflict is particularly severe in the shallow and deep layers and weaker in the middle layers. The Uni-X architecture reduces it further.</figcaption></figure>
+
+<p>To characterize this phenomenon, we define a layer-wise gradient conflict metric, <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>g</mi></msub></mrow><annotation encoding="application/x-tex">c_{g}</annotation></semantics></math>. We compute the cosine similarity <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>i</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{inter}</annotation></semantics></math> between gradients from text-only data, <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mrow><mi>t</mi><mi>e</mi><mi>x</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">g_{text}</annotation></semantics></math>, and image–text pairs, <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>g</mi><mrow><mi>i</mi><mi>m</mi><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">g_{img}</annotation></semantics></math>, then <b>subtract</b> the baseline gradient similarity under the mixed-modality data distribution, <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S_{base}</annotation></semantics></math>, giving:</p>
+
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>g</mi></msub><mo>=</mo><mo>−</mo><mo stretchy="false">(</mo><msub><mi>S</mi><mrow><mi>i</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi></mrow></msub><mo>−</mo><msub><mi>S</mi><mrow><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex"> c_{g}=-(S_{inter}-S_{base}) </annotation></semantics></math></p>
+
+<h2 id="section-2-en">Where conflict comes from: entropy differences in low-level representations</h2>
+
+<p>Why does this happen? We explore an explanation from information theory: visual sequences produced by vector quantization differ substantially from natural language. Our N-gram conditional entropy analysis shows that visual token sequences have significantly higher conditional entropy than English, German, or Chinese text. This high entropy makes visual sequences harder to predict, requiring the model to capture longer-range and more spatially entangled dependencies.</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/uni-x-02.webp"><img alt="Visual token sequences have substantially higher conditional entropy than natural languages such as English, German, and Chinese." decoding="async" height="595" loading="lazy" src="../assets/blog/uni-x-02.webp" width="785"/></a><figcaption>Visual token sequences have substantially higher conditional entropy than natural languages such as English, German, and Chinese.</figcaption></figure>
+
+<p>When a single network must process both low-entropy, grammatically structured text and high-entropy, spatially structured visual inputs, its shallow layers, which extract low-level features, and its deep layers, which predict the target distribution, must reconcile very different statistics. This produces strong conflict between their gradients. In the middle layers, representations become more abstract and semantic, making cross-modal alignment more natural and reducing conflict.</p>
+
+<h2 id="section-3-en">2. Uni-X: two-end-separated, middle-shared</h2>
+
+<p>Instead of relying solely on external visual semantic encoders or complex task-specific branches, we align the architecture with the inherent properties of the modalities. We propose Uni-X, an X-shaped architecture with separate ends and a shared middle:</p>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/uni-x-03.webp"><img alt="Uni-X compared with a standard shared Transformer. Separating the two ends avoids severe gradient conflict, while the shared core supports feature alignment." decoding="async" height="786" loading="lazy" src="../assets/blog/uni-x-03.webp" width="1440"/></a><figcaption>Uni-X compared with a standard shared Transformer. Separating the two ends avoids severe gradient conflict, while the shared core supports feature alignment.</figcaption></figure>
+
+<ul><li><b>Separated layers:</b> the first <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math> and last <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math> Transformer layers are split into parallel, modality-specific branches. Text and visual tokens are processed independently during early feature extraction and final token projection, isolating the optimization conflicts caused by their different low-level distributions.</li><li><b>Shared layers:</b> the middle layers retain shared parameters and focus on cross-modal fusion and reasoning over high-level semantic features.</li></ul>
+
+<h2 id="section-4-en">Connections to encoder–decoder architectures</h2>
+
+<p>Our design is also partly inspired by the classic encoder–decoder architecture. We hope the separated layers can serve as an encoder and decoder, respectively, although time and resource constraints prevented us from conducting dedicated analyses. <i>One interesting question is whether the shallow separated branches could be used directly as a dual-encoder model with reasonable retrieval performance.</i></p>
+
+<h2 id="section-5-en">An additional benefit in theoretical compute efficiency</h2>
+
+<p>Beyond the optimization benefits, visual and textual tokens follow separate computation paths in the separated layers. For a sequence of length <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math>, containing <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math> visual tokens and <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math> text tokens, self-attention complexity drops from the fully shared <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mi>a</mi><mo>+</mo><mi>b</mi><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O((a+b)^{2})</annotation></semantics></math> to a quantity proportional to <math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^{2}+b^{2}</annotation></semantics></math>. This gives Uni-X a higher theoretical ceiling for training and inference throughput at the same parameter scale.</p>
+
+<h2 id="section-6-en">3. Experimental results</h2>
+
+<p>Under matched training budgets, the 3B-parameter version of Uni-X demonstrates strong scaling behavior and competitive performance:</p>
+
+<ul><li><b>Image generation and understanding:</b> without an additional semantic encoder, the model achieves a score of 82 on GenEval, matching or exceeding some 7B autoregressive UMMs.</li><li><b>Image editing and zero-shot generalization:</b> after fine-tuning on only about 90K image-editing examples, Uni-X achieves overall ImgEdit leaderboard performance comparable to Bagel, which uses more data and a larger model. The shared middle layers provide the semantic alignment that supports this capability.</li></ul>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/uni-x-04.webp"><img alt="Uni-X: original figure 4" decoding="async" height="1091" loading="lazy" src="../assets/blog/uni-x-04.webp" width="1440"/></a></figure>
+
+<figure><a aria-label="View full-size figure" href="../assets/blog/uni-x-05.webp"><img alt="Uni-X: original figure 5" decoding="async" height="429" loading="lazy" src="../assets/blog/uni-x-05.webp" width="1440"/></a></figure>
+
+<h2 id="section-7-en">Future work</h2>
+
+<p>Not relying on an external visual feature extractor such as CLIP does limit Uni-X’s multimodal understanding performance to some extent. We plan to explore whether VQ-VAE, the intermediate tokenization component, can also be removed. If the branches of the “X” directly perform tokenization and detokenization, we may be able to achieve truly end-to-end, pixel-to-pixel unified multimodal modeling.</p>
+
+</div>
+<footer class="article-footer"><p>Translated from my published Chinese posts. <a href="https://zhuanlan.zhihu.com/p/2011911325794714946">Zhihu version</a> · <a href="https://www.xiaohongshu.com/explore/69a6852d000000000d00b09c">Xiaohongshu version</a></p>
+
+<a href="./">← Back to all posts</a></footer>
+
+</article>
+
+</main></div></body></html>

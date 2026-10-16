@@ -5,7 +5,14 @@ Academic homepage for Jitai Hao, covering efficient AI, long-context LLM inferen
 ## Core Pages
 
 - [Homepage](https://currentf.github.io/): profile, publications, projects, and research directions.
-- [Blog](https://currentf.github.io/blog/): research notes and paper overviews.
+- [Blog](https://currentf.github.io/blog/): Bilingual English and Chinese research articles based on the author’s Zhihu and Xiaohongshu posts, one current introduction per project.
+
+## Research Blog
+
+- [SparseEngine：面向稀疏注意力的推理引擎](https://currentf.github.io/blog/sparseengine.html): 从 KV 管理到 Chain Cache，让稀疏方法真正参与推理引擎的执行与跨轮缓存复用。
+- [OmniKV：动态上下文选择与层间注意力复用](https://currentf.github.io/blog/omnikv.html): 保留完整 KV，动态选择注意力上下文；以及这一思路在 IndexCache 中的延伸。
+- [Uni-X：用“两端分离，中间共享”缓解模态冲突](https://currentf.github.io/blog/uni-x.html): 从文本与视觉的梯度冲突出发，探索统一理解、生成和编辑的自回归架构。
+- [Low-Rank Clone：从 FFN 记忆到高效蒸馏](https://currentf.github.io/blog/low-rank-clone.html): 把 FFN 看作 Key-Value Memory，用低秩投影与激活克隆将教师的知识带入小模型。
 
 ## Published Papers
 
