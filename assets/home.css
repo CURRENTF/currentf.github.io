@@ -14,12 +14,16 @@
 .hero-about a { color: var(--ink); text-decoration-color: var(--line); }
 .hero-about a:hover { text-decoration-color: var(--accent); }
 .quick-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.research-map { padding: 32px 0; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+.research-map { min-width: 0; padding: 32px 0; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
 .map-topline { margin-bottom: 24px; }
 .map-title { margin: 0; font-size: 1.25rem; font-weight: 600; letter-spacing: -.015em; }
 .map-note { display: block; margin-top: 5px; color: var(--muted); font-size: .9375rem; }
+.map-scroll-hint { display: none; margin: 12px 0 0; color: var(--muted); font-size: .875rem; }
+.map-viewport { overflow-x: auto; overscroll-behavior-x: contain; padding-bottom: 8px; }
+.map-viewport:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.map-viewport > .map-canvas { min-width: 520px; }
 .map-canvas { position: relative; display: grid; gap: 14px; padding: 8px; }
-.map-canvas + .map-canvas { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+.map-viewport + .map-canvas { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
 .map-node { position: relative; min-width: 0; padding: 15px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
 .map-node.root { background: var(--soft); border-color: transparent; }
 .map-node h3 { margin: 0; font-size: 1rem; font-weight: 650; line-height: 1.4; }
@@ -108,4 +112,7 @@
     .map-node { padding: 10px; }
     .map-node h3 { font-size: .9375rem; }
     .education-list { gap: 26px; }
+}
+@media (max-width: 559px) {
+    .map-scroll-hint { display: block; }
 }

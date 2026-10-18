@@ -4,14 +4,23 @@
     if (!window.dagre || !canvases.length) return;
     const svgNS = 'http://www.w3.org/2000/svg';
 
+    function textLayout(canvas) {
+        canvas.classList.remove('is-laid-out');
+        canvas.style.removeProperty('height');
+        canvas.querySelectorAll('.map-node').forEach(node => node.removeAttribute('style'));
+    }
+
     function layout(canvas) {
         const nodes = [...canvas.querySelectorAll('.map-node')];
         const available = canvas.clientWidth;
         if (!available) return;
-        const horizontal = available >= 880 || (canvas.dataset.graph === 'multimodal' && available >= 520);
-        const nodeWidth = canvas.dataset.graph === 'multimodal' ? Math.min(215, available - 16) : horizontal
-            ? Math.min(215, (available - 16 - 3 * 36) / 4)
-            : Math.min(230, (available - 16 - 24) / 2);
+        // The expanded efficiency tree has five ranks and three sibling branches.
+        const horizontal = available >= 960 || (canvas.dataset.graph === 'multimodal' && available >= 520);
+        // Round down before measuring: rounding each fractional column up can
+        // otherwise make a fitting graph overflow at particular zoom levels.
+        const nodeWidth = Math.floor(canvas.dataset.graph === 'multimodal' ? Math.min(215, available - 16) : horizontal
+            ? Math.min(215, (available - 16 - 4 * 36) / 5)
+            : Math.min(230, (available - 16 - 2 * 24) / 3));
         const graph = new dagre.graphlib.Graph().setGraph({
             rankdir: horizontal ? 'LR' : 'TB', align: horizontal ? undefined : 'UL',
             ranksep: 36, nodesep: 24, marginx: 8, marginy: 8
@@ -20,7 +29,8 @@
         canvas.classList.add('is-laid-out');
         nodes.forEach(node => {
             node.style.width = `${nodeWidth}px`;
-            graph.setNode(node.dataset.node, { width: node.offsetWidth, height: node.offsetHeight });
+            const { width, height } = node.getBoundingClientRect();
+            graph.setNode(node.dataset.node, { width, height });
         });
         nodes.forEach(node => {
             if (node.dataset.from) graph.setEdge(node.dataset.from, node.dataset.node);
@@ -76,9 +86,7 @@
             try { layout(canvas); }
             catch (error) {
                 // A dependency or measurement failure must never hide research content.
-                canvas.classList.remove('is-laid-out');
-                canvas.style.removeProperty('height');
-                canvas.querySelectorAll('.map-node').forEach(node => node.removeAttribute('style'));
+                textLayout(canvas);
                 console.warn('Research map is using its text fallback.', error);
             }
         }));
