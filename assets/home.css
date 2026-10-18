@@ -8,6 +8,11 @@
 .cn-name { display: inline-block; margin-left: 16px; color: var(--muted); font-size: 1.15rem; font-weight: 400; letter-spacing: 0; vertical-align: middle; }
 .hero-about { font-size: 1.0625rem; line-height: 1.8; color: var(--muted); }
 .hero-about p { margin: 0; }
+.hero-about p, .tldr, .research-impact, .news-item p, .project-strip p {
+    text-align: justify;
+    text-align-last: start;
+    overflow-wrap: break-word;
+}
 .hero-about .profile-highlight, .hero-about .profile-impact { margin-top: 14px; }
 .hero-about strong { color: var(--ink); }
 .hero-about strong.emphasis { color: var(--emphasis); }
@@ -95,6 +100,7 @@
     .hero-grid { gap: 44px; }
 }
 @media (max-width: 600px) {
+    .hero-about p:lang(en), .tldr:lang(en), .research-impact:lang(en), .news-item p:lang(en), .project-strip p:lang(en) { text-align: start; }
     .hero { padding-top: 32px; }
     .hero-copy { grid-template-columns: minmax(0, 1fr); gap: 24px; }
     .hero-portrait { width: 150px; }
