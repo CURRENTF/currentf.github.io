@@ -29,7 +29,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 html[lang="en"] [lang="zh-CN"], html[lang="zh-CN"] [lang="en"] { display: none; }
-body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.7 var(--font); -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.4 var(--font); -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-underline-offset: 3px; }
 button { font: inherit; }
 a, button { -webkit-tap-highlight-color: transparent; }

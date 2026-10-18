@@ -12,8 +12,8 @@
 <meta content="website" property="og:type"/>
 <meta content="https://currentf.github.io/blog/" property="og:url"/>
 <link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M16 16h32v32H16z' fill='%23eaf1ff'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial,sans-serif' font-size='20' font-weight='700' fill='%232563eb'%3EJH%3C/text%3E%3C/svg%3E" rel="icon"/>
-<link href="../assets/site.css?v=20261013-type" rel="stylesheet"/>
-<link href="../assets/blog.css?v=20261015-bilingual" rel="stylesheet"/>
+<link href="../assets/site.css?v=20261019-compact" rel="stylesheet"/>
+<link href="../assets/blog.css?v=20261019-compact" rel="stylesheet"/>
 <script defer="" src="../assets/paper-pages.js?v=20261015-bilingual"></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Blog", "name": "Jitai Hao Blog", "url": "https://currentf.github.io/blog/", "blogPost": [{"@type": "BlogPosting", "headline": "SparseEngine: An Inference Engine for Sparse Attention", "url": "https://currentf.github.io/blog/sparseengine.html", "inLanguage": ["en", "zh-CN"]}, {"@type": "BlogPosting", "headline": "OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse", "url": "https://currentf.github.io/blog/omnikv.html", "inLanguage": ["en", "zh-CN"]}, {"@type": "BlogPosting", "headline": "Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle", "url": "https://currentf.github.io/blog/uni-x.html", "inLanguage": ["en", "zh-CN"]}, {"@type": "BlogPosting", "headline": "Low-Rank Clone: From FFN Memory to Efficient Distillation", "url": "https://currentf.github.io/blog/low-rank-clone.html", "inLanguage": ["en", "zh-CN"]}], "inLanguage": ["en", "zh-CN"]}</script>
 </head>
@@ -43,31 +43,29 @@
 
 </header>
 <main class="blog-index" id="main"><header class="blog-heading"><h1><span lang="en">Blog</span><span lang="zh-CN">博客</span></h1>
-<p lang="zh-CN">聊聊研究中的问题、思路与实现。</p>
-<p lang="en">Notes on research, ideas, and implementation.</p>
 </header>
-<div class="post-list" lang="zh-CN"><article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2026-10-15">2026-10-15</time><span>知乎 / 小红书</span></div><h2><a href="sparseengine.html">SparseEngine：面向稀疏注意力的推理引擎</a></h2>
+<div class="post-list" lang="zh-CN"><article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="sparseengine.html">SparseEngine：面向稀疏注意力的推理引擎</a></h2><time class="post-date" datetime="2026-10-15">2026-10-15</time></div>
 <p>从 KV 管理到 Chain Cache，让稀疏方法真正参与推理引擎的执行与跨轮缓存复用。</p>
 </div><a aria-hidden="true" class="post-art" href="sparseengine.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/sparseengine-thumb.webp" width="160"/></a></article>
-<article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2026-06-22">2026-06-22</time><span>知乎 / 小红书</span></div><h2><a href="omnikv.html">OmniKV：动态上下文选择与层间注意力复用</a></h2>
+<article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="omnikv.html">OmniKV：动态上下文选择与层间注意力复用</a></h2><time class="post-date" datetime="2026-06-22">2026-06-22</time></div>
 <p>保留完整 KV，动态选择注意力上下文；以及这一思路在 IndexCache 中的延伸。</p>
 </div><a aria-hidden="true" class="post-art" href="omnikv.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/omnikv-thumb.webp" width="160"/></a></article>
-<article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2026-03-03">2026-03-03</time><span>知乎 / 小红书</span></div><h2><a href="uni-x.html">Uni-X：用“两端分离，中间共享”缓解模态冲突</a></h2>
+<article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="uni-x.html">Uni-X：用“两端分离，中间共享”缓解模态冲突</a></h2><time class="post-date" datetime="2026-03-03">2026-03-03</time></div>
 <p>从文本与视觉的梯度冲突出发，探索统一理解、生成和编辑的自回归架构。</p>
 </div><a aria-hidden="true" class="post-art" href="uni-x.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/uni-x-thumb.webp" width="160"/></a></article>
-<article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2025-11-30">2025-11-30</time><span>知乎 / 小红书</span></div><h2><a href="low-rank-clone.html">Low-Rank Clone：从 FFN 记忆到高效蒸馏</a></h2>
+<article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="low-rank-clone.html">Low-Rank Clone：从 FFN 记忆到高效蒸馏</a></h2><time class="post-date" datetime="2025-11-30">2025-11-30</time></div>
 <p>把 FFN 看作 Key-Value Memory，用低秩投影与激活克隆将教师的知识带入小模型。</p>
 </div><a aria-hidden="true" class="post-art" href="low-rank-clone.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/low-rank-clone-thumb.webp" width="160"/></a></article>
-</div><div class="post-list" lang="en"><article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2026-10-15">2026-10-15</time><span>Zhihu / Xiaohongshu</span></div><h2><a href="sparseengine.html">SparseEngine: An Inference Engine for Sparse Attention</a></h2>
+</div><div class="post-list" lang="en"><article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="sparseengine.html">SparseEngine: An Inference Engine for Sparse Attention</a></h2><time class="post-date" datetime="2026-10-15">2026-10-15</time></div>
 <p>From KV management to Chain Cache: making sparse methods part of engine execution and cache reuse across turns.</p>
 </div><a aria-hidden="true" class="post-art" href="sparseengine.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/sparseengine-thumb.webp" width="160"/></a></article>
-<article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2026-06-22">2026-06-22</time><span>Zhihu / Xiaohongshu</span></div><h2><a href="omnikv.html">OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse</a></h2>
+<article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="omnikv.html">OmniKV: Dynamic Context Selection and Cross-Layer Attention Reuse</a></h2><time class="post-date" datetime="2026-06-22">2026-06-22</time></div>
 <p>Retain the full KV cache while selecting attention context dynamically, with later developments in IndexCache.</p>
 </div><a aria-hidden="true" class="post-art" href="omnikv.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/omnikv-thumb.webp" width="160"/></a></article>
-<article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2026-03-03">2026-03-03</time><span>Zhihu / Xiaohongshu</span></div><h2><a href="uni-x.html">Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle</a></h2>
+<article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="uni-x.html">Uni-X: Resolving Modality Conflict with Separate Ends and a Shared Middle</a></h2><time class="post-date" datetime="2026-03-03">2026-03-03</time></div>
 <p>An autoregressive architecture for unified understanding, generation, and editing, motivated by text–vision gradient conflict.</p>
 </div><a aria-hidden="true" class="post-art" href="uni-x.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/uni-x-thumb.webp" width="160"/></a></article>
-<article class="post-row"><div class="post-info"><div class="post-meta"><time datetime="2025-11-30">2025-11-30</time><span>Zhihu / Xiaohongshu</span></div><h2><a href="low-rank-clone.html">Low-Rank Clone: From FFN Memory to Efficient Distillation</a></h2>
+<article class="post-row"><div class="post-info"><div class="post-heading"><h2><a href="low-rank-clone.html">Low-Rank Clone: From FFN Memory to Efficient Distillation</a></h2><time class="post-date" datetime="2025-11-30">2025-11-30</time></div>
 <p>Treating FFNs as key-value memories, and transferring their knowledge through low-rank projection and activation clone.</p>
 </div><a aria-hidden="true" class="post-art" href="low-rank-clone.html" tabindex="-1"><img alt="" height="106" loading="lazy" src="../assets/blog/low-rank-clone-thumb.webp" width="160"/></a></article>
 </div><footer class="blog-footer"><span lang="zh-CN">也可以在这里找到我：</span><span lang="en">Elsewhere:</span> <a href="https://www.zhihu.com/people/78-74-68-27/posts"><span lang="en">Zhihu</span><span lang="zh-CN">知乎</span></a> · <a href="https://www.xiaohongshu.com/user/profile/63ea27cc0000000027035522"><span lang="en">Xiaohongshu</span><span lang="zh-CN">小红书</span></a></footer>
