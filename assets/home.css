@@ -14,8 +14,10 @@ html:lang(en) .hero-copy h1 { font-family: var(--font-prose); font-size: 2.5rem;
 .hero-about p { margin: 0; }
 .hero-about p, .tldr, .research-impact, .news-item p, .project-strip p { text-align: start; overflow-wrap: break-word; }
 .hero-about .profile-highlight, .hero-about .profile-impact { margin-top: 16px; }
-/* Prose should read as sentences, not a sequence of competing callouts. */
+/* Emphasize selected contributions and results, not every semantic strong. */
 .hero-about strong, .tldr strong, .research-impact strong { color: inherit; font-weight: inherit; }
+.hero-about strong.key-point, .tldr strong.key-point { font-weight: 600; }
+.hero-about strong.key-point.emphasis, .tldr strong.key-point.emphasis { color: var(--accent); }
 .hero-about a { color: var(--ink); text-decoration-color: var(--line); }
 .hero-about a:hover { text-decoration-color: var(--accent); }
 .research-map { min-width: 0; padding: 40px 0; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
@@ -93,6 +95,7 @@ html:lang(en) .hero-copy h1 { font-family: var(--font-prose); font-size: 2.5rem;
 .simple-list li { color: var(--muted); font-size: var(--text-body); }
 .simple-list p { margin: 10px 0 0; color: var(--ink); font-family: var(--font-prose); font-size: var(--text-prose); line-height: var(--prose-leading); }
 .simple-list b { color: var(--ink); font-weight: 600; }
+#experience .simple-list > li > b { font-size: var(--text-entry); line-height: 1.5; }
 #awards .simple-list { gap: 12px; }
 .visitor-widget-wrap { margin: 16px 0 40px; max-width: 540px; overflow: hidden; }
 .visitor-widget-wrap #mapmyvisitors-widget { display: block; width: 100% !important; max-width: 100%; }
